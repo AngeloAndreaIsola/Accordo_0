@@ -18,6 +18,7 @@ public class BachecaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
+
         ComunicationController cc = new ComunicationController(this);
         cc.register(response -> informTheUserAboutTheSID(response), error -> reportErrorToUsers(error));
 
@@ -38,6 +39,7 @@ public class BachecaActivity extends AppCompatActivity {
 //TODO BACK-END Richiedere SID (fai un ComunicationController)
 //TODO BACK-END Salva SID (come singleton)
 //TODO BACK-END Scrivere test registrazione
+//TODO BACK-END Implementare reclyer view
 
 //TODO FRONT-END Gestire pulsanti
 //TODO Gestire refresh pagina
