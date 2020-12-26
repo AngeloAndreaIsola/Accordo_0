@@ -22,53 +22,62 @@ public class BachecaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
-        //FA E GESTISCE LE RICHIESTE
-        ComunicationController ccBacheca = new ComunicationController(this);
-        ccBacheca.register(response -> saveSID(response), error -> reportErrorToUsers(error));
+        //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
+        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        if (preferences.getBoolean("firstLogin", true)) {
+
+            //FA E GESTISCE LE RICHIESTE
+            ComunicationController ccBacheca = new ComunicationController(this);
+            ccBacheca.register(response -> saveSID(response), error -> reportErrorToUsers(error));
+
+            editor.putBoolean("firstLogin", false);
+            editor.commit();
+        }
+
+        Log.d(TAG, "le shared preference sono" + preferences.getAll());
+        //aEThNhv0ALoFRhuv
 
     }
 
     private void informTheUserAboutTheSID(JSONObject response) {
         Log.d(TAG, "request correct: "+ response.toString());
     }
-
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
         //TODO  FRONT-END Mettere un TOAST per l'utente
     }
     public void saveSID(JSONObject response) {
-        SharedPreferences sp = getSharedPreferences("User preference", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
         try {
-            editor.putString("sid", response.getString("sid"));  //TODO: VA PARSERIZZATO
+            editor.putString("sid", response.getString("sid"));
         } catch (JSONException e) {
             Log.d(TAG, "parsing fallito");
         }
         editor.commit();
         Log.d(TAG, "request correct: "+ response.toString());
-        Log.d(TAG, "request saved: "+ sp.getAll().toString());
+        Log.d(TAG, "request saved: "+ preferences.getAll().toString());
     }
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//TODO BACK-END Controllare se è il primo accesso dell'utente
-//TODO BACK-END Richiedere SID (fai un ComunicationController)
-//TODO BACK-END Salva SID (come singleton)
+//TODO BACK-END Salva SID (come singleton)????
 //TODO BACK-END Scrivere test registrazione
 //TODO BACK-END Implementare reclyer view
 
 //TODO FRONT-END Gestire pulsanti
 //TODO Gestire refresh pagina
+
+
+
+
+
+
+
+
+
+
+
+
