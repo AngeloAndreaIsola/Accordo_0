@@ -7,6 +7,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ComunicationController {
@@ -26,9 +28,20 @@ public class ComunicationController {
     public void register (Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         final String service_url = "register.php";
         final String url = BASE_URL + service_url;
-        final JSONObject jsonBobdy = new JSONObject();
+        final JSONObject jsonObject = new JSONObject();
 
-        JsonObjectRequest request = new JsonObjectRequest(url, jsonBobdy, responseListener, errorListener);
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void getWall(String sid,Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
+        final String service_url = "getWall.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid",sid);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
         Log.d(TAG, "Sendig request" + service_url);
         requestQueue.add(request);
     }

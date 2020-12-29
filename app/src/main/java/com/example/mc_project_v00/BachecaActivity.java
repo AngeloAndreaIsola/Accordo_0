@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 public class BachecaActivity extends AppCompatActivity {
     private static final String TAG = "BachecaActivity";
+    private String sidString = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,19 +26,35 @@ public class BachecaActivity extends AppCompatActivity {
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+
+        //PER TESTARE IL SALVATAGGIO DEL SID, RESET SHARED PREFERENCE
+        /*
+        editor.clear();
+        editor.apply();
+         */
+        ComunicationController ccBacheca = new ComunicationController(this);
         if (preferences.getBoolean("firstLogin", true)) {
 
-            //FA E GESTISCE LE RICHIESTE
-            ComunicationController ccBacheca = new ComunicationController(this);
-            ccBacheca.register(response -> saveSID(response), error -> reportErrorToUsers(error));
+            ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> reportErrorToUsers(error));
 
             editor.putBoolean("firstLogin", false);
             editor.commit();
         }
 
-        Log.d(TAG, "le shared preference sono" + preferences.getAll());
-        //aEThNhv0ALoFRhuv
 
+        if (preferences.getString("sid",null) != null){
+            sidString = preferences.getString("sid", null);
+            try {
+                ccBacheca.getWall(sidString, response -> TeastaRispostaPagine(response), error -> reportErrorToUsers(error));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void TeastaRispostaPagine(JSONObject response) {
+        Log.d(TAG, "request correct: "+ response.toString());
     }
 
     private void informTheUserAboutTheSID(JSONObject response) {
@@ -47,28 +64,19 @@ public class BachecaActivity extends AppCompatActivity {
         Log.d(TAG, "request error: " + error.toString());
         //TODO  FRONT-END Mettere un TOAST per l'utente
     }
-    public void saveSID(JSONObject response) {
+    public void saveSID_inSharedPreferences(JSONObject response) {
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         try {
             editor.putString("sid", response.getString("sid"));
+            editor.apply();
         } catch (JSONException e) {
             Log.d(TAG, "parsing fallito");
         }
-        editor.commit();
         Log.d(TAG, "request correct: "+ response.toString());
         Log.d(TAG, "request saved: "+ preferences.getAll().toString());
     }
 }
-
-
-
-//TODO BACK-END Salva SID (come singleton)????
-//TODO BACK-END Scrivere test registrazione
-//TODO BACK-END Implementare reclyer view
-
-//TODO FRONT-END Gestire pulsanti
-//TODO Gestire refresh pagina
 
 
 
