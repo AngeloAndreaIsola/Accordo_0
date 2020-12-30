@@ -1,6 +1,8 @@
 package com.example.mc_project_v00;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BachecaActivity extends AppCompatActivity {
+public class BachecaActivity extends AppCompatActivity implements OnListClickListener {
     private static final String TAG = "BachecaActivity";
     private String sidString = null;
 
@@ -51,7 +53,23 @@ public class BachecaActivity extends AppCompatActivity {
             }
         }
 
+
+
+        Model.getInstance().addFakeData();
+        Log.d(TAG, "Num of contacts: " + Model.getInstance().getContactSize());
+
+
+
+        //colleghiamo model e dapter
+        RecyclerView rv = findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        MyAdapter adapter = new MyAdapter(this, this);
+        rv.setAdapter(adapter);
+
+
     }
+
+
 
     private void TeastaRispostaPagine(JSONObject response) {
         Log.d(TAG, "request correct: "+ response.toString());
@@ -75,6 +93,11 @@ public class BachecaActivity extends AppCompatActivity {
         }
         Log.d(TAG, "request correct: "+ response.toString());
         Log.d(TAG, "request saved: "+ preferences.getAll().toString());
+    }
+
+    @Override
+    public void onListClick(int position) {
+        Log.d("RecycleViewExample", "From Main Activity: " + position);
     }
 }
 
