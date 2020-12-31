@@ -11,11 +11,13 @@ import java.util.List;
 
 public class Model {
     private List<String> contacts = null;
+    private List<JSONObject> listaCanali = null;
     private static Model theInstance = null;
     private static final String TAG = "Model";
 
     private  Model(){
         contacts = new ArrayList();
+        listaCanali = new ArrayList<>();
     }
     public static synchronized Model getInstance(){
         if(theInstance==null){
@@ -24,25 +26,19 @@ public class Model {
         return theInstance;
     }
 
-
-    public void addFakeData(){
-        for(int i=0; i<100; i++){
-            contacts.add("contact "+ i);
-        }
+    public int getListaCanaliSize(){
+        return listaCanali.size();
     }
 
-    public int getContactSize(){
-        return contacts.size();
-    }
-
-    public String getContact(int i){
-        return contacts.get(i);
+    public String getCanaleDaLista(int i) throws JSONException {
+        JSONObject o = listaCanali.get(i);
+        return o.getString("ctitle");
     }
     public void addData(JSONObject response) throws JSONException {
         JSONArray jsonArray = response.getJSONArray("channels");
         for (int i = 0; i<jsonArray.length(); i++) {
-            contacts.add( jsonArray.getJSONObject(i).toString());
+            listaCanali.add( jsonArray.getJSONObject(i));
         }
-        Log.d(TAG, "Lista canali salvata nel model: " + contacts.toString());
+        Log.d(TAG, "Lista canali salvata nel model: " + listaCanali.toString());
     }
 }

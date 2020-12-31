@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
     private LayoutInflater mInflater = null;
     private OnListClickListener mListClickListener = null;
@@ -26,13 +28,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) { //viene chiamato quando è necessario riciclare una view
-        String s = Model.getInstance().getContact(position);
+        String s = null;
+        try {
+            s = Model.getInstance().getCanaleDaLista(position);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         holder.updateContent(s);
 
     }
 
     @Override
     public int getItemCount() {  //dice quanti sono gli elementi ella lista
-        return Model.getInstance().getContactSize();
+        return Model.getInstance().getListaCanaliSize();
     }
 }
