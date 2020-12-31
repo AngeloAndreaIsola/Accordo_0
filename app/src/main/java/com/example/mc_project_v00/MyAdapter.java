@@ -19,6 +19,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //viene chiamato quando dobbiamo creare una nuova view
+        //TODO: CONTROLLA che qui che qualcosa che non va
         View view = mInflater.inflate(R.layout.single_row, parent, false);
         return new MyViewHolder(view, mListClickListener);
     }

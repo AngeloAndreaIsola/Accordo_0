@@ -58,7 +58,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         Model.getInstance().addFakeData();
         Log.d(TAG, "Num of contacts: " + Model.getInstance().getContactSize());
 
-
+        //prova a mettere addDAta qui
 
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
