@@ -25,6 +25,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
+
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -47,7 +48,13 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         if (preferences.getString("sid",null) != null){
             sidString = preferences.getString("sid", null);
             try {
-                ccBacheca.getWall(sidString, response -> TeastaRispostaPagine(response), error -> reportErrorToUsers(error));
+                ccBacheca.getWall(sidString, response -> {
+                    try {
+                        teastaRispostaPagine(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> reportErrorToUsers(error));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -55,10 +62,21 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
 
 
-        Model.getInstance().addFakeData();
-        Log.d(TAG, "Num of contacts: " + Model.getInstance().getContactSize());
+        //Model.getInstance().addFakeData();
+        //Log.d(TAG, "Num of contacts: " + Model.getInstance().getContactSize());
 
         //prova a mettere addDAta qui
+
+
+
+
+
+    }
+
+
+
+    private void teastaRispostaPagine(JSONObject response) throws JSONException {
+        Log.d(TAG, "request correct: "+ response.toString());
 
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
@@ -66,13 +84,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         MyAdapter adapter = new MyAdapter(this, this);
         rv.setAdapter(adapter);
 
-
-    }
-
-
-
-    private void TeastaRispostaPagine(JSONObject response) {
-        Log.d(TAG, "request correct: "+ response.toString());
+        Model.getInstance().addData(response);
     }
 
     private void informTheUserAboutTheSID(JSONObject response) {
