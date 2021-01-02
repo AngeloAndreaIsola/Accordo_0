@@ -84,7 +84,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         MyAdapter adapter = new MyAdapter(this, this);
         rv.setAdapter(adapter);
 
-        Model.getInstance().addData(response);
+        Model.getInstance().addAndSortData(response);
     }
 
     private void informTheUserAboutTheSID(JSONObject response) {

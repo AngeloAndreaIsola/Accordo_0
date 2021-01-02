@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class Model {
     private static final String TAG = "Model";
 
     private  Model(){
-        listaCanali = new ArrayList<>();
+        listaCanali = new ArrayList<JSONObject>();
     }
     public static synchronized Model getInstance(){
         if(theInstance==null){
@@ -34,45 +33,45 @@ public class Model {
         JSONObject o = listaCanali.get(i);
         return o.getString("ctitle");
     }
-    public void addData(JSONObject response) throws JSONException {
+    public void addAndSortData(JSONObject response) throws JSONException {
         JSONArray jsonArray = response.getJSONArray("channels");
         for (int i = 0; i<jsonArray.length(); i++) {
             listaCanali.add( jsonArray.getJSONObject(i));
         }
 
-        listaCanali.get(0).put("mine","t");
-        sortData(listaCanali);
+
+        //USA QUESTA LINEA PER TESTARE LA sortData()
+        listaCanali.get(21).put("mine","t");
+        listaCanali.get(22).put("mine", "t");
+        listaCanali.get(19).put("mine", "t");
+
+
+
+        listaCanali.sort(listaCanaliComparator);
 
         Log.d(TAG, "Lista canali salvata nel model: " + listaCanali.toString());
     }
 
-    public void sortData(List<JSONObject> lista){
-        Collections.sort(lista, new Comparator<JSONObject>() {
-            @Override
-            public int compare(JSONObject o1, JSONObject o2) {
-                /*
-                String o1_string = null;
-                String o2_string = null;
-                boolean b1 = Boolean.valueOf(o1_string);
-                boolean b2 = Boolean.valueOf(o2_string);
 
-                 */
-                boolean b1 = false;
-                boolean b2 = false;
-                try {
-                    b1 = o1.getString("mine").contains("t");
-                    b2 = o2.getString("mine").contains("f");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    public static Comparator<JSONObject> listaCanaliComparator = new Comparator<JSONObject>() {
 
-
-                return Boolean.compare(b1 ,b2);
+        public int compare(JSONObject o1, JSONObject o2) {
+            String s1 = null;
+            String s2 = null;
+            try {
+                s1 = o1.getString("mine");
+                s2 = o2.getString("mine");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
-        Log.d(TAG, "Lista canali riordinata è: " + listaCanali.toString());
-    }
 
+            //ascending order
+            //return StudentName1.compareTo(StudentName2);
+            return s2.compareTo(s1);
+
+            //descending order
+            //return StudentName2.compareTo(StudentName1);
+        }};
 
 
 }
