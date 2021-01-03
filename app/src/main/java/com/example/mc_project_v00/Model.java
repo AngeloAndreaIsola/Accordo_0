@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Model {
+
     private List<JSONObject> listaCanali = null;
     private static Model theInstance = null;
     private static final String TAG = "Model";
@@ -18,6 +19,7 @@ public class Model {
     private  Model(){
         listaCanali = new ArrayList<JSONObject>();
     }
+
     public static synchronized Model getInstance(){
         if(theInstance==null){
             theInstance= new Model();
@@ -33,19 +35,20 @@ public class Model {
         JSONObject o = listaCanali.get(i);
         return o.getString("ctitle");
     }
+
     public void addAndSortData(JSONObject response) throws JSONException {
         JSONArray jsonArray = response.getJSONArray("channels");
         for (int i = 0; i<jsonArray.length(); i++) {
             listaCanali.add( jsonArray.getJSONObject(i));
         }
 
-
+        /*
         //USA QUESTA LINEA PER TESTARE LA sortData()
         listaCanali.get(21).put("mine","t");
         listaCanali.get(22).put("mine", "t");
         listaCanali.get(19).put("mine", "t");
 
-
+         */
 
         listaCanali.sort(listaCanaliComparator);
 

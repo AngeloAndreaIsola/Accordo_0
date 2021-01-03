@@ -35,6 +35,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         editor.clear();
         editor.apply();
          */
+
         ComunicationController ccBacheca = new ComunicationController(this);
         if (preferences.getBoolean("firstLogin", true)) {
 
@@ -47,6 +48,15 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         if (preferences.getString("sid",null) != null){
             sidString = preferences.getString("sid", null);
+
+            //TEST ADD CHANNEL
+            String nomeCanale = "Apple";
+            try {
+                ccBacheca.addChannel(sidString, nomeCanale, response -> LogNewChannel(response), error -> reportErrorToUsers(error));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             try {
                 ccBacheca.getWall(sidString, response -> {
                     try {
@@ -62,17 +72,13 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
 
 
-        //Model.getInstance().addFakeData();
-        //Log.d(TAG, "Num of contacts: " + Model.getInstance().getContactSize());
-
-        //prova a mettere addDAta qui
-
-
-
 
 
     }
 
+    private void LogNewChannel(JSONObject response) {
+        Log.d(TAG, "Risposta addChannel(): " + response.toString());
+    }
 
 
     private void teastaRispostaPagine(JSONObject response) throws JSONException {
