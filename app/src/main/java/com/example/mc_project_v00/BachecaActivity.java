@@ -4,14 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.VolleyError;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
+        onButtonClickSettings();
 
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
@@ -49,6 +51,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         if (preferences.getString("sid",null) != null){
             sidString = preferences.getString("sid", null);
 
+            /*
             //TEST ADD CHANNEL
             String nomeCanale = "Apple";
             try {
@@ -56,6 +59,9 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+             */
+
 
             try {
                 ccBacheca.getWall(sidString, response -> {
@@ -76,11 +82,10 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
+
     private void LogNewChannel(JSONObject response) {
         Log.d(TAG, "Risposta addChannel(): " + response.toString());
     }
-
-
     private void teastaRispostaPagine(JSONObject response) throws JSONException {
         Log.d(TAG, "request correct: "+ response.toString());
 
@@ -92,7 +97,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         Model.getInstance().addAndSortData(response);
     }
-
     private void informTheUserAboutTheSID(JSONObject response) {
         Log.d(TAG, "request correct: "+ response.toString());
     }
@@ -116,6 +120,15 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     @Override
     public void onListClick(int position) {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
+    }
+    public void onButtonClickSettings(){
+        Button settingsButton = (Button) findViewById(R.id.goToSettings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BachecaActivity.this, SettingsActivity.class));
+            }
+        });
     }
 }
 

@@ -49,17 +49,10 @@ public class ComunicationController {
     public void addChannel(String sid, String cTitle, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
         final String service_url = "addChannel.php";
         final String url = BASE_URL + service_url;
-        /*
-        final JSONObject sidObject = new JSONObject();
-        final JSONObject cTitleObject = new JSONObject();
-        sidObject.put("sid",sid);
-        cTitleObject.put("ctitle", cTitle);
-
-         */
-
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("sid",sid);
         jsonObject.put("ctitle",cTitle);
+
         JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
         Log.d(TAG, "Sendig request" + service_url);
         requestQueue.add(request);
