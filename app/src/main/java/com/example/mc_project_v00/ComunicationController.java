@@ -18,11 +18,13 @@ public class ComunicationController {
     private RequestQueue requestQueue = null;
     private Context contextContainer;
 
+
+
+
     public ComunicationController(Context c){
         Log.d(TAG, "Creating the comunication controller");
         contextContainer = c;
         requestQueue = Volley.newRequestQueue(contextContainer);
-
     }
 
     public void register (Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){

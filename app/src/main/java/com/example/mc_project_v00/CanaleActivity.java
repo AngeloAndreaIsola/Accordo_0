@@ -12,25 +12,42 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CanaleActivity extends AppCompatActivity {
-    private static final String TAG = "BachecaActivity";
+    private static final String TAG = "CanaleActivity";
+    private int position;
+    private String sidString;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canale);
 
-        ComunicationController ccCanale = new ComunicationController(this);
-
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
-        String sidString = preferences.getString("sid", null);
+        sidString = preferences.getString("sid", null);
         String nomeCanale = null;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            nomeCanale = extras.getString("key");
+            //The key argument here must match that used in the other activity
+        }
+
         try {
-            ccCanale.getChannel(sidString, nomeCanale, response -> logPostCanle(response), error -> reportErrorToUsers(error));
+            nomeCanale = Model.getInstance().getCanaleDaLista(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        ComunicationController ccCanale = new ComunicationController(this);
 
+        try {
+            String finalNomeCanale = nomeCanale;
+            ccCanale.getChannel(sidString, nomeCanale, response -> Log.d(TAG, "elenco post del canale " + finalNomeCanale + ": " + response.toString()), error -> reportErrorToUsers(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
 
     private void logPostCanle(JSONObject response) {
         Log.d(TAG, "elenco post canale: " + response.toString());

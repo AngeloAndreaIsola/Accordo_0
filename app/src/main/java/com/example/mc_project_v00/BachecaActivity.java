@@ -55,7 +55,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         if (preferences.getString("sid",null) != null){
             sidString = preferences.getString("sid", null);
-
             /*
             //TEST ADD CHANNEL
             String nomeCanale = "Apple";
@@ -126,10 +125,19 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     public void onListClick(int position) throws JSONException {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
         //QUI GLI DIRO DI APRIRE IL CANALE SU CUI CLICCO
+        /*
         String nomeCanale = Model.getInstance().getCanaleDaLista(position);
         ComunicationController ccCanale = new ComunicationController(this);
         ccCanale.getChannel(sidString, nomeCanale, response -> Log.d(TAG, "elenco post canale: " + response.toString()), error -> reportErrorToUsers(error));
+        */
+
+
         //startActivity(new Intent(BachecaActivity.this, CanaleActivity.class));
+
+        String nomeCanale = Model.getInstance().getCanaleDaLista(position);
+        Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
+        i.putExtra("key", nomeCanale);
+        startActivity(i);
 
     }
     public void onButtonClickSettings(){
