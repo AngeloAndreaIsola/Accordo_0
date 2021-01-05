@@ -19,6 +19,8 @@ import org.json.JSONObject;
 public class BachecaActivity extends AppCompatActivity implements OnListClickListener {
     private static final String TAG = "BachecaActivity";
     private String sidString = null;
+    private MyAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,10 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
+        adapter = new MyAdapter(this, this);
+
         onButtonClickSettings();
+        onButtonClickRerfesh();
 
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
@@ -92,7 +97,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        MyAdapter adapter = new MyAdapter(this, this);
+        //MyAdapter adapter = new MyAdapter(this, this);
         rv.setAdapter(adapter);
 
         Model.getInstance().addAndSortData(response);
@@ -118,8 +123,14 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     }
 
     @Override
-    public void onListClick(int position) {
+    public void onListClick(int position) throws JSONException {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
+        //QUI GLI DIRO DI APRIRE IL CANALE SU CUI CLICCO
+        String nomeCanale = Model.getInstance().getCanaleDaLista(position);
+        ComunicationController ccCanale = new ComunicationController(this);
+        ccCanale.getChannel(sidString, nomeCanale, response -> Log.d(TAG, "elenco post canale: " + response.toString()), error -> reportErrorToUsers(error));
+        //startActivity(new Intent(BachecaActivity.this, CanaleActivity.class));
+
     }
     public void onButtonClickSettings(){
         Button settingsButton = (Button) findViewById(R.id.goToSettings);
@@ -127,6 +138,21 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(BachecaActivity.this, SettingsActivity.class));
+            }
+        });
+    }
+
+    private void onButtonClickRerfesh() {
+        Button refreshButton = (Button) findViewById(R.id.refresh);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Model.getInstance().testRefresh();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
             }
         });
     }

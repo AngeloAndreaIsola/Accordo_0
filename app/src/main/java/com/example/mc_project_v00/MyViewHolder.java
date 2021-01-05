@@ -1,11 +1,15 @@
 package com.example.mc_project_v00;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
 
 public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private static final String TAG = "RecyclerView";
@@ -22,6 +26,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
 
     public void updateContent (String text){ //posso chiedere di passarmi anche altre cose come oggetti, nomi e cognomi e settare piu campi
+        //TODO: NON FUNZIONA COME DEVE
         if (firstuse){
             Log.v(TAG, "First use " + text);
         }else {
@@ -32,7 +37,12 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        mListClickListener.onListClick(getAdapterPosition());
+        try {
+            mListClickListener.onListClick(getAdapterPosition());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Log.v(TAG, "Click on: "+ mTextView.getText());
+
     }
 }

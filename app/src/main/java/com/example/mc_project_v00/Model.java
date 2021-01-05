@@ -76,5 +76,13 @@ public class Model {
             //return StudentName2.compareTo(StudentName1);
         }};
 
+    public void testRefresh() throws JSONException {
+        listaCanali.get(21).put("mine","t");
+        listaCanali.get(22).put("mine", "t");
+        listaCanali.get(19).put("mine", "t");
+        listaCanali.sort(listaCanaliComparator);
+        Log.d(TAG, "addFakeData: " + listaCanali.toString());
+
+    }
 
 }
