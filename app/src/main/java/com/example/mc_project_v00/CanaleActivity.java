@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
@@ -46,11 +47,6 @@ public class CanaleActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-
-    private void logPostCanle(JSONObject response) {
-        Log.d(TAG, "elenco post canale: " + response.toString());
     }
 
     private void reportErrorToUsers(VolleyError error){

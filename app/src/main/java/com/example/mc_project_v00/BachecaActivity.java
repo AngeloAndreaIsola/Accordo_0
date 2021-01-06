@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     private static final String TAG = "BachecaActivity";
     private String sidString = null;
     private MyAdapter adapter;
-
+    private Context context = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         Log.d(TAG, "On Create");
 
         adapter = new MyAdapter(this, this);
+
+        context = this;
 
         onButtonClickSettings();
         onButtonClickRerfesh();
@@ -140,6 +143,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         startActivity(i);
 
     }
+
     public void onButtonClickSettings(){
         Button settingsButton = (Button) findViewById(R.id.goToSettings);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -155,8 +159,23 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 try {
                     Model.getInstance().testRefresh();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                 */
+                ComunicationController ccBacheca = new ComunicationController(context);
+                try {
+                    ccBacheca.getWall(sidString, response -> {
+                        try {
+                            teastaRispostaPagine(response);   //TODO: NON SOVRASCRIVE I DATI MA LI AGGIUNGE E BASTA
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }, error -> reportErrorToUsers(error));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
