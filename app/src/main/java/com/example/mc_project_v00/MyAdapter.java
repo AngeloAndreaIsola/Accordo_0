@@ -41,4 +41,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
     public int getItemCount() {  //dice quanti sono gli elementi ella lista
         return Model.getInstance().getListaCanaliSize();
     }
+
 }

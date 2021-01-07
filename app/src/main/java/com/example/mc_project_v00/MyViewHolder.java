@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONException;
 
 public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private static final String TAG = "RecyclerView";
+    private static final String TAG = "Groups_RecyclerView";
+
     private boolean firstuse = true;
+
     private TextView mTextView = null;
+
     private OnListClickListener mListClickListener = null;
 
     public MyViewHolder(@NonNull View itemView, OnListClickListener clicklistener) {  //qui gli dico che se clicca su un contatto lo riamndo alal pagina contatto
