@@ -12,12 +12,12 @@ import java.util.List;
 
 public class Model {
 
-    private List<JSONObject> listaCanali = null;
+    private List<JSONObject> channelList = null;
     private static Model theInstance = null;
     private static final String TAG = "Model";
 
     private  Model(){
-        listaCanali = new ArrayList<JSONObject>();
+        channelList = new ArrayList<JSONObject>();
     }
 
     public static synchronized Model getInstance(){
@@ -27,19 +27,20 @@ public class Model {
         return theInstance;
     }
 
-    public int getListaCanaliSize(){
-        return listaCanali.size();
+    public int getChannelListSize(){
+        return channelList.size();
     }
 
-    public String getCanaleDaLista(int i) throws JSONException {
-        JSONObject o = listaCanali.get(i);
+    public String getChannelFromList(int i) throws JSONException {
+        JSONObject o = channelList.get(i);
         return o.getString("ctitle");
     }
 
     public void addAndSortData(JSONObject response) throws JSONException {
+        channelList.clear();
         JSONArray jsonArray = response.getJSONArray("channels");
         for (int i = 0; i<jsonArray.length(); i++) {
-            listaCanali.add( jsonArray.getJSONObject(i));
+            channelList.add( jsonArray.getJSONObject(i));
         }
 
         /*
@@ -50,13 +51,13 @@ public class Model {
 
          */
 
-        listaCanali.sort(listaCanaliComparator);
+        channelList.sort(channelListComparator);
 
-        Log.d(TAG, "Lista canali salvata nel model: " + listaCanali.toString());
+        Log.d(TAG, "Channel list save in model: " + channelList.toString());
     }
 
 
-    public static Comparator<JSONObject> listaCanaliComparator = new Comparator<JSONObject>() {
+    public static Comparator<JSONObject> channelListComparator = new Comparator<JSONObject>() {
 
         public int compare(JSONObject o1, JSONObject o2) {
             String s1 = null;
@@ -77,11 +78,11 @@ public class Model {
         }};
 
     public void testRefresh() throws JSONException {
-        listaCanali.get(21).put("mine","t");
-        listaCanali.get(22).put("mine", "t");
-        listaCanali.get(19).put("mine", "t");
-        listaCanali.sort(listaCanaliComparator);
-        Log.d(TAG, "addFakeData: " + listaCanali.toString());
+        channelList.get(21).put("mine","t");
+        channelList.get(22).put("mine", "t");
+        channelList.get(19).put("mine", "t");
+        channelList.sort(channelListComparator);
+        Log.d(TAG, "addFakeData: " + channelList.toString());
 
     }
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -109,7 +110,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     }
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
-        //TODO  FRONT-END Mettere un TOAST per l'utente
+        Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
     }
     public void saveSID_inSharedPreferences(JSONObject response) {
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
@@ -137,9 +138,10 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         //startActivity(new Intent(BachecaActivity.this, CanaleActivity.class));
 
-        String nomeCanale = Model.getInstance().getCanaleDaLista(position);
+        String nomeCanale = Model.getInstance().getChannelFromList(position);
         Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
-        i.putExtra("key", nomeCanale);
+        i.putExtra("nomeCanale", nomeCanale);
+        i.putExtra("position", position);
         startActivity(i);
 
     }

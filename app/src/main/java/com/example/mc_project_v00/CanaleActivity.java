@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -13,8 +14,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CanaleActivity extends AppCompatActivity {
-    private static final String TAG = "CanaleActivity";
+    private static final String TAG = "ChannelActivity";
     private int position;
+    private String channelName = null;
     private String sidString;
 
 
@@ -26,31 +28,39 @@ public class CanaleActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         sidString = preferences.getString("sid", null);
-        String nomeCanale = null;
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            nomeCanale = extras.getString("key");
-            //The key argument here must match that used in the other activity
+            channelName = extras.getString("nomeCanale");
+            position = extras.getInt("position");
+            TextView mTextView = findViewById(R.id.nomeCanale);
+            mTextView.setText(channelName);
         }
 
         try {
-            nomeCanale = Model.getInstance().getCanaleDaLista(position);
+            channelName = Model.getInstance().getChannelFromList(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         ComunicationController ccCanale = new ComunicationController(this);
 
         try {
-            String finalNomeCanale = nomeCanale;
-            ccCanale.getChannel(sidString, nomeCanale, response -> Log.d(TAG, "elenco post del canale " + finalNomeCanale + ": " + response.toString()), error -> reportErrorToUsers(error));
+            String finalChannelName = channelName;
+            ccCanale.getChannel(sidString, channelName, response -> logAndShowChannel(finalChannelName, response), error -> reportErrorToUsers(error));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void logAndShowChannel(String channelName, JSONObject response) {
+        Log.d(TAG, "channel post list: " + channelName + ": " + response.toString());
+        TextView mTextView = findViewById(R.id.logCanale);
+        mTextView.setText(response.toString());
+    }
+
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
-        //TODO  FRONT-END Mettere un TOAST per l'utente
-    }
+        Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();    }
 }

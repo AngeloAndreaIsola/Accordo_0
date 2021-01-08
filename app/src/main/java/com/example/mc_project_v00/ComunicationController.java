@@ -21,6 +21,7 @@ public class ComunicationController {
 
 
 
+
     public ComunicationController(Context c){
         Log.d(TAG, "Creating the comunication controller");
         contextContainer = c;
@@ -72,4 +73,16 @@ public class ComunicationController {
         requestQueue.add(request);
     }
 
+    public void setProfile(String sid, String name, String picture, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
+        final String service_url = "setProfile.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("name", name);
+        jsonObject.put("picture", picture);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
 }

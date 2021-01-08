@@ -3,25 +3,18 @@ package com.example.mc_project_v00;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -30,49 +23,61 @@ import java.io.InputStream;
 
 public class SettingsActivity extends AppCompatActivity{
     private static final String TAG = "SettingsActivity";
-    private static int PICK_IMAGE = 1;
     private static int PICK_PHOTO_FOR_AVATAR = 0;
 
-
-    private ImageView imageView;
     private TextView textView;
-    String username = null;
-    private View usernametextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+
+
+        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
+
+
         onBackToBachecaButtonClick();
         onSaveUsernameButtonClick();
-
+        onButtonLoadPictureClick();
 
         textView = findViewById((R.id.username));
-        textView.setHint("inserisci username");
+        textView.setHint("insert username");
 
-        Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
-        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                /*
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+        if (preferences.getString("username", null) != null){
+            loadLastUsername();
+        }
 
-                 */
-                pickImage();
+        loadLastProfilePicture();
 
-            }
-        });
+    }
 
+    private void loadLastProfilePicture() {
+        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
+
+        //decodifica da stringa a bitmap
+        String encodedImage = preferences.getString("profileImage", null);
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setImageBitmap(decodedByte);
+
+        Log.d(TAG, "Profile image set");
     }
 
     public void pickImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
+    }
+
+    public void loadLastUsername(){
+        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
+        TextView userName = findViewById(R.id.usernameDisplay);
+        userName.setText("");
+        userName.setText(preferences.getString("username","null"));
+        Log.d(TAG, "username settato a: " + preferences.getString("username","null"));
     }
 
     @Override
@@ -85,14 +90,23 @@ public class SettingsActivity extends AppCompatActivity{
             }
             InputStream imageStream = null;
             try {
-                //fai cose qui
                 imageStream = this.getContentResolver().openInputStream(data.getData());
 
-                Log.d(TAG,"SONO QUI");
-
                 Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-                encodeTobase64(yourSelectedImage);
 
+                if (imageIsValid(yourSelectedImage)) {
+                    saveImage(encodeTobase64(yourSelectedImage));
+
+                    /*
+                    ComunicationController ccSettings = new ComunicationController(this);
+                    SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+                    String sid = preferences.getString("sid", null);
+                    String image = preferences.getString("profileImage", null);
+                    String username = preferences.getString("username", null);
+                    ccSettings.setProfile(sid, username, image, response -> ProfileIsSet(), error -> reportErrorToUsers());
+
+                     */
+                }
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -112,6 +126,19 @@ public class SettingsActivity extends AppCompatActivity{
         }
     }
 
+    private void saveImage(String encodeTobase64) {
+        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString("profileImage", "");
+
+        editor.putString("profileImage", encodeTobase64);
+        editor.apply();
+
+        Log.d(TAG, "Profile image saved:  " + preferences.getString("profileImage", null));
+
+        loadLastProfilePicture();
+    }
 
     public static String encodeTobase64(Bitmap image) {
         Bitmap immagex=image;
@@ -125,17 +152,17 @@ public class SettingsActivity extends AppCompatActivity{
     }
 
     private void saveUsername() {
+        //TODO filtrare i numi con invio e spazio
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
+        editor.putString("username", "");
         editor.putString("username", textView.getText().toString());
-        //editor.putString("username", "toString");
         editor.apply();
 
-        TextView displayUsername = findViewById(R.id.usernameDisplay);
-        displayUsername.setText(preferences.getString("Username",null));
+        loadLastUsername();
 
-        Log.d(TAG, "username: " + preferences.getString("username", null));
+        Log.d(TAG, "SaveUsername username: " + preferences.getString("username", null));
     }
 
     public void onBackToBachecaButtonClick(){
@@ -158,7 +185,27 @@ public class SettingsActivity extends AppCompatActivity{
         });
     }
 
+    public void onButtonLoadPictureClick(){
+        Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                pickImage();
+            }
+        });
+    }
 
-
-
+    public boolean imageIsValid (Bitmap image){
+        if (image.getHeight() != image.getWidth()){
+            Toast.makeText(this,"The image is NOT square", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "string lenght: " + encodeTobase64(image).length());
+            return false;
+        } else if (encodeTobase64(image).length() >= 137000) {  //500000  //TODO: TROVARE LA LUNGHEZZA DI CARATTERI GISUTA
+            Log.d(TAG, "string lenght: " + encodeTobase64(image).length());
+            Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

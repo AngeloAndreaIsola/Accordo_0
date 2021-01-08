@@ -29,7 +29,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) { //viene chiamato quando è necessario riciclare una view
         String s = null;
         try {
-            s = Model.getInstance().getCanaleDaLista(position);
+            s = Model.getInstance().getChannelFromList(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
 
     @Override
     public int getItemCount() {  //dice quanti sono gli elementi ella lista
-        return Model.getInstance().getListaCanaliSize();
+        return Model.getInstance().getChannelListSize();
     }
 
 }
