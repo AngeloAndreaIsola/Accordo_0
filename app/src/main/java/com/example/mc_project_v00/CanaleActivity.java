@@ -1,10 +1,13 @@
 package com.example.mc_project_v00;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,26 +41,43 @@ public class CanaleActivity extends AppCompatActivity {
             mTextView.setText(channelName);
         }
 
-        try {
-            channelName = Model.getInstance().getChannelFromList(position);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         ComunicationController ccCanale = new ComunicationController(this);
 
         try {
+            channelName = Model.getInstance().getChannelFromList(position);
+
             String finalChannelName = channelName;
-            ccCanale.getChannel(sidString, channelName, response -> logAndShowChannel(finalChannelName, response), error -> reportErrorToUsers(error));
+            ccCanale.getChannel(sidString, channelName, response -> {
+                try {
+                    showPost(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }, error -> reportErrorToUsers(error));  //logAndShowChannel(finalChannelName, response)
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void showPost(JSONObject response) throws JSONException {
+        Log.d(TAG, "request correct: "+ response.toString());
+
+        //colleghiamo model e dapter
+        RecyclerView rvPost = findViewById(R.id.postRecyclerView);
+        rvPost.setLayoutManager(new LinearLayoutManager(this));
+        rvPost.setHasFixedSize(true);
+        PostAdapter postAdapter = new PostAdapter(response, this);
+        rvPost.setAdapter(postAdapter);
+
+    }
+
+
     private void logAndShowChannel(String channelName, JSONObject response) {
         Log.d(TAG, "channel post list: " + channelName + ": " + response.toString());
-        TextView mTextView = findViewById(R.id.logCanale);
-        mTextView.setText(response.toString());
+        //TextView mTextView = findViewById(R.id.logCanale);
+        //mTextView.setText(response.toString());
     }
 
     private void reportErrorToUsers(VolleyError error){

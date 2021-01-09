@@ -140,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity{
         loadLastProfilePicture();
     }
 
-    public static String encodeTobase64(Bitmap image) {
+    public static String encodeTobase64(Bitmap image) {  //TODO: L'IMMAGINI VENGONO CCOMPRESSE IN UN MODO STRANO
         Bitmap immagex=image;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -152,7 +152,7 @@ public class SettingsActivity extends AppCompatActivity{
     }
 
     private void saveUsername() {
-        //TODO filtrare i numi con invio e spazio
+        //TODO filtrare i nomi con invio e spazio
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 

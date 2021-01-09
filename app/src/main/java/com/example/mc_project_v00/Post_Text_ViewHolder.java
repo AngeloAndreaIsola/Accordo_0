@@ -12,6 +12,6 @@ public class Post_Text_ViewHolder extends RecyclerView.ViewHolder {
 
         public Post_Text_ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTextView = itemView.findViewById(R.id.post_text);
+            mTextView = itemView.findViewById(R.id.post_Text_Username);
         }
     }

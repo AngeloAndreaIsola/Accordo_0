@@ -19,10 +19,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class BachecaActivity extends AppCompatActivity implements OnListClickListener {
+
     private static final String TAG = "BachecaActivity";
     private String sidString = null;
     private MyAdapter adapter;
     private Context context = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +32,17 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
-        adapter = new MyAdapter(this, this);
+        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
 
+        sidString = preferences.getString("sid", null);
+        adapter = new MyAdapter(this, this);
         context = this;
+
 
         onButtonClickSettings();
         onButtonClickRerfesh();
-
-        //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
-        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        onButtonClickAddChannel();
 
         //PER TESTARE IL SALVATAGGIO DEL SID, RESET SHARED PREFERENCE
         /*
@@ -47,6 +50,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         editor.apply();
          */
 
+        //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
         ComunicationController ccBacheca = new ComunicationController(this);
         if (preferences.getBoolean("firstLogin", true)) {
 
@@ -74,7 +78,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             try {
                 ccBacheca.getWall(sidString, response -> {
                     try {
-                        teastaRispostaPagine(response);
+                        showWall(response);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -90,28 +94,27 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
-
     private void LogNewChannel(JSONObject response) {
-        Log.d(TAG, "Risposta addChannel(): " + response.toString());
+        Log.d(TAG, "addChannel() response: " + response.toString());
     }
-    private void teastaRispostaPagine(JSONObject response) throws JSONException {
+
+    private void showWall(JSONObject response) throws JSONException {   //TODO: PENSA A UN NOME MIGLIORE
         Log.d(TAG, "request correct: "+ response.toString());
 
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        //MyAdapter adapter = new MyAdapter(this, this);
+        MyAdapter adapter = new MyAdapter(this, this);
         rv.setAdapter(adapter);
 
         Model.getInstance().addAndSortData(response);
     }
-    private void informTheUserAboutTheSID(JSONObject response) {
-        Log.d(TAG, "request correct: "+ response.toString());
-    }
+
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
         Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
     }
+
     public void saveSID_inSharedPreferences(JSONObject response) {
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -119,7 +122,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             editor.putString("sid", response.getString("sid"));
             editor.apply();
         } catch (JSONException e) {
-            Log.d(TAG, "parsing fallito");
+            Log.d(TAG, "parsing failed");
         }
         Log.d(TAG, "request correct: "+ response.toString());
         Log.d(TAG, "request saved: "+ preferences.getAll().toString());
@@ -128,21 +131,16 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     @Override
     public void onListClick(int position) throws JSONException {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
-        //QUI GLI DIRO DI APRIRE IL CANALE SU CUI CLICCO
-        /*
-        String nomeCanale = Model.getInstance().getCanaleDaLista(position);
-        ComunicationController ccCanale = new ComunicationController(this);
-        ccCanale.getChannel(sidString, nomeCanale, response -> Log.d(TAG, "elenco post canale: " + response.toString()), error -> reportErrorToUsers(error));
-        */
-
-
-        //startActivity(new Intent(BachecaActivity.this, CanaleActivity.class));
 
         String nomeCanale = Model.getInstance().getChannelFromList(position);
         Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
         i.putExtra("nomeCanale", nomeCanale);
         i.putExtra("position", position);
         startActivity(i);
+
+    }
+
+    private void onButtonClickAddChannel() {
 
     }
 
@@ -169,26 +167,31 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 }
 
                  */
-                ComunicationController ccBacheca = new ComunicationController(context);
+
+                refreshWall();
+            }
+        });
+    }
+
+    private void refreshWall(){
+        ComunicationController ccBacheca = new ComunicationController(context);
+        try {
+            ccBacheca.getWall(sidString, response -> {
                 try {
-                    ccBacheca.getWall(sidString, response -> {
-                        try {
-                            teastaRispostaPagine(response);   //TODO: NON SOVRASCRIVE I DATI MA LI AGGIUNGE E BASTA
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }, error -> reportErrorToUsers(error));
+                    showWall(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                adapter.notifyDataSetChanged();
-            }
-        });
+            }, error -> reportErrorToUsers(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        adapter.notifyDataSetChanged();
     }
 }
 
 
-
+//TODO: COMPORTAMENTO STRANO QUANDO CHANNELLIST VUOTA, SEGNA CHE L'ADAPTER NON SIA COLELGATO E SKIPPA IL LAYOUT
 
 
 
