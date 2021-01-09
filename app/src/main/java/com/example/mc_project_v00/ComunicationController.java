@@ -85,4 +85,31 @@ public class ComunicationController {
         Log.d(TAG, "Sendig request" + service_url);
         requestQueue.add(request);
     }
+
+    public void getPostImage(String sid, String pid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
+        final String service_url = "getPostImage.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("pid", pid);
+
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+
+    }
+
+    public void getUserPicture (String sid, String uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
+        final String service_url = "getUserPicture.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("uid", uid);
+
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
 }
