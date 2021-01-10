@@ -9,12 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
+    View itemView;
 
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
+        this.itemView = itemView;
     }
 
-    class ViewHolder_Post_Text extends RecyclerView.ViewHolder{   //Post testo
+    static class ViewHolder_Post_Text extends PostViewHolder{   //Post testo
         TextView textViewUsername, textViewContent;
         ImageView imageViewProfileImage;
 
@@ -26,7 +28,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    class ViewHolder_Post_Image extends RecyclerView.ViewHolder{
+    static class ViewHolder_Post_Image extends PostViewHolder{
         TextView textViewUsername;
         ImageView imageViewProfileImage, imageViewContent;
 
@@ -39,7 +41,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    class ViewHolder_Post_Position extends RecyclerView.ViewHolder{
+    static class ViewHolder_Post_Position extends PostViewHolder{
         TextView textViewUsername;
         ImageView imageViewProfileImage;
         Button settingsButton;

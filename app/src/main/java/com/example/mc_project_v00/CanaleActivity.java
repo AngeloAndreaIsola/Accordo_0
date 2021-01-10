@@ -68,7 +68,7 @@ public class CanaleActivity extends AppCompatActivity {
         RecyclerView rvPost = findViewById(R.id.postRecyclerView);
         rvPost.setLayoutManager(new LinearLayoutManager(this));
         rvPost.setHasFixedSize(true);
-        PostAdapter postAdapter = new PostAdapter(response, this);
+        PostAdapter postAdapter = new PostAdapter(response, this, sidString);
         rvPost.setAdapter(postAdapter);
 
     }
