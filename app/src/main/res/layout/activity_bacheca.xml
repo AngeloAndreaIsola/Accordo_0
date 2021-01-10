@@ -14,24 +14,25 @@
 
         <Button
             android:id="@+id/goToSettings"
-            android:layout_width="wrap_content"
+            android:layout_width="66dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="GoToSettings" />
 
         <Button
+            android:id="@+id/addChannel"
+            android:layout_width="19dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="+" />
+
+        <Button
             android:id="@+id/refresh"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="refresh" />
 
-        <Button
-            android:id="@+id/addChannel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Add Channel" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

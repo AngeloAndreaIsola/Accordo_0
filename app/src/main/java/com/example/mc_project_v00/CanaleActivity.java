@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +20,10 @@ import org.json.JSONObject;
 
 public class CanaleActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
+    private static Context context;
     private int position;
     private String channelName = null;
     private String sidString;
-
 
 
     @Override
@@ -32,7 +33,7 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
 
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         sidString = preferences.getString("sid", null);
-
+        context = this;
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -101,5 +102,9 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
         i.putExtra("position", position);
         startActivity(i);
          */
+    }
+
+    public static Context getPostActivityContext(){
+        return context;
     }
 }

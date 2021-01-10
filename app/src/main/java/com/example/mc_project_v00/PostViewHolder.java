@@ -1,5 +1,6 @@
 package com.example.mc_project_v00;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,8 +46,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             imageViewContent = itemView.findViewById(R.id.post_text_Content);
             imageViewProfileImage = itemView.findViewById((R.id.post_Text_ProfileImage));
 
-            //itemView.setOnClickListener(this);
-            //imageViewContent.setOnClickListener(this);
             itemView.findViewById(R.id.post_Image_Content).setOnClickListener(this);
             mClickListener = clicklistener;
 
@@ -56,6 +55,17 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         public void onClick(View v) {
             Log.v(TAG, "Click on image");
 
+            Intent i = new Intent(CanaleActivity.getPostActivityContext(), ImageActivity.class);
+            v.getContext().startActivity(i);
+
+            /*
+            String nomeCanale = Model.getInstance().getChannelFromList(position);
+            Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
+            i.putExtra("nomeCanale", nomeCanale);
+            i.putExtra("position", position);
+            startActivity(i);
+
+             */
 
         }
     }
