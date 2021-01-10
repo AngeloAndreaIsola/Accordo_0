@@ -26,10 +26,11 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private static final String TAG ="Post RecyclerView";
-    List<JSONObject> postList;
-    Context contextContainer;
-    ComunicationController ccPostAdapter;
-    String sid;
+    private List<JSONObject> postList;
+    private Context contextContainer;
+    private ComunicationController ccPostAdapter;
+    private String sid;
+    private View.OnClickListener mClickListener = null;
 
     public int getItemViewType(int position){
         try {
@@ -46,7 +47,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         return 3;
     }
 
-    public PostAdapter (JSONObject object, Context context, String sid) throws JSONException {
+    public PostAdapter (JSONObject object, Context context, String sid, View.OnClickListener ClickListener) throws JSONException {
         List<JSONObject> tempPostList = new ArrayList<JSONObject>();;
         JSONArray postArray = object.getJSONArray("posts");
         for(int i=0; i < postArray.length(); i++ ){
@@ -60,6 +61,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         this.ccPostAdapter = new ComunicationController(context);
 
         this.sid = sid;
+
+        mClickListener = ClickListener;
     }
 
     @NonNull
@@ -91,21 +94,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 //TEXT SET USERNAME
                 setUsername(viewHolderPostText, R.id.post_Text_Username, position);
 
-
                 //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE PROFILO
                 profileImageRequest(position, viewHolderPostText, R.id.post_Text_ProfileImage);
-                /*
-                String uid = postList.get(position).getString("uid");
-                ccPostAdapter.getUserPicture(sid, uid, response -> {
-                    try {
-                        handleGetUSerPictureResponse(response,  viewHolderPostText, R.id.post_Text_ProfileImage);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }, error -> reportErrorToUser(error));
-
-                 */
-
 
                 //TEXT SET CONTENT
                 TextView content = viewHolderPostText.itemView.findViewById(R.id.post_text_Content);
@@ -115,7 +105,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
             }else if(postList.get(position).getString("type").contains("i")) { //BIND VIEWHOLDERONE
 
-                PostViewHolder.ViewHolder_Post_Image viewHolderPostImage = new PostViewHolder.ViewHolder_Post_Image(holder.itemView);
+                PostViewHolder.ViewHolder_Post_Image viewHolderPostImage = new PostViewHolder.ViewHolder_Post_Image(holder.itemView, mClickListener);
 
                 //IMAGE SE USERNAME
                 setUsername(viewHolderPostImage, R.id.post_Image_Username, position);
@@ -137,7 +127,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
             }else if(postList.get(position).getString("type").contains("l")){
 
-                PostViewHolder.ViewHolder_Post_Position viewHolderPostPosition = new PostViewHolder.ViewHolder_Post_Position(holder.itemView);
+                PostViewHolder.ViewHolder_Post_Position viewHolderPostPosition = new PostViewHolder.ViewHolder_Post_Position(holder.itemView, mClickListener);
 
                 setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
 
@@ -210,47 +200,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String temp_username = object_username.getString("name");
         username.setText(temp_username);
     }
-
-/*
-    class ViewHolder_Post_Text extends RecyclerView.ViewHolder{   //Post testo
-        TextView textViewUsername, textViewContent;
-        ImageView imageViewProfileImage;
-
-        public ViewHolder_Post_Text(@NonNull View itemView) {
-            super(itemView);
-            textViewUsername = itemView.findViewById(R.id.post_Image_Username);
-            textViewContent = itemView.findViewById(R.id.post_Image_Content);
-            imageViewProfileImage = itemView.findViewById((R.id.post_Image_ProfileImage));
-        }
-    }
-
-    class ViewHolder_Post_Image extends RecyclerView.ViewHolder{
-        TextView textViewUsername;
-        ImageView imageViewProfileImage, imageViewContent;
-
-        public ViewHolder_Post_Image(@NonNull View itemView) {
-            super(itemView);
-
-            textViewUsername = itemView.findViewById(R.id.post_Text_Username);
-            imageViewContent = itemView.findViewById(R.id.post_text_Content);
-            imageViewProfileImage = itemView.findViewById((R.id.post_Text_ProfileImage));
-        }
-    }
-
-    class ViewHolder_Post_Position extends RecyclerView.ViewHolder{
-        TextView textViewUsername;
-        ImageView imageViewProfileImage;
-        Button settingsButton;
-
-        public ViewHolder_Post_Position(@NonNull View itemView) {
-            super(itemView);
-            textViewUsername = itemView.findViewById(R.id.post_Position_Username);
-            imageViewProfileImage = itemView.findViewById(R.id.post_Position_ProfileImage);
-            settingsButton = itemView.findViewById(R.id.post_Position_Button_ShowPosition);
-        }
-    }
-
- */
 
 
 

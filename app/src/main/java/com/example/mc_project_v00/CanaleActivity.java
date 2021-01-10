@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +17,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CanaleActivity extends AppCompatActivity {
+public class CanaleActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
     private int position;
     private String channelName = null;
@@ -68,7 +69,7 @@ public class CanaleActivity extends AppCompatActivity {
         RecyclerView rvPost = findViewById(R.id.postRecyclerView);
         rvPost.setLayoutManager(new LinearLayoutManager(this));
         rvPost.setHasFixedSize(true);
-        PostAdapter postAdapter = new PostAdapter(response, this, sidString);
+        PostAdapter postAdapter = new PostAdapter(response, this, sidString, this);
         rvPost.setAdapter(postAdapter);
 
     }
@@ -83,4 +84,22 @@ public class CanaleActivity extends AppCompatActivity {
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
         Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();    }
+
+    @Override
+    public void onClick(View v) {
+        //a seconda del tipo di view fai partire l'activy giusta
+        Log.d("RecycleViewPost", "From Channel Activity: " + position);
+
+
+
+        /*
+         Log.d("RecycleViewExample", "From Main Activity: " + position);
+
+        String nomeCanale = Model.getInstance().getChannelFromList(position);
+        Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
+        i.putExtra("nomeCanale", nomeCanale);
+        i.putExtra("position", position);
+        startActivity(i);
+         */
+    }
 }
