@@ -1,5 +1,6 @@
 package com.example.mc_project_v00;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,13 +36,18 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
         sidString = preferences.getString("sid", null);
         context = this;
 
+        ActionBar actionbar = getSupportActionBar();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             channelName = extras.getString("nomeCanale");
             position = extras.getInt("position");
-            TextView mTextView = findViewById(R.id.nomeCanale);
-            mTextView.setText(channelName);
+            actionbar.setTitle(channelName);
         }
+
+        actionbar.setDisplayUseLogoEnabled(true);
+        actionbar.setDisplayShowHomeEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled(true);
+
 
 
         ComunicationController ccCanale = new ComunicationController(this);

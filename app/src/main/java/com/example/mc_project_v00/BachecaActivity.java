@@ -1,5 +1,7 @@
 package com.example.mc_project_v00;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,6 +36,9 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         setContentView(R.layout.activity_bacheca);
         Log.d(TAG, "On Create");
 
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle("ACCORDO");
+
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -39,9 +46,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         adapter = new MyAdapter(this, this);
         context = this;
 
-
-        onButtonClickSettings();
-        onButtonClickRerfesh();
         onButtonClickAddChannel();
 
         //PER TESTARE IL SALVATAGGIO DEL SID, RESET SHARED PREFERENCE
@@ -94,6 +98,35 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_bacheca, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.refresh:
+                Toast.makeText(context, "Refreshing wall", Toast.LENGTH_SHORT).show();
+                refreshWall();
+                break;
+
+            case R.id.addChannel:
+
+                break;
+
+            case R.id.settings:
+                startActivity(new Intent(BachecaActivity.this, SettingsActivity.class));
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void LogNewChannel(JSONObject response) {
         Log.d(TAG, "addChannel() response: " + response.toString());
     }
@@ -142,35 +175,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     private void onButtonClickAddChannel() {
 
-    }
-
-    public void onButtonClickSettings(){
-        Button settingsButton = (Button) findViewById(R.id.goToSettings);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(BachecaActivity.this, SettingsActivity.class));
-            }
-        });
-    }
-
-    private void onButtonClickRerfesh() {
-        Button refreshButton = (Button) findViewById(R.id.refresh);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*
-                try {
-                    Model.getInstance().testRefresh();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                 */
-
-                refreshWall();
-            }
-        });
     }
 
     private void refreshWall(){
