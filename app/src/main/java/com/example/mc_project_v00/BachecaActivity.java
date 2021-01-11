@@ -106,7 +106,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 break;
 
             case R.id.addChannel:
-
                 AlertDialog.Builder channelDialog = new AlertDialog.Builder(context);
                 channelDialog.setTitle("Add a new channel:");
                 final EditText channelName = new EditText(context);
@@ -126,7 +125,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 });
                 channelDialog.setNegativeButton("Cancel",null);
                 channelDialog.show();
-
                 break;
 
             case R.id.settings:
