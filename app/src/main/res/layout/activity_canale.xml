@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CanaleActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_width="411dp"
+        android:layout_height="616dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="194dp"
+        tools:layout_conversion_absoluteWidth="411dp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/messageInputView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
         android:hint="Scrivi messaggio"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/postRecyclerView"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="@+id/postRecyclerView"
+        tools:layout_conversion_absoluteHeight="45dp"
+        tools:layout_conversion_absoluteWidth="411dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/buttonSendPost"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/ic_baseline_send_24"
+        android:backgroundTint="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/messageInputView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/messageInputView" />
+
+    <Button
+        android:id="@+id/buttonSendImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/ic_baseline_add_photo_alternate_24"
+        android:backgroundTint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/messageInputView"
+        app:layout_constraintVertical_bias="0.51" />
+
+    <Button
+        android:id="@+id/buttonSendPosition"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_baseline_add_location_alt_24"
+        android:backgroundTint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSendImage"
+        app:layout_constraintTop_toTopOf="@+id/messageInputView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -46,8 +50,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         adapter = new MyAdapter(this, this);
         context = this;
 
-        onButtonClickAddChannel();
-
         //PER TESTARE IL SALVATAGGIO DEL SID, RESET SHARED PREFERENCE
         /*
         editor.clear();
@@ -67,17 +69,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         if (preferences.getString("sid",null) != null){
             sidString = preferences.getString("sid", null);
-            /*
-            //TEST ADD CHANNEL
-            String nomeCanale = "Apple";
-            try {
-                ccBacheca.addChannel(sidString, nomeCanale, response -> LogNewChannel(response), error -> reportErrorToUsers(error));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-             */
-
 
             try {
                 ccBacheca.getWall(sidString, response -> {
@@ -116,6 +107,26 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
             case R.id.addChannel:
 
+                AlertDialog.Builder channelDialog = new AlertDialog.Builder(context);
+                channelDialog.setTitle("Add a new channel:");
+                final EditText channelName = new EditText(context);
+                channelName.setInputType(InputType.TYPE_CLASS_TEXT);
+                channelDialog.setView(channelName);
+                channelDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String channel= channelName.getText().toString();
+                        Log.d(TAG, channel);
+                        try {
+                            addChannelAndRefresh(channel);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                channelDialog.setNegativeButton("Cancel",null);
+                channelDialog.show();
+
                 break;
 
             case R.id.settings:
@@ -127,9 +138,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         return super.onOptionsItemSelected(item);
     }
 
-    private void LogNewChannel(JSONObject response) {
-        Log.d(TAG, "addChannel() response: " + response.toString());
-    }
 
     private void showWall(JSONObject response) throws JSONException {   //TODO: PENSA A UN NOME MIGLIORE
         Log.d(TAG, "request correct: "+ response.toString());
@@ -173,8 +181,14 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
-    private void onButtonClickAddChannel() {
-
+    private void addChannelAndRefresh(String cTitle) throws JSONException {
+        ComunicationController ccBacheca = new ComunicationController(context);
+        try {
+            ccBacheca.addChannel(sidString, cTitle, response -> Log.d(TAG, "Canale " + cTitle +  " aggiunto") , error -> reportErrorToUsers(error));
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        refreshWall();
     }
 
     private void refreshWall(){
