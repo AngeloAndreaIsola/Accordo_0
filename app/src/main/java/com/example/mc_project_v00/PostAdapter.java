@@ -26,7 +26,7 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private static final String TAG ="Post RecyclerView";
-    private List<JSONObject> postList;
+    private List<JSONObject> postList;   //TODO: INVERTI LA LISTA ALTRIMENTI SI VEDONO IN ALTO GLI ULTIMI MESSSAGGI
     private Context contextContainer;
     private ComunicationController ccPostAdapter;
     private String sid;
@@ -43,8 +43,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            return 3;
         }
-        return 3;
+
     }
 
     public PostAdapter (JSONObject object, Context context, String sid, View.OnClickListener ClickListener) throws JSONException {

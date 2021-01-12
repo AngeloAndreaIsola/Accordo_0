@@ -69,7 +69,8 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         if (preferences.getString("sid",null) != null){
             sidString = preferences.getString("sid", null);
-
+            refreshWall();
+            /*
             try {
                 ccBacheca.getWall(sidString, response -> {
                     try {
@@ -81,6 +82,9 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+             */
+
         }
 
 

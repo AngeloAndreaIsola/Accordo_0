@@ -113,14 +113,50 @@ public class ComunicationController {
         requestQueue.add(request);
     }
 
-    public void addPost(String sid, String cTitle, String type, String content, String lat, String lon, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+    public void addPostText(String sid, String cTitle, String content, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+        final String service_url = "addPost.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("ctitle", cTitle);
+        jsonObject.put("type", "t");
+        jsonObject.put("content", content);
+        //jsonObject.put("lat", null);
+        //jsonObject.put("lon", null);
+
+
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void addPostImage(String sid, String cTitle, String content, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
         final String service_url = "addPost.php";
         final String url = BASE_URL + service_url;
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("sid", sid);
         jsonObject.put("cTitle", cTitle);
-        jsonObject.put("type", type);
+        jsonObject.put("type", "i");
         jsonObject.put("content", content);
+        jsonObject.put("lat", null);
+        jsonObject.put("lon", null);
+
+
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void addPostPosition(String sid, String cTitle, String lat, String lon, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+        final String service_url = "addPost.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("cTitle", cTitle);
+        jsonObject.put("type", "l");
+        jsonObject.put("content", null);
         jsonObject.put("lat", lat);
         jsonObject.put("lon", lon);
 
