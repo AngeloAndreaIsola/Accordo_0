@@ -1,5 +1,6 @@
 package com.example.mc_project_v00;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -7,7 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +18,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +31,7 @@ import java.io.InputStream;
 public class SettingsActivity extends AppCompatActivity{
     private static final String TAG = "SettingsActivity";
     private static int PICK_PHOTO_FOR_AVATAR = 0;
+    private static final int GALLERY_REQUEST = 9;
 
     private TextView textView;
 
@@ -48,38 +56,21 @@ public class SettingsActivity extends AppCompatActivity{
             loadLastUsername();
         }
 
-        loadLastProfilePicture();
+        if (preferences.getString("profileImage", null) != null){
+            loadLastProfilePicture();
+        }
+
 
     }
 
-    private void loadLastProfilePicture() {
-        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
 
-        //decodifica da stringa a bitmap
-        String encodedImage = preferences.getString("profileImage", null);
-        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-        ImageView imageView = findViewById(R.id.imageView);
-        imageView.setImageBitmap(decodedByte);
-
-        Log.d(TAG, "Profile image set");
-    }
 
     public void pickImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
     }
-
-    public void loadLastUsername(){
-        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
-        TextView userName = findViewById(R.id.usernameDisplay);
-        userName.setText("");
-        userName.setText(preferences.getString("username","null"));
-        Log.d(TAG, "username settato a: " + preferences.getString("username","null"));
-    }
-
+    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -88,30 +79,30 @@ public class SettingsActivity extends AppCompatActivity{
                 //Display an error
                 return;
             }
+
             InputStream imageStream = null;
             try {
                 imageStream = this.getContentResolver().openInputStream(data.getData());
 
                 Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+                byte[] imageBytes = getBytes(imageStream);
+                String imageBase64 = Base64.encodeToString(imageBytes,Base64.DEFAULT);
 
-                if (imageIsValid(yourSelectedImage)) {
-                    saveImage(encodeTobase64(yourSelectedImage));
+                //return imageBase64;
+                Log.d(TAG, "imageBase64: " + imageBase64);
 
-                    /*
-                    ComunicationController ccSettings = new ComunicationController(this);
-                    SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
-                    String sid = preferences.getString("sid", null);
-                    String image = preferences.getString("profileImage", null);
-                    String username = preferences.getString("username", null);
-                    ccSettings.setProfile(sid, username, image, response -> ProfileIsSet(), error -> reportErrorToUsers());
 
-                     */
+                if (imageIsValid(yourSelectedImage, imageBytes)) {
+                    saveImage(imageBase64);
+                    uploadImage();
+
                 }
 
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException | JSONException e) {
                 e.printStackTrace();
-            }
-            finally {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
                 //close input
                 if (imageStream != null) {
                     try {
@@ -126,6 +117,7 @@ public class SettingsActivity extends AppCompatActivity{
         }
     }
 
+     */
     private void saveImage(String encodeTobase64) {
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -137,19 +129,102 @@ public class SettingsActivity extends AppCompatActivity{
 
         Log.d(TAG, "Profile image saved:  " + preferences.getString("profileImage", null));
 
-        loadLastProfilePicture();
+    }
+    private void loadLastProfilePicture() {
+        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
+
+        //decodifica da stringa a bitmap
+        String encodedImage = preferences.getString("profileImage", null);
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setImageBitmap(decodedByte);
+
+        Log.d(TAG, "Profile image set");
+    }
+    private void uploadImage() throws JSONException {
+        ComunicationController cc = new ComunicationController(this);
+
+        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+        String sid = preferences.getString("sid", null);
+        String image = preferences.getString("profileImage", null);
+
+        cc.setProfilePicture(sid, image, response -> Log.d(TAG, "Profile image uploaded to server"), error -> reportErrorToUser(error) );
+    }
+    public boolean imageIsValid (String encodedImage, Bitmap imageBitmap){   //TODO: DA CAMBIARE QUI
+
+        if (imageBitmap.getHeight() != imageBitmap.getWidth()){
+            Toast.makeText(this,"The image is NOT square", Toast.LENGTH_LONG).show();
+            //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
+            return false;
+        } else if (encodedImage.length() >= 137000) {  //500000  //TODO: TROVARE LA LUNGHEZZA DI CARATTERI GISUTA
+            //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
+            Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+
+
+    }
+    public void onButtonLoadPictureClick(){
+        Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                //pickImage();
+                getImageFromGallery();
+            }
+        });
     }
 
-    public static String encodeTobase64(Bitmap image) {  //TODO: L'IMMAGINI VENGONO CCOMPRESSE IN UN MODO STRANO
-        Bitmap immagex=image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
-
-        Log.d("LOOK", imageEncoded);
-        return imageEncoded;
+    private void getImageFromGallery(){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, GALLERY_REQUEST);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Check if the intent was to pick image, was successful and an image was picked
+        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null)
+        {
+
+            //Get selected image uri here
+            Uri imageUri = data.getData();
+            Bitmap imageBitmap =null;
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //imageView.setImageURI(selectedImage);
+
+            String endodedImage = null;
+            try {
+                endodedImage = uriToBase64(imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (imageIsValid(endodedImage, imageBitmap)) {
+            saveImage(endodedImage);
+            loadLastProfilePicture();
+            try {
+                uploadImage();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        }
+    }
+
 
     private void saveUsername() {
         //TODO filtrare i nomi con invio e spazio
@@ -164,6 +239,44 @@ public class SettingsActivity extends AppCompatActivity{
 
         Log.d(TAG, "SaveUsername username: " + preferences.getString("username", null));
     }
+    private void uploadUsername() throws JSONException {
+        ComunicationController cc = new ComunicationController(this);
+
+        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+        String sid = preferences.getString("sid", null);
+        String username = preferences.getString("username", null);
+
+        cc.setProfileUsername(sid, username, response -> Log.d(TAG, "Profile username uploaded to server"), error -> reportErrorToUser(error) );
+    }
+    public void loadLastUsername(){
+        SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
+        TextView userName = findViewById(R.id.usernameDisplay);
+        userName.setText("");
+        userName.setText(preferences.getString("username","null"));
+        Log.d(TAG, "username settato a: " + preferences.getString("username","null"));
+    }
+    public void onSaveUsernameButtonClick(){
+        Button settingsButton = (Button) findViewById(R.id.saveUsername);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveUsername();
+                try {
+                    uploadUsername();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    private void reportErrorToUser(VolleyError error) {
+            Log.d(TAG, "request error: " + error.toString());
+            Toast.makeText(this,"upload error: " + error.toString(), Toast.LENGTH_LONG).show();
+    }
+
+
 
     public void onBackToBachecaButtonClick(){
         Button settingsButton = (Button) findViewById(R.id.backToBacheca);
@@ -175,37 +288,28 @@ public class SettingsActivity extends AppCompatActivity{
         });
     }
 
-    public void onSaveUsernameButtonClick(){
-        Button settingsButton = (Button) findViewById(R.id.saveUsername);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveUsername();
-            }
-        });
+
+    private String uriToBase64 (Uri uri) throws IOException {
+        InputStream inStream = getContentResolver().openInputStream(uri);
+        byte[] imageBytes = getBytes(inStream);
+        String imageBase64 = Base64.encodeToString(imageBytes,Base64.DEFAULT);
+        return imageBase64;
     }
 
-    public void onButtonLoadPictureClick(){
-        Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
-        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                pickImage();
-            }
-        });
-    }
+    public byte[] getBytes(InputStream inputStream) throws IOException { //URI to Bytes array
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
 
-    public boolean imageIsValid (Bitmap image){
-        if (image.getHeight() != image.getWidth()){
-            Toast.makeText(this,"The image is NOT square", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "string lenght: " + encodeTobase64(image).length());
-            return false;
-        } else if (encodeTobase64(image).length() >= 137000) {  //500000  //TODO: TROVARE LA LUNGHEZZA DI CARATTERI GISUTA
-            Log.d(TAG, "string lenght: " + encodeTobase64(image).length());
-            Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
-            return false;
-        }else{
-            return true;
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
         }
+        return byteBuffer.toByteArray();
     }
+
+
+
+
+
 }

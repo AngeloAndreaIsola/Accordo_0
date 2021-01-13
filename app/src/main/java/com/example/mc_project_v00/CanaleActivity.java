@@ -94,6 +94,7 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
 
  */
 
+        //TODO: AGGIUNGERE PULSANTE REFRESH AL CANALE
 
         Button buttonSendPost = findViewById(R.id.buttonSendPost);
         Button buttonSendImage = findViewById(R.id.buttonSendImage);
@@ -216,7 +217,8 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
 
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
-        Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();    }
+        Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onClick(View v) {
@@ -282,3 +284,4 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
 }
 
 //TODO: PROVA CHIAMTE A CASO
+//TODO: SALVARE IMMAGINI PROFILO IN CHACHE

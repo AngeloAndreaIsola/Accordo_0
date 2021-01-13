@@ -137,7 +137,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 //SET CONTENT
                 Button showPositionButton = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_Button_ShowPosition);
 
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -201,7 +200,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String temp_username = object_username.getString("name");
         username.setText(temp_username);
     }
-
-
 
 }

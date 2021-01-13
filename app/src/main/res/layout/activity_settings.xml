@@ -21,10 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="123dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="123dp"
             android:text="backToBacheca"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
-            android:layout_marginBottom="18dp"
             android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -47,25 +44,20 @@
             android:id="@+id/imageView"
             android:layout_width="123dp"
             android:layout_height="120dp"
-            android:layout_marginStart="144dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginEnd="144dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/usernameDisplay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="@+id/backToBacheca"
+            app:layout_constraintStart_toStartOf="@+id/backToBacheca"
+            app:layout_constraintTop_toBottomOf="@+id/backToBacheca"
             tools:srcCompat="@tools:sample/avatars[1]" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="114dp"
             android:layout_marginBottom="36dp"
             app:layout_constraintBottom_toTopOf="@+id/saveUsername"
-            app:layout_constraintTop_toBottomOf="@+id/usernameDisplay">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
@@ -84,24 +76,23 @@
             android:id="@+id/buttonLoadPicture"
             android:layout_width="413dp"
             android:layout_height="50dp"
-            android:layout_marginTop="41dp"
-            android:layout_marginBottom="121dp"
+            android:layout_marginBottom="4dp"
             android:text="buttonLoadPicture"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saveUsername" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/saveUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="41dp"
+            android:layout_marginBottom="36dp"
             android:layout_weight="1"
             android:text="save username"
             app:layout_constraintBottom_toTopOf="@+id/buttonLoadPicture"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
