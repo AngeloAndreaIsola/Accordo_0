@@ -203,8 +203,9 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
         rvPost.setLayoutManager(new LinearLayoutManager(this));
         rvPost.setHasFixedSize(true);
         PostAdapter postAdapter = new PostAdapter(response, this, sidString, this);
-        postAdapter = new PostAdapter(response, this, sidString, this);
         rvPost.setAdapter(postAdapter);
+
+        PostModel.getInstance().addPosts(response);
 
     }
 
