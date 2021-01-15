@@ -40,7 +40,7 @@ allprojects {
                 // This should always be `mapbox` (not your username).
                 username = 'mapbox'
                 // Use the secret token you stored in gradle.properties as the password
-                password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: "pk.eyJ1IjoiYW5nZWxvYW5kcmVhaXNvbGEiLCJhIjoiY2tqeXBzY2N5MDAwYTJucXF2Y2Y5M2ZucSJ9.nki_4-IoUMr8JzmaHAdF6Q"
+                password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
             }
         }
     }
@@ -58,5 +58,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.7'
 }

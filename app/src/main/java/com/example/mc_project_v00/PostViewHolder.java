@@ -101,6 +101,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         @Override
         public void onClick(View v) {
             Log.v(TAG, "Click on position");
+            Intent i = new Intent(CanaleActivity.getPostActivityContext(), MapActivity.class);
+            v.getContext().startActivity(i);
         }
     }
 
