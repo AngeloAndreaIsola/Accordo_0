@@ -165,9 +165,8 @@ public class SettingsActivity extends AppCompatActivity{
         }else{
             return true;
         }
-
-
     }
+
     public void onButtonLoadPictureClick(){
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {

@@ -148,11 +148,11 @@ public class ComunicationController {
         final String url = BASE_URL + service_url;
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("sid", sid);
-        jsonObject.put("cTitle", cTitle);
+        jsonObject.put("ctitle", cTitle);
         jsonObject.put("type", "i");
         jsonObject.put("content", content);
-        jsonObject.put("lat", null);
-        jsonObject.put("lon", null);
+        //jsonObject.put("lat", null);
+        //jsonObject.put("lon", null);
 
 
 

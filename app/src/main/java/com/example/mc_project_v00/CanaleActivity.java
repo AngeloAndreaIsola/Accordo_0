@@ -1,25 +1,26 @@
 package com.example.mc_project_v00;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -27,6 +28,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +36,7 @@ import java.io.InputStream;
 public class CanaleActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
     private static int PICK_PHOTO_FOR_POST = 0;
+    private static final int GALLERY_REQUEST = 9;
     private static Context context;
     private int position;
     private String channelName = null;
@@ -74,26 +77,6 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
 
         refreshChat();
 
-/*
-        ComunicationController ccCanale = new ComunicationController(this);
-
-        try {
-            channelName = Model.getInstance().getChannelFromList(position);
-
-            ccCanale.getChannel(sidString, channelName, response -> {
-                try {
-                    showPost(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }, error -> reportErrorToUsers(error));  //logAndShowChannel(finalChannelName, response)
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
- */
-
         //TODO: AGGIUNGERE PULSANTE REFRESH AL CANALE
 
         Button buttonSendPost = findViewById(R.id.buttonSendPost);
@@ -121,10 +104,95 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
         buttonSendImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //openGallery();
+                getImageFromGallery();
             }
         });
     }
+
+
+    private void getImageFromGallery(){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, GALLERY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Check if the intent was to pick image, was successful and an image was picked
+        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null)
+        {
+
+            //Get selected image uri here
+            Uri imageUri = data.getData();
+            Bitmap imageBitmap =null;
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //imageView.setImageURI(selectedImage);
+
+            String endodedImage = null;
+            try {
+                endodedImage = uriToBase64(imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (imageIsValid(endodedImage)) {
+                try {
+                    postImage(endodedImage);
+                    refreshChat();                      //TODO: NON FA IL REFRESH DELLA PAGINA QUANDO MANDA LA FOTO
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+    }
+
+    private void postImage(String endodedImage) throws JSONException {
+        ComunicationController comunicationController = new ComunicationController(this);
+        comunicationController.addPostImage(sidString, channelName, endodedImage, response -> Log.d(TAG, "Risposta postImage: " + response), error -> reportErrorToUsers(error));
+    }
+
+    private String uriToBase64 (Uri uri) throws IOException {
+        InputStream inStream = getContentResolver().openInputStream(uri);
+        byte[] imageBytes = getBytes(inStream);
+        String imageBase64 = Base64.encodeToString(imageBytes,Base64.DEFAULT);
+        return imageBase64;
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException { //URI to Bytes array
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    public boolean imageIsValid (String encodedImage){   //TODO: DA CAMBIARE QUI
+
+        if (encodedImage.length() >= 137000) {  //500000  //TODO: TROVARE LA LUNGHEZZA DI CARATTERI GISUTA
+            //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
+            Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+
 
     private void refreshChat() {
         try {
@@ -187,13 +255,6 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    /*
-            try {
-            ccBacheca.addChannel(sidString, cTitle, response -> Log.d(TAG, "Canale " + cTitle +  " aggiunto") , error -> reportErrorToUsers(error));
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
-     */
 
     private void showPost(JSONObject response) throws JSONException {
         Log.d(TAG, "request correct: "+ response.toString());
@@ -230,58 +291,6 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
         return context;
     }
 
-    /*
-    public void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_PHOTO_FOR_POST);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_PHOTO_FOR_POST && resultCode == Activity.RESULT_OK) {
-            if (data == null) {
-                //Display an error
-                return;
-            }
-            InputStream imageStream = null;
-            try {
-                imageStream = this.getContentResolver().openInputStream(data.getData());
-
-                Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-
-                if (imageIsValid(yourSelectedImage)) {
-                    sendImage(encodeTobase64(yourSelectedImage));
-
-                    /*
-                    ComunicationController ccSettings = new ComunicationController(this);
-                    SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
-                    String sid = preferences.getString("sid", null);
-                    String image = preferences.getString("profileImage", null);
-                    String username = preferences.getString("username", null);
-                    ccSettings.setProfile(sid, username, image, response -> ProfileIsSet(), error -> reportErrorToUsers());
-
-
-                }
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            finally {
-                //close input
-                if (imageStream != null) {
-                    try {
-                        imageStream.close();
-                    } catch (IOException ioex) {
-                        //Very bad things just happened... handle it
-                    }
-                }
-            }
-
-
-        }
-    }
-    */
 }
 
 //TODO: PROVA CHIAMTE A CASO

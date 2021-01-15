@@ -19,7 +19,7 @@ public class ImageActivity extends AppCompatActivity {
     private static final String TAG = "ImmageActivity";
     int pid;
     String sid;
-    String encodedImage=null;
+
 
 
     @Override
