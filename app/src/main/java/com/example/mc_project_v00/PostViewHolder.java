@@ -76,8 +76,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                 e.printStackTrace();
             }
 
-
-
             i.putExtra("pid", pid);
             v.getContext().startActivity(i);
 
