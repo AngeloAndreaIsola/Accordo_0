@@ -2,7 +2,6 @@ package com.example.mc_project_v00;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,13 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,12 +25,9 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
-public class CanaleActivity extends AppCompatActivity implements View.OnClickListener {
+public class CanaleActivity extends ImageController implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
     private static int PICK_PHOTO_FOR_POST = 0;
     private static final int GALLERY_REQUEST = 9;
@@ -161,24 +155,6 @@ public class CanaleActivity extends AppCompatActivity implements View.OnClickLis
         comunicationController.addPostImage(sidString, channelName, endodedImage, response -> Log.d(TAG, "Risposta postImage: " + response), error -> reportErrorToUsers(error));
     }
 
-    private String uriToBase64 (Uri uri) throws IOException {
-        InputStream inStream = getContentResolver().openInputStream(uri);
-        byte[] imageBytes = getBytes(inStream);
-        String imageBase64 = Base64.encodeToString(imageBytes,Base64.DEFAULT);
-        return imageBase64;
-    }
-
-    public byte[] getBytes(InputStream inputStream) throws IOException { //URI to Bytes array
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len = 0;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
-    }
 
     public boolean imageIsValid (String encodedImage){   //TODO: DA CAMBIARE QUI
 

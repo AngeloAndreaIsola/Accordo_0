@@ -35,9 +35,9 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         public ViewHolder_Post_Text(@NonNull View itemView) {
             super(itemView);
-            textViewUsername = itemView.findViewById(R.id.post_Image_Username);
-            textViewContent = itemView.findViewById(R.id.post_Image_Content);
-            imageViewProfileImage = itemView.findViewById((R.id.post_Image_ProfileImage));
+            textViewUsername = itemView.findViewById(R.id.post_Text_Username);
+            textViewContent = itemView.findViewById(R.id.post_text_Content);
+            imageViewProfileImage = itemView.findViewById((R.id.post_Text_ProfileImage));
         }
     }
 
@@ -50,9 +50,9 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder_Post_Image(@NonNull View itemView, View.OnClickListener clicklistener, int position) {
             super(itemView);
 
-            textViewUsername = itemView.findViewById(R.id.post_Text_Username);
-            imageViewContent = itemView.findViewById(R.id.post_text_Content);
-            imageViewProfileImage = itemView.findViewById((R.id.post_Text_ProfileImage));
+            textViewUsername = itemView.findViewById(R.id.post_Image_Username);
+            imageViewContent = itemView.findViewById(R.id.post_Image_Content);
+            imageViewProfileImage = itemView.findViewById((R.id.post_Image_ProfileImage));
 
             itemView.findViewById(R.id.post_Image_Content).setOnClickListener(this);
             mClickListener = clicklistener;
@@ -80,17 +80,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
             i.putExtra("pid", pid);
             v.getContext().startActivity(i);
-            //CanaleActivity.getPostActivityContext().startActivity(i);
 
         }
-    }
-
-    public static String convert(Bitmap bitmap)
-    {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
     }
 
     static class ViewHolder_Post_Position extends PostViewHolder implements View.OnClickListener {
