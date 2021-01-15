@@ -106,7 +106,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
             }else if(postList.get(position).getString("type").contains("i")) { //BIND VIEWHOLDERONE
 
-                PostViewHolder.ViewHolder_Post_Image viewHolderPostImage = new PostViewHolder.ViewHolder_Post_Image(holder.itemView, mClickListener);
+                PostViewHolder.ViewHolder_Post_Image viewHolderPostImage = new PostViewHolder.ViewHolder_Post_Image(holder.itemView, mClickListener, position);
 
                 //IMAGE SE USERNAME
                 setUsername(viewHolderPostImage, R.id.post_Image_Username, position);

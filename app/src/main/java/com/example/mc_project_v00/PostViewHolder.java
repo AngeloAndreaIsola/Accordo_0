@@ -1,6 +1,9 @@
 package com.example.mc_project_v00;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "Post_RecyclerView";
@@ -37,9 +44,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     static class ViewHolder_Post_Image extends PostViewHolder implements View.OnClickListener {
         TextView textViewUsername;
         ImageView imageViewProfileImage, imageViewContent;
+        int p;
         private View.OnClickListener mClickListener = null;
 
-        public ViewHolder_Post_Image(@NonNull View itemView, View.OnClickListener clicklistener) {
+        public ViewHolder_Post_Image(@NonNull View itemView, View.OnClickListener clicklistener, int position) {
             super(itemView);
 
             textViewUsername = itemView.findViewById(R.id.post_Text_Username);
@@ -49,6 +57,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             itemView.findViewById(R.id.post_Image_Content).setOnClickListener(this);
             mClickListener = clicklistener;
 
+            p = position;
+
         }
 
         @Override
@@ -56,18 +66,31 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             Log.v(TAG, "Click on image");
 
             Intent i = new Intent(CanaleActivity.getPostActivityContext(), ImageActivity.class);
+            int pid = 0;
+
+            try {
+                JSONObject o = PostModel.getInstance().getPostFromList(p);
+                pid = o.getInt("pid");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            i.putExtra("pid", pid);
             v.getContext().startActivity(i);
-
-            /*
-            String nomeCanale = Model.getInstance().getChannelFromList(position);
-            Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
-            i.putExtra("nomeCanale", nomeCanale);
-            i.putExtra("position", position);
-            startActivity(i);
-
-             */
+            //CanaleActivity.getPostActivityContext().startActivity(i);
 
         }
+    }
+
+    public static String convert(Bitmap bitmap)
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
     }
 
     static class ViewHolder_Post_Position extends PostViewHolder implements View.OnClickListener {

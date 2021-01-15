@@ -20,5 +20,4 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_settings_24"/>
 
-
  </menu>
