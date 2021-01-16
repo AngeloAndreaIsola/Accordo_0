@@ -148,7 +148,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         BachecaAdapter adapter = new BachecaAdapter(this, this);
         rv.setAdapter(adapter);
 
-        Model.getInstance().addAndSortData(response);
+        BachecaModel.getInstance().addAndSortData(response);
     }
 
     private void reportErrorToUsers(VolleyError error){
@@ -173,7 +173,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     public void onListClick(int position) throws JSONException {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
 
-        String nomeCanale = Model.getInstance().getChannelFromList(position);
+        String nomeCanale = BachecaModel.getInstance().getChannelFromList(position);
         Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
         i.putExtra("nomeCanale", nomeCanale);
         i.putExtra("position", position);

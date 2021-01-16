@@ -29,7 +29,7 @@ public class BachecaAdapter extends RecyclerView.Adapter<BachecaViewHolder>  {
     public void onBindViewHolder(@NonNull BachecaViewHolder holder, int position) { //viene chiamato quando è necessario riciclare una view
         String s = null;
         try {
-            s = Model.getInstance().getChannelFromList(position);
+            s = BachecaModel.getInstance().getChannelFromList(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class BachecaAdapter extends RecyclerView.Adapter<BachecaViewHolder>  {
 
     @Override
     public int getItemCount() {  //dice quanti sono gli elementi ella lista
-        return Model.getInstance().getChannelListSize();
+        return BachecaModel.getInstance().getChannelListSize();
     }
 
 }

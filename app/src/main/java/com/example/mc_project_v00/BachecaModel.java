@@ -10,19 +10,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Model {
+public class BachecaModel {
 
     private List<JSONObject> channelList = null;
-    private static Model theInstance = null;
+    private static BachecaModel theInstance = null;
     private static final String TAG = "Model";
 
-    private  Model(){
+    private BachecaModel(){
         channelList = new ArrayList<JSONObject>();
     }
 
-    public static synchronized Model getInstance(){
+    public static synchronized BachecaModel getInstance(){
         if(theInstance==null){
-            theInstance= new Model();
+            theInstance= new BachecaModel();
         }
         return theInstance;
     }

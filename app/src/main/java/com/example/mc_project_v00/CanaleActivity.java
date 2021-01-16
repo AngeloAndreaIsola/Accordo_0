@@ -64,7 +64,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
 
         try {
-            channelName = Model.getInstance().getChannelFromList(position);
+            channelName = BachecaModel.getInstance().getChannelFromList(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
