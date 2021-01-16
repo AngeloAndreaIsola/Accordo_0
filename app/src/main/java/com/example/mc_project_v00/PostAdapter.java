@@ -128,7 +128,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
             }else if(postList.get(position).getString("type").contains("l")){
 
-                PostViewHolder.ViewHolder_Post_Position viewHolderPostPosition = new PostViewHolder.ViewHolder_Post_Position(holder.itemView, mClickListener);
+                PostViewHolder.ViewHolder_Post_Position viewHolderPostPosition = new PostViewHolder.ViewHolder_Post_Position(holder.itemView, mClickListener, position);
 
                 setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
 

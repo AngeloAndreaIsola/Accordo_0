@@ -87,21 +87,42 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewProfileImage;
         Button settingsButton;
         private View.OnClickListener mListClickListener;
+        int p=0;
 
-        public ViewHolder_Post_Position(@NonNull View itemView, View.OnClickListener onClickListener) {
+        public ViewHolder_Post_Position(@NonNull View itemView, View.OnClickListener onClickListener, int position) {
             super(itemView);
             textViewUsername = itemView.findViewById(R.id.post_Position_Username);
             imageViewProfileImage = itemView.findViewById(R.id.post_Position_ProfileImage);
             settingsButton = itemView.findViewById(R.id.post_Position_Button_ShowPosition);
 
+
             itemView.findViewById(R.id.post_Position_Button_ShowPosition).setOnClickListener(this);
             mListClickListener = onClickListener;
+            p = position;
+
         }
 
         @Override
         public void onClick(View v) {
             Log.v(TAG, "Click on position");
             Intent i = new Intent(CanaleActivity.getPostActivityContext(), MapActivity.class);
+
+            String lat= null;
+            String lon = null;
+            try {
+                JSONObject o = PostModel.getInstance().getPostFromList(p);
+                lat = o.getString("lat");
+                lon = o.getString("lon");
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            i.putExtra("lat", lat);
+            i.putExtra("lon", lon);
+
             v.getContext().startActivity(i);
         }
     }
