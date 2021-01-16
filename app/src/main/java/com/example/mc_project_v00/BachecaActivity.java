@@ -16,8 +16,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,7 +28,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     private static final String TAG = "BachecaActivity";
     private String sidString = null;
-    private MyAdapter adapter;
+    private BachecaAdapter adapter;
     private Context context = null;
 
 
@@ -47,7 +45,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         SharedPreferences.Editor editor = preferences.edit();
 
         sidString = preferences.getString("sid", null);
-        adapter = new MyAdapter(this, this);
+        adapter = new BachecaAdapter(this, this);
         context = this;
 
         //PER TESTARE IL SALVATAGGIO DEL SID, RESET SHARED PREFERENCE
@@ -147,7 +145,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        MyAdapter adapter = new MyAdapter(this, this);
+        BachecaAdapter adapter = new BachecaAdapter(this, this);
         rv.setAdapter(adapter);
 
         Model.getInstance().addAndSortData(response);

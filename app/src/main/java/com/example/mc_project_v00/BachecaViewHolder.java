@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 
-public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class BachecaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private static final String TAG = "Groups_RecyclerView";
 
     private boolean firstuse = true;
@@ -20,7 +20,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     private OnListClickListener mListClickListener = null;
 
-    public MyViewHolder(@NonNull View itemView, OnListClickListener clicklistener) {  //qui gli dico che se clicca su un contatto lo riamndo alal pagina contatto
+    public BachecaViewHolder(@NonNull View itemView, OnListClickListener clicklistener) {  //qui gli dico che se clicca su un contatto lo riamndo alal pagina contatto
         super(itemView);
         mTextView = itemView.findViewById(R.id.singleRow);
         itemView.setOnClickListener(this);

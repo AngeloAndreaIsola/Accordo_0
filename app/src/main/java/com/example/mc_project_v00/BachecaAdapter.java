@@ -10,23 +10,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>  {
+public class BachecaAdapter extends RecyclerView.Adapter<BachecaViewHolder>  {
     private LayoutInflater mInflater = null;
     private OnListClickListener mListClickListener = null;
 
-    public MyAdapter (Context context, OnListClickListener listClickListener){
+    public BachecaAdapter(Context context, OnListClickListener listClickListener){
         mInflater = LayoutInflater.from(context);
         mListClickListener = listClickListener;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //viene chiamato quando dobbiamo creare una nuova view
+    public BachecaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //viene chiamato quando dobbiamo creare una nuova view
         View view = mInflater.inflate(R.layout.single_row, parent, false);
-        return new MyViewHolder(view, mListClickListener);
+        return new BachecaViewHolder(view, mListClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) { //viene chiamato quando è necessario riciclare una view
+    public void onBindViewHolder(@NonNull BachecaViewHolder holder, int position) { //viene chiamato quando è necessario riciclare una view
         String s = null;
         try {
             s = Model.getInstance().getChannelFromList(position);
