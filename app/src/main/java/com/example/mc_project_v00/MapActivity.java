@@ -3,9 +3,11 @@ package com.example.mc_project_v00;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -69,7 +71,6 @@ public class MapActivity extends AppCompatActivity {
                         markerOptions.title("posizione condivisa");
                         markerOptions.position(new LatLng(latFloat, lonFloat));
                         mapboxMap.addMarker(markerOptions);
-
                     }
                 });
             }

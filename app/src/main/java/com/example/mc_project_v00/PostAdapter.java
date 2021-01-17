@@ -86,7 +86,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) { //quello di youtube
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) { //TODO: CONTROLLA CHE RECICLI
         try {
             if(postList.get(position).getString("type").contains("t")){ //BIND VIEWHOLDERONE
 
@@ -154,6 +154,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
         ImageView content = viewHolderPostImage.itemView.findViewById(R.id.post_Image_Content);
         content.setImageBitmap(decodedByte);
+
+        //TODO: HANDLE BAD BASE64
     }
     private void handleGetUSerPictureResponse(JSONObject response, PostViewHolder postViewHolder, int viewID) throws JSONException {
         Log.d(TAG, "request user picture correct: "+ response.toString());

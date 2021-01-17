@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.mapbox.mapboxsdk.Mapbox;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -101,6 +102,17 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
                 getImageFromGallery();
             }
         });
+
+        buttonSendPosition.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                sendLastPosition();
+            }
+        });
+    }
+
+    private void sendLastPosition() {
+
     }
 
 
@@ -156,9 +168,9 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     }
 
 
-    public boolean imageIsValid (String encodedImage){   //TODO: DA CAMBIARE QUI
+    public boolean imageIsValid (String encodedImage){
 
-        if (encodedImage.length() >= 137000) {  //500000  //TODO: TROVARE LA LUNGHEZZA DI CARATTERI GISUTA
+        if (encodedImage.length() >= 137000) {  //500000
             //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
             Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
             return false;
