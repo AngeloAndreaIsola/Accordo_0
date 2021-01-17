@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MC_Project_V00">
-        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".SendLocationActivity"></activity>
+        <activity android:name=".MapActivity" />
         <activity android:name=".ImageActivity" />
         <activity android:name=".CanaleActivity">
             <meta-data
