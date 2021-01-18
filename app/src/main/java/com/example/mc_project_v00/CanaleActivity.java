@@ -106,7 +106,10 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         buttonSendPosition.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CanaleActivity.getPostActivityContext(), SendLocationActivity.class);
+                //Intent i = new Intent(CanaleActivity.getPostActivityContext(), SendLocationActivity.class);
+                Intent i = new Intent(CanaleActivity.getPostActivityContext(), LocationComponentActivity.class);
+                i.putExtra("nomeCanale", channelName);
+                i.putExtra("sid",sidString);
                 v.getContext().startActivity(i);
             }
         });

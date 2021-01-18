@@ -166,7 +166,7 @@ public class ComunicationController {
         final String url = BASE_URL + service_url;
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("sid", sid);
-        jsonObject.put("cTitle", cTitle);
+        jsonObject.put("ctitle", cTitle);
         jsonObject.put("type", "l");
         jsonObject.put("content", null);
         jsonObject.put("lat", lat);

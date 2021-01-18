@@ -2,9 +2,12 @@ package com.example.mc_project_v00;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.location.Location;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mapbox.android.core.location.LocationEngine;
@@ -33,8 +36,7 @@ import androidx.annotation.NonNull;
  * Use the Mapbox Core Library to receive updates when the device changes location.
  */
 
-public class SendLocationActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener {
+public class SendLocationActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {   //TODO: LA POSIZIONE VIENE CHIAMATA SOLO QUANDO CAMBIA
     private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
     private MapboxMap mapboxMap;
@@ -43,6 +45,7 @@ public class SendLocationActivity extends AppCompatActivity implements
     private LocationEngine locationEngine;
     private LocationChangeListeningActivityLocationCallback callback =
             new LocationChangeListeningActivityLocationCallback(this);
+    private static final String TAG = "Send Location Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class SendLocationActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        findViewById(R.id.buttonSendLocation).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -104,6 +108,7 @@ public class SendLocationActivity extends AppCompatActivity implements
             locationComponent.setRenderMode(RenderMode.COMPASS);
 
             initLocationEngine();
+
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
@@ -150,8 +155,8 @@ public class SendLocationActivity extends AppCompatActivity implements
         }
     }
 
-    private static class LocationChangeListeningActivityLocationCallback
-            implements LocationEngineCallback<LocationEngineResult> {
+    private static class LocationChangeListeningActivityLocationCallback implements LocationEngineCallback<LocationEngineResult> {
+
 
         private final WeakReference<SendLocationActivity> activityWeakReference;
 
@@ -187,6 +192,7 @@ public class SendLocationActivity extends AppCompatActivity implements
                 // Pass the new location to the Maps SDK's LocationComponent
                 if (activity.mapboxMap != null && result.getLastLocation() != null) {
                     activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
+                    Log.d(TAG, "ABBIAMO LA POSIZIONE");
                 }
             }
         }
