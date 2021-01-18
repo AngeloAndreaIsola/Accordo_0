@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -30,7 +32,7 @@ import java.util.List;
 /**
  * Use the LocationComponent to easily add a device location "puck" to a Mapbox map.
  */
-public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener { //TODO:LA LOCATION VIENE CAMBIATA SOLO DOPO LA SECONDA CHIAMATA
 
     private static final String TAG = "LocationComponentActivity";
     private PermissionsManager permissionsManager;
@@ -92,6 +94,13 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
+
+                        LatLng yourLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        double yourZoom = 7;
+                        mapboxMap.setCameraPosition(new CameraPosition.Builder()
+                                .target(yourLatLng)
+                                .zoom(yourZoom)
+                                .build());
                     }
                 });
     }
@@ -117,7 +126,9 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
 
-            location = locationComponent.getLastKnownLocation();
+
+
+            location = locationComponent.getLastKnownLocation();    //TODO: FARE LA CHIAMATA CHE PRENDE EFFETIVAMENTE L'ULTIMA POSIZIONE E NON SOLO L'ULTIMA CONOSCIUTA
 
         } else {
             permissionsManager = new PermissionsManager(this);

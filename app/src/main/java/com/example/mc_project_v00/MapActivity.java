@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -56,10 +57,14 @@ public class MapActivity extends AppCompatActivity {
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                LatLng yourLatLng = new LatLng((double) latFloat, (double) lonFloat);
+                double yourZoom = 7;
+                mapboxMap.setCameraPosition(new CameraPosition.Builder()
+                        .target(yourLatLng)
+                        .zoom(yourZoom)
+                        .build());
+
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-
-
-
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         Log.d(TAG, "Map created and style loaded");
