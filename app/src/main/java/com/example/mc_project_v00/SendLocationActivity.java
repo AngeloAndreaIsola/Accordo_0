@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.location.Location;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.mapbox.android.core.location.LocationEngine;
@@ -29,7 +28,6 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Use the Mapbox Core Library to receive updates when the device changes location.
@@ -56,7 +54,8 @@ public class SendLocationActivity extends AppCompatActivity implements
 
 
         // This contains the MapView in XML and needs to be called after the access token is configured.
-        setContentView(R.layout.activity_send_location);
+        //setContentView(R.layout.activity_send_location);  //ORIGINALE
+        setContentView(R.layout.activity_map);
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -222,6 +221,9 @@ public class SendLocationActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+        if (locationEngine != null) {
+            locationEngine.removeLocationUpdates(callback);
+        }
         mapView.onPause();
     }
 
