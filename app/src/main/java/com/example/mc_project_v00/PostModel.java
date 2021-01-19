@@ -72,6 +72,17 @@ public class PostModel {
             post.setUsername( jsonArray.getJSONObject(i).getString("name"));
             post.setPid( jsonArray.getJSONObject(i).getString("pid"));
             post.setType( jsonArray.getJSONObject(i).getString("type"));
+
+            if (!jsonArray.getJSONObject(i).isNull("content"))
+                post.setContentTextPost(jsonArray.getJSONObject(i).getString("content"));
+
+            if (!jsonArray.getJSONObject(i).isNull("lat"))
+                post.setLat( jsonArray.getJSONObject(i).getString("lat"));
+
+            if (!jsonArray.getJSONObject(i).isNull("lon"))
+                post.setLonN( jsonArray.getJSONObject(i).getString("lon"));
+
+
             postListForDB.add(post);
         }
         Log.d(TAG, "Post salvati nela lista per database: " + postListForDB.toString());

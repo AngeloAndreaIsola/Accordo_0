@@ -13,18 +13,24 @@ import java.util.List;
 @Dao
 public interface PostDao {
     @Insert (onConflict = OnConflictStrategy.IGNORE)
-    void insertAll(List<Post> posts);
+    void insertAllPosts(List<Post> posts);
 
     @Insert (onConflict = OnConflictStrategy.IGNORE)
-    void add(Post post);
+    void addPost(Post post);
 
     @Delete
-    void delete(Post post);
+    void deletePost(Post post);
 
     @Query("SELECT * FROM posts")
-    List<Post> getAll();
+    List<Post> getAllPosts();
 
     @Update
-    void updateUsers(Post... posts);
+    void updatePosts(Post... posts);
+
+    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    void addContentImage(PostContentImage postContentImage);
+
+    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    void addPostProfileImage(PostProfileImage profileImage);
 
 }

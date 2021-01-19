@@ -262,15 +262,12 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         PostModel.getInstance().addPosts(response);
         PostModel.getInstance().addPostForDB(response);
 
-        //PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
-        //postRoomDatabase.postDao().insertAll(PostModel.getInstance().getListForDB());
-
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
                 try {
-                    postRoomDatabase.postDao().insertAll(PostModel.getInstance().getListForDB());
+                    postRoomDatabase.postDao().insertAllPosts(PostModel.getInstance().getListForDB());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -304,7 +301,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
 
         for (int i=0; i<PostModel.getInstance().getListForDBsize(); i++) {
-            postRoomDatabase.postDao().add(PostModel.getInstance().getPostFromListForDB(i));
+            postRoomDatabase.postDao().addPost(PostModel.getInstance().getPostFromListForDB(i));
         }
 
         postRoomDatabase.close();
