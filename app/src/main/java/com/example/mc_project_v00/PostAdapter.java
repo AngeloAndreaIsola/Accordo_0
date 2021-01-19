@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
 import com.example.mc_project_v00.database.PostContentImage;
+import com.example.mc_project_v00.database.PostProfileImage;
 import com.example.mc_project_v00.database.PostRoomDatabase;
 import com.google.android.gms.tasks.Task;
 
@@ -198,6 +199,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String encodedImage = response.getString("picture");
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(contextContainer).getPostRoomDatabase();
+
+                PostProfileImage postProfileImage = new PostProfileImage();
+                try {
+                    postProfileImage.setUid(response.getString("uid"));
+                    postProfileImage.setProfileImage(response.getString("picture"));
+                    //setversion
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                postRoomDatabase.postDao().addPostProfileImage(postProfileImage);
+                Log.d(TAG, "immagine proilo salvata nel database");
+            }
+        });
 
         if (encodedImage == null) {
             //TODO: SET DEFAULT DRAWABLE
