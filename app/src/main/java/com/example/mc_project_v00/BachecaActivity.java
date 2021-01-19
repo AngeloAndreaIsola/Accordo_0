@@ -20,6 +20,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.mc_project_v00.database.AppExecutors;
+import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.PostRoomDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,14 +57,27 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         editor.apply();
          */
 
-        //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
-        ComunicationController ccBacheca = new ComunicationController(this);
-        if (preferences.getBoolean("firstLogin", true)) {
+        /*
+        //PER AZZERARE IL DATABASE
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
+                postRoomDatabase.clearAllTables();
+            }
+        });
 
-            ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> reportErrorToUsers(error));
+         */
+
+        //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
+
+        if (preferences.getBoolean("firstLogin", true)) {  //TODO: OGNI TANTO NON ASSEGNA IL SID
+
+            register();
 
             editor.putBoolean("firstLogin", false);
             editor.commit();
+            refreshWall();
         }
 
 
@@ -89,6 +105,11 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
 
 
+    }
+
+    private void register() {
+        ComunicationController ccBacheca = new ComunicationController(this);
+        ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> reportErrorToUsers(error));
     }
 
     @Override

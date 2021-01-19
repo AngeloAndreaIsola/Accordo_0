@@ -18,8 +18,8 @@ public class Post {
     @ColumnInfo(name = "username")
     private String username;
 
-    //@ColumnInfo(name = "pVersion")
-    //private String pVersion;
+    @ColumnInfo(name = "version")
+    private int version;
 
     @ColumnInfo(name = "type")
     private String type;
@@ -58,13 +58,13 @@ public class Post {
         this.username = username;
     }
 
-    //public String getpVersion() {
-    //    return pVersion;
-    //}
+    public int getVersion() {
+        return version;
+    }
 
-    //public void setpVersion(String pVersion) {
-    //    this.pVersion = pVersion;
-    //}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     public String getType() {
         return type;

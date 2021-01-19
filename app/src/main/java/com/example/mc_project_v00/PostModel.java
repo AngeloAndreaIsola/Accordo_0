@@ -72,8 +72,7 @@ public class PostModel {
             post.setUsername( jsonArray.getJSONObject(i).getString("name"));
             post.setPid( jsonArray.getJSONObject(i).getString("pid"));
             post.setType( jsonArray.getJSONObject(i).getString("type"));
-
-            //setversion
+            post.setVersion(jsonArray.getJSONObject(i).getInt("pversion"));
 
             if (!jsonArray.getJSONObject(i).isNull("content"))
                 post.setContentTextPost(jsonArray.getJSONObject(i).getString("content"));
