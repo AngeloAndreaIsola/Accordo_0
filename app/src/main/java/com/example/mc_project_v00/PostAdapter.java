@@ -3,6 +3,7 @@ package com.example.mc_project_v00;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +12,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
+import androidx.room.Room;
 
 import com.android.volley.VolleyError;
+import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.PostRoomDatabase;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
+
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private static final String TAG ="Post RecyclerView";
     private List<JSONObject> postList;   //TODO: INVERTI LA LISTA ALTRIMENTI SI VEDONO IN ALTO GLI ULTIMI MESSSAGGI
@@ -31,6 +40,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private ComunicationController ccPostAdapter;
     private String sid;
     private View.OnClickListener mClickListener = null;
+    private PostRoomDatabase postRoomDatabase;
+
+
 
     public int getItemViewType(int position){
         try {
@@ -64,6 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         this.sid = sid;
 
         mClickListener = ClickListener;
+
     }
 
     @NonNull
@@ -202,5 +215,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String temp_username = object_username.getString("name");
         username.setText(temp_username);
     }
+
 
 }

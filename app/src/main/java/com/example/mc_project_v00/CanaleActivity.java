@@ -21,12 +21,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.mc_project_v00.database.AppExecutors;
+import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.PostRoomDatabase;
 import com.mapbox.mapboxsdk.Mapbox;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CanaleActivity extends ImageController implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
@@ -256,6 +260,22 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         rvPost.setAdapter(postAdapter);
 
         PostModel.getInstance().addPosts(response);
+        PostModel.getInstance().addPostForDB(response);
+
+        //PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
+        //postRoomDatabase.postDao().insertAll(PostModel.getInstance().getListForDB());
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
+                try {
+                    postRoomDatabase.postDao().insertAll(PostModel.getInstance().getListForDB());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -278,6 +298,16 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
     public static Context getPostActivityContext(){
         return context;
+    }
+
+    public void writeOnDatabse() throws JSONException {
+        PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
+
+        for (int i=0; i<PostModel.getInstance().getListForDBsize(); i++) {
+            postRoomDatabase.postDao().add(PostModel.getInstance().getPostFromListForDB(i));
+        }
+
+        postRoomDatabase.close();
     }
 
 }
