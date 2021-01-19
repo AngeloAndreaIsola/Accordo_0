@@ -20,7 +20,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 
 import com.android.volley.VolleyError;
+import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.PostContentImage;
 import com.example.mc_project_v00.database.PostRoomDatabase;
 import com.google.android.gms.tasks.Task;
 
@@ -169,6 +171,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         content.setImageBitmap(decodedByte);
 
         //TODO: HANDLE BAD BASE64
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(contextContainer).getPostRoomDatabase();
+
+                PostContentImage postContentImage = new PostContentImage();
+                try {
+                    postContentImage.setPid(response.getString("pid"));
+                    postContentImage.setPostContentImage(response.getString("content"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                postRoomDatabase.postDao().addContentImage(postContentImage);
+                Log.d(TAG, "immagine post salvata nel database");
+            }
+        });
+
     }
     private void handleGetUSerPictureResponse(JSONObject response, PostViewHolder postViewHolder, int viewID) throws JSONException {
         Log.d(TAG, "request user picture correct: "+ response.toString());
