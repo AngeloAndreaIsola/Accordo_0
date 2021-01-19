@@ -14,6 +14,12 @@ public class PostProfileImage {
     @PrimaryKey
     private String uid;
 
+
+    @ColumnInfo(name = "version")
+    private int version;
+
+
+
     @ColumnInfo(name = "Profile Image")
     private String profileImage;
 
@@ -24,6 +30,16 @@ public class PostProfileImage {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
 
     public String getProfileImage() {
         return profileImage;

@@ -209,7 +209,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 try {
                     postProfileImage.setUid(response.getString("uid"));
                     postProfileImage.setProfileImage(response.getString("picture"));
-                    //setversion
+                    postProfileImage.setVersion(response.getInt("pversion"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

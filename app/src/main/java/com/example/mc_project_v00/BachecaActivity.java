@@ -57,18 +57,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         editor.apply();
          */
 
-        /*
-        //PER AZZERARE IL DATABASE
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
-                postRoomDatabase.clearAllTables();
-            }
-        });
-
-         */
-
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
 
         if (preferences.getBoolean("firstLogin", true)) {  //TODO: OGNI TANTO NON ASSEGNA IL SID
