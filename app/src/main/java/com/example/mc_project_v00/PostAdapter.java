@@ -1,8 +1,10 @@
 package com.example.mc_project_v00;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -112,7 +114,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostText, R.id.post_Text_Username, position);
 
                 //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE PROFILO
-                profileImageRequest(position, viewHolderPostText, R.id.post_Text_ProfileImage);
+                if (postList.get(position).getInt("pversion")==0){
+                    ImageView profilePicture = viewHolderPostText.itemView.findViewById(R.id.post_Text_ProfileImage);
+                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
+
+                    //viewHolderPostText.imageViewProfileImage.setImageResource(R.drawable.ic_baseline_account_box_24);
+                }else {
+                    profileImageRequest(position, viewHolderPostText, R.id.post_Text_ProfileImage);
+                }
+
 
                 //TEXT SET CONTENT
                 TextView content = viewHolderPostText.itemView.findViewById(R.id.post_text_Content);
@@ -128,7 +138,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostImage, R.id.post_Image_Username, position);
 
                 //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE PROFILO
-                profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage );
+                //profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage );
+                if (postList.get(position).getInt("pversion")==0){
+                    ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
+                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
+
+                    //viewHolderPostImage.imageViewContent.setImageResource(R.drawable.ic_baseline_account_box_24);
+                }else {
+                    profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage);
+                }
 
                 //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
                 String pid = postList.get(position).getString("pid");
@@ -148,7 +166,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                 setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
 
-                profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
+                //profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
+                if (postList.get(position).getInt("pversion")==0){
+                    ImageView profilePicture = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_ProfileImage);
+                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
+
+                    //viewHolderPostPosition.imageViewProfileImage.setImageResource(R.drawable.ic_baseline_account_box_24);
+                }else {
+                    profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
+                }
 
                 //SET CONTENT
                 Button showPositionButton = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_Button_ShowPosition);
@@ -219,12 +245,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
             }
         });
 
-        if (encodedImage == null) {
-            //TODO: SET DEFAULT DRAWABLE
-        } else {
             ImageView profilePicture = postViewHolder.itemView.findViewById(viewID);
             profilePicture.setImageBitmap(decodedByte);
-        }
+
 
     }
 
