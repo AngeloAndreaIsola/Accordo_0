@@ -157,7 +157,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
             if (imageIsValid(endodedImage)) {
                 try {
                     postImage(endodedImage);
-                    refreshChat();                      //TODO: NON FA IL REFRESH DELLA PAGINA QUANDO MANDA LA FOTO
+                                         //TODO: NON FA IL REFRESH DELLA PAGINA QUANDO MANDA LA FOTO
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -170,6 +170,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     private void postImage(String endodedImage) throws JSONException {
         ComunicationController comunicationController = new ComunicationController(this);
         comunicationController.addPostImage(sidString, channelName, endodedImage, response -> Log.d(TAG, "Risposta postImage: " + response), error -> reportErrorToUsers(error));
+        refreshChat();
     }
 
 
@@ -310,4 +311,3 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 }
 
 //TODO: PROVA CHIAMTE A CASO
-//TODO: SALVARE IMMAGINI PROFILO IN CHACHE
