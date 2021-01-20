@@ -59,39 +59,21 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
 
-        if (preferences.getBoolean("firstLogin", true)) {  //TODO: OGNI TANTO NON ASSEGNA IL SID
+        if (preferences.getBoolean("firstLogin", true)) {
+
+            Log.d(TAG, "sid: " + preferences.getString("sid",null));
 
             register();
 
+            Log.d(TAG, "sid: " + preferences.getString("sid",null));
+
             editor.putBoolean("firstLogin", false);
             editor.commit();
+            //refreshWall();
+        } else if (preferences.getString("sid",null) != null){
+            //sidString = preferences.getString("sid", null);
             refreshWall();
         }
-
-
-        if (preferences.getString("sid",null) != null){
-            sidString = preferences.getString("sid", null);
-            refreshWall();
-            /*
-            try {
-                ccBacheca.getWall(sidString, response -> {
-                    try {
-                        showWall(response);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }, error -> reportErrorToUsers(error));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-             */
-
-        }
-
-
-
-
 
     }
 
@@ -148,7 +130,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     }
 
 
-    private void showWall(JSONObject response) throws JSONException {   //TODO: PENSA A UN NOME MIGLIORE
+    private void showWall(JSONObject response) throws JSONException {
         Log.d(TAG, "request correct: "+ response.toString());
 
         //colleghiamo model e dapter
@@ -176,6 +158,10 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         }
         Log.d(TAG, "request correct: "+ response.toString());
         Log.d(TAG, "request saved: "+ preferences.getAll().toString());
+
+        sidString = preferences.getString("sid", null);
+
+        refreshWall();
     }
 
     @Override
