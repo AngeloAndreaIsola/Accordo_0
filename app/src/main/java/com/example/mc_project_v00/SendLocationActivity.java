@@ -82,7 +82,7 @@ public class SendLocationActivity extends AppCompatActivity implements OnMapRead
      * Initialize the Maps SDK's LocationComponent
      */
     @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) {  //TODO:
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 

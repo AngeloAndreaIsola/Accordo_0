@@ -1,5 +1,6 @@
 package com.example.mc_project_v00;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Use the LocationComponent to easily add a device location "puck" to a Mapbox map.
  */
-public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener { //TODO:LA LOCATION VIENE CAMBIATA SOLO DOPO LA SECONDA CHIAMATA
+public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
     private static final String TAG = "LocationComponentActivity";
     private PermissionsManager permissionsManager;
@@ -60,6 +61,8 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                startActivity(new Intent(LocationComponentActivity.this, CanaleActivity.class));
             }
         });
 
@@ -106,7 +109,7 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     }
 
     @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) { //TODO: SE CI METTI TROPPO TEMPO A CONDERE I PERMESSI CRASHA, PROBLEMA DI THREAD
 // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
