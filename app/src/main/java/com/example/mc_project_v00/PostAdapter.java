@@ -277,8 +277,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         TextView username = postViewHolder.itemView.findViewById(viewID);
         JSONObject object_username = postList.get(position);
         String temp_username = object_username.getString("name");
-        username.setText(temp_username);
+        Log.d(TAG, "il nome dell'utente è: " + temp_username);
+        if (temp_username == "null"){
+            username.setText("NO_NAME");
+        }else{
+            username.setText(temp_username);
+        }
     }
-
-
 }
