@@ -93,7 +93,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
             public void onClick(View v) {
                 try {
                     sendMessage();
-                    refreshChat();
+                                  //TODO: METTI IL REFRESH CHAT NELLA RESPONSE DI SENDMESSAGE
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -157,11 +157,10 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
             if (imageIsValid(endodedImage)) {
                 try {
                     postImage(endodedImage);
-                                         //TODO: Fa il refresh solo della prima immagine mandata IN Un cananle
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
         }
@@ -169,8 +168,8 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
     private void postImage(String endodedImage) throws JSONException {
         ComunicationController comunicationController = new ComunicationController(this);
-        comunicationController.addPostImage(sidString, channelName, endodedImage, response -> Log.d(TAG, "Risposta postImage: " + response), error -> reportErrorToUsers(error));
-        refreshChat();
+        comunicationController.addPostImage(sidString, channelName, endodedImage, response -> refreshChat(), error -> reportErrorToUsers(error));
+
     }
 
 
@@ -238,7 +237,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         Log.d(TAG,"addPost request");
         ComunicationController cc = new ComunicationController(this);
         if(content.length() < 100) { //controlla che il testo sia piú breve di 100 caratteri
-            cc.addPostText(sidString, channelName, content, response -> Log.d(TAG, "messaggio spedito"), error -> reportErrorToUsers(error) );
+            cc.addPostText(sidString, channelName, content, response -> refreshChat(), error -> reportErrorToUsers(error));
             //TODO: PULIRE INPUT
             EditText editTextMessage = findViewById(R.id.messageInputView);
             editTextMessage.setText("");
