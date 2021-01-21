@@ -17,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MC_Project_V00">
         <activity android:name=".LocationComponentActivity"></activity>
-        <activity android:name=".SendLocationActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".ImageActivity" />
         <activity android:name=".CanaleActivity">

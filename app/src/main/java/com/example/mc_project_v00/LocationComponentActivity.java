@@ -33,13 +33,14 @@ import java.util.List;
 /**
  * Use the LocationComponent to easily add a device location "puck" to a Mapbox map.
  */
-public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener { //TODO: QUANDO TORNA ALLA SCHERMATA DI PRIMA NON RESETTA IL NOME DEL CANALE
 
     private static final String TAG = "LocationComponentActivity";
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
     private MapView mapView;
     private Location location;
+    LocationComponent lc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 
     }
 
-    private void sendLocation() throws JSONException {
+    private void sendLocation() throws JSONException { //TODO: VERIFICA CHE LA POSIZIONE SIA VALIDA
         String channelName = null, sid = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -92,11 +93,15 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         LocationComponentActivity.this.mapboxMap = mapboxMap;
 
-        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7"),
+
+        //new Style.Builder().fromUri("mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7")
+
+        mapboxMap.setStyle(Style.TRAFFIC_NIGHT,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         enableLocationComponent(style);
+
 
                         LatLng yourLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                         double yourZoom = 7;
@@ -110,28 +115,31 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) { //TODO: SE CI METTI TROPPO TEMPO A CONDERE I PERMESSI CRASHA, PROBLEMA DI THREAD
-// Check if permissions are enabled and if not request
+        // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
-// Get an instance of the component
+            // Get an instance of the component
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            lc = locationComponent;
 
-// Activate with options
+            // Activate with options
             locationComponent.activateLocationComponent(
                     LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
 
-// Enable to make component visible
+            // Enable to make component visible
             locationComponent.setLocationComponentEnabled(true);
 
-// Set the component's camera mode
+            // Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING);
 
-// Set the component's render mode
+            // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
 
 
 
             location = locationComponent.getLastKnownLocation();    //TODO: FARE LA CHIAMATA CHE PRENDE EFFETIVAMENTE L'ULTIMA POSIZIONE E NON SOLO L'ULTIMA CONOSCIUTA
+
+            //TODO: SE CAMBIA LA POSIZINE NELLA SCHERMATA DOVE DOVREBBE ESSERE INVIATA NON MANDA L'ULTIMA
 
         } else {
             permissionsManager = new PermissionsManager(this);

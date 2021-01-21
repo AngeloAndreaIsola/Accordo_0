@@ -25,7 +25,6 @@ import java.io.IOException;
 
 public class SettingsActivity extends ImageController {
     private static final String TAG = "SettingsActivity";
-    private static int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int GALLERY_REQUEST = 9;
 
     private TextView textView;
@@ -58,13 +57,6 @@ public class SettingsActivity extends ImageController {
 
     }
 
-
-
-    public void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
-    }
 
     private void saveImage(String encodeTobase64) {
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
@@ -194,6 +186,7 @@ public class SettingsActivity extends ImageController {
         String username = preferences.getString("username", null);
 
         cc.setProfileUsername(sid, username, response -> Log.d(TAG, "Profile username uploaded to server"), error -> reportErrorToUser(error) );
+        //TODO: GESTISCI L'ERRORE NEW CASO L'USERNAME SEISTA GIA
     }
     public void loadLastUsername(){
         SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
