@@ -157,7 +157,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
             if (imageIsValid(endodedImage)) {
                 try {
                     postImage(endodedImage);
-                                         //TODO: NON FA IL REFRESH DELLA PAGINA QUANDO MANDA LA FOTO
+                                         //TODO: Fa il refresh solo della prima immagine mandata IN Un cananle
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

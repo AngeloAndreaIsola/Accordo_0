@@ -189,15 +189,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private void handleGetPostImageResponse(JSONObject response, PostViewHolder.ViewHolder_Post_Image viewHolderPostImage, int position ) throws JSONException {
         Log.d(TAG, "request post image correct: "+ response.toString());
 
-        //decodifica da stringa a bitmap
-        String encodedImage = response.getString("content");
-        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+
 
         ImageView content = viewHolderPostImage.itemView.findViewById(R.id.post_Image_Content);
-        content.setImageBitmap(decodedByte);
+        try {
+            //decodifica da stringa a bitmap
+            String encodedImage = response.getString("content");
+            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            content.setImageBitmap(decodedByte);
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "BASE 64 SBAGLIATO");
+            // TODO: handle exception
+        }
 
-        //TODO: HANDLE BAD BASE64
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -208,12 +214,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 try {
                     postContentImage.setPid(response.getString("pid"));
                     postContentImage.setPostContentImage(response.getString("content"));
+
+                    postRoomDatabase.postDao().addContentImage(postContentImage);
+                    Log.d(TAG, "immagine post salvata nel database");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                postRoomDatabase.postDao().addContentImage(postContentImage);
-                Log.d(TAG, "immagine post salvata nel database");
             }
         });
 
