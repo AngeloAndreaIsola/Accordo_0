@@ -1,28 +1,26 @@
 package com.example.mc_project_v00.database;
 
-import android.graphics.Bitmap;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity (tableName = "Content Images")
+@Entity (tableName = "Content_Images")
 public class PostContentImage {
 
     @NonNull
     @PrimaryKey
-    private String pid;
+    private String image_pid;
 
-    @ColumnInfo(name = "image content")
+    @ColumnInfo(name = "image_content")
     private String postContentImage;
 
-    public String getPid() {
-        return pid;
+    public String getImage_pid() {
+        return image_pid;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setImage_pid(String image_pid) {
+        this.image_pid = image_pid;
     }
 
     public String getPostContentImage() {

@@ -30,7 +30,7 @@ import org.json.JSONObject;
 public class BachecaActivity extends AppCompatActivity implements OnListClickListener {
 
     private static final String TAG = "BachecaActivity";
-    private String sidString = null;
+    private String sidString = null; 
     private BachecaAdapter adapter;
     private Context context = null;
 
@@ -51,11 +51,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         adapter = new BachecaAdapter(this, this);
         context = this;
 
-        //PER TESTARE IL SALVATAGGIO DEL SID, RESET SHARED PREFERENCE
-        /*
-        editor.clear();
-        editor.apply();
-         */
 
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE
 

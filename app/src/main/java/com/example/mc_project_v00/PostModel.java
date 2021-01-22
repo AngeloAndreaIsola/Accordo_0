@@ -2,9 +2,7 @@ package com.example.mc_project_v00;
 
 import android.util.Log;
 
-import com.example.mc_project_v00.database.DatabaseClient;
 import com.example.mc_project_v00.database.Post;
-import com.example.mc_project_v00.database.PostRoomDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;

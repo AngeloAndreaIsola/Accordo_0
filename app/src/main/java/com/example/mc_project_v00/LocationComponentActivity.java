@@ -40,7 +40,7 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     private MapboxMap mapboxMap;
     private MapView mapView;
     private Location location;
-    LocationComponent lc;
+    private LocationComponent lc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

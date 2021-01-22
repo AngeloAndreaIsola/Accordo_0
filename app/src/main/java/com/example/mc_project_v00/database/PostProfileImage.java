@@ -1,18 +1,16 @@
 package com.example.mc_project_v00.database;
 
-import android.graphics.Bitmap;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Profile Images")
+@Entity(tableName = "Profile_Images")
 public class PostProfileImage {
 
     @NonNull
     @PrimaryKey
-    private String uid;
+    private String profile_uid;
 
 
     @ColumnInfo(name = "version")
@@ -23,12 +21,12 @@ public class PostProfileImage {
     @ColumnInfo(name = "Profile Image")
     private String profileImage;
 
-    public String getUid() {
-        return uid;
+    public String getProfile_uid() {
+        return profile_uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setProfile_uid(String profile_uid) {
+        this.profile_uid = profile_uid;
     }
 
 

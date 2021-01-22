@@ -12,7 +12,7 @@ public class Post {
     @PrimaryKey
     private String pid;
 
-    @ColumnInfo(name = "uid")
+    @ColumnInfo(name = "post_uid")
     private String uid;
 
     @ColumnInfo(name = "username")

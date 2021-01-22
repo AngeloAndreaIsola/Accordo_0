@@ -24,6 +24,18 @@ public interface PostDao {
     @Query("SELECT * FROM posts")
     List<Post> getAllPosts();
 
+    @Query("SELECT * FROM posts WHERE pid=:pid")
+    Post getSinglePost(int pid);
+
+    @Query("SELECT image_content FROM content_images WHERE image_pid=:pid")
+    String getContentImage(int pid);
+
+    @Query("SELECT version FROM profile_images WHERE profile_uid=:uid")
+    int getProfileVersion(int uid);
+
+    @Query("SELECT `Profile Image` FROM profile_images WHERE profile_uid=:uid")
+    String getProfileContent(int uid);
+
     @Update
     void updatePosts(Post... posts);
 

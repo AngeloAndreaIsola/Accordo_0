@@ -1,11 +1,8 @@
 package com.example.mc_project_v00;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,20 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
-import androidx.room.Room;
 
 import com.android.volley.VolleyError;
 import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.Post;
 import com.example.mc_project_v00.database.PostContentImage;
 import com.example.mc_project_v00.database.PostProfileImage;
 import com.example.mc_project_v00.database.PostRoomDatabase;
-import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,11 +30,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
-
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private static final String TAG ="Post RecyclerView";
     private List<JSONObject> postList;   //TODO: INVERTI LA LISTA ALTRIMENTI SI VEDONO IN ALTO GLI ULTIMI MESSSAGGI
+    private List<JSONObject> oldpostList;
     private Context contextContainer;
     private ComunicationController ccPostAdapter;
     private String sid;
@@ -81,6 +74,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         this.sid = sid;
 
         mClickListener = ClickListener;
+
+        postRoomDatabase = DatabaseClient.getInstance(contextContainer).getPostRoomDatabase();
 
     }
 
@@ -139,11 +134,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                 //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE PROFILO
                 //profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage );
-                if (postList.get(position).getInt("pversion")==0){
-                    ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
-                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
+                int uid = postList.get(position).getInt("uid");
+                if (postRoomDatabase.postDao().getProfileVersion(uid) <= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
+                   // ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
+                    //profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
 
                     //viewHolderPostImage.imageViewContent.setImageResource(R.drawable.ic_baseline_account_box_24);
+
+
+                    String encodedImage = (postRoomDatabase.postDao().getProfileContent(uid));
+
+                    ImageView content = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
+                    try {
+                        //decodifica da stringa a bitmap
+                        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        content.setImageBitmap(decodedByte);
+                        Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
+                    } catch (IllegalArgumentException e) {
+                        Log.d(TAG, "BASE 64 SBAGLIATO");
+                        // TODO: handle exception
+                    }
+
+
+
                 }else {
                     profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage);
                 }
@@ -151,13 +165,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
                 String pid = postList.get(position).getString("pid");
 
-                ccPostAdapter.getPostImage(sid, pid, response -> {
+                if (postRoomDatabase.postDao().getContentImage(Integer.parseInt(pid)) != null){
+
+                    String encodedImage = (postRoomDatabase.postDao().getContentImage(Integer.parseInt(pid)));
+
+                    ImageView content = viewHolderPostImage.itemView.findViewById(R.id.post_Image_Content);
                     try {
-                        handleGetPostImageResponse(response, viewHolderPostImage, position);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        //decodifica da stringa a bitmap
+                        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                content.setImageBitmap(decodedByte);
+                                Log.d(TAG, "contenuto immagine caricato da db");
+                    } catch (IllegalArgumentException e) {
+                        Log.d(TAG, "BASE 64 SBAGLIATO");
+                        // TODO: handle exception
                     }
-                }, error -> reportErrorToUser(error));
+
+                }else{
+                    ccPostAdapter.getPostImage(sid, pid, response -> {
+                        try {
+                            handleGetPostImageResponse(response, viewHolderPostImage, position);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }, error -> reportErrorToUser(error));
+                }
+
+
 
 
             }else if(postList.get(position).getString("type").contains("l")){
@@ -172,8 +206,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                     profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
 
                     //viewHolderPostPosition.imageViewProfileImage.setImageResource(R.drawable.ic_baseline_account_box_24);
-                }else {
-                    profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
+                }else if (true){
+                    //se è nel databse caricala
+                    Log.d(TAG,"L'immagine PROFILO è gia nel db");
+                } else {
+                    //profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
                 }
 
                 //SET CONTENT
@@ -212,7 +249,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                 PostContentImage postContentImage = new PostContentImage();
                 try {
-                    postContentImage.setPid(response.getString("pid"));
+                    postContentImage.setImage_pid(response.getString("pid"));
                     postContentImage.setPostContentImage(response.getString("content"));
 
                     postRoomDatabase.postDao().addContentImage(postContentImage);
@@ -239,7 +276,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                 PostProfileImage postProfileImage = new PostProfileImage();
                 try {
-                    postProfileImage.setUid(response.getString("uid"));
+                    postProfileImage.setProfile_uid(response.getString("uid"));
                     postProfileImage.setProfileImage(response.getString("picture"));
                     postProfileImage.setVersion(response.getInt("pversion"));
                 } catch (JSONException e) {
