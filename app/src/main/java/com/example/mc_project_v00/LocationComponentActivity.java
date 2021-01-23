@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Use the LocationComponent to easily add a device location "puck" to a Mapbox map.
  */
-public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener { //TODO: QUANDO TORNA ALLA SCHERMATA DI PRIMA NON RESETTA IL NOME DEL CANALE
+public class LocationComponentActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
     private static final String TAG = "LocationComponentActivity";
     private PermissionsManager permissionsManager;
@@ -63,7 +63,7 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
                     e.printStackTrace();
                 }
 
-                startActivity(new Intent(LocationComponentActivity.this, CanaleActivity.class));
+                finish();
             }
         });
 

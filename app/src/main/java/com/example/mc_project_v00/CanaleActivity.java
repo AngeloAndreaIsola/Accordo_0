@@ -32,10 +32,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-public class CanaleActivity extends ImageController implements View.OnClickListener {   //MANDA LA POSIZONE NELLO STESSO CANALE
+public class CanaleActivity extends ImageController implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
     private static int PICK_PHOTO_FOR_POST = 0;
     private static final int GALLERY_REQUEST = 9;
+    private static final int SEND_POSITION = 1;
     private static Context context;
     private int position;
     private String channelName = null;
@@ -114,23 +115,21 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
                 Intent i = new Intent(CanaleActivity.getPostActivityContext(), LocationComponentActivity.class);
                 i.putExtra("nomeCanale", channelName);
                 i.putExtra("sid",sidString);
-                v.getContext().startActivity(i);
+                //v.getContext().startActivity(i);
+
+                startActivityForResult(i, SEND_POSITION);
             }
         });
     }
 
-    /*
+
     @Override
     protected void onStart() {
         super.onStart();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            channelName = extras.getString("nomeCanale");
-            this.setTitle(channelName);
-        }
+        refreshChat();
     }
 
-     */
+
 
     private void getImageFromGallery(){
         Intent intent = new Intent();

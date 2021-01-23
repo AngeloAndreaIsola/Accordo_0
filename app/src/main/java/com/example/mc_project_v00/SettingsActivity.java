@@ -98,7 +98,7 @@ public class SettingsActivity extends ImageController {
             Toast.makeText(this,"The image is NOT square", Toast.LENGTH_LONG).show();
             //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
             return false;
-        } else if (encodedImage.length() >= 137000) {  //500000  //TODO: TROVARE LA LUNGHEZZA DI CARATTERI GISUTA
+        } else if (encodedImage.length() >= 137000) {
             //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
             Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
             return false;
