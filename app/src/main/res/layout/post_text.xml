@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:paddingBottom="16dp"
-        android:id="@+id/container"
+        android:id="@+id/container_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -57,9 +57,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="TextView"
-            android:textColor="@color/content_text_color"
-
-            />
+            android:textColor="@color/content_text_color"/>
     </RelativeLayout>
 
     <ImageView
@@ -71,8 +69,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/container"
-        app:layout_constraintStart_toStartOf="@+id/container"
-        app:layout_constraintTop_toTopOf="@+id/container"
+        app:layout_constraintEnd_toStartOf="@+id/container_text"
+        app:layout_constraintStart_toStartOf="@+id/container_text"
+        app:layout_constraintTop_toTopOf="@+id/container_text"
         app:srcCompat="@mipmap/ic_launcher" />
 </androidx.constraintlayout.widget.ConstraintLayout>
