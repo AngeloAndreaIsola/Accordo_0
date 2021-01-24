@@ -167,7 +167,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
-    private void addChannelAndRefresh(String cTitle) {  //TODO: AVVISARE SE CREA UN CANALE CON UN NOME UGUALE
+    private void addChannelAndRefresh(String cTitle) {
         ComunicationController ccBacheca = new ComunicationController(context);
         if (cTitle.length() >= 21){
             Toast.makeText(context, "Il nome del canale non può essere piu lungo di 20 caratteri", Toast.LENGTH_SHORT).show();

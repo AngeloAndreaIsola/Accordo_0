@@ -273,5 +273,3 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
 
 }
-
-//TODO: PROVA CHIAMTE A CASO

@@ -141,7 +141,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                         Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
                     } catch (IllegalArgumentException e) {
                         Log.d(TAG, "BASE 64 SBAGLIATO");
+
                         // TODO: handle exception
+                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
                     }
 
 
@@ -193,7 +195,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                         Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
                     } catch (IllegalArgumentException e) {
                         Log.d(TAG, "BASE 64 SBAGLIATO");
+
                         // TODO: handle exception
+                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
                     }
 
 
@@ -219,6 +223,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                     } catch (IllegalArgumentException e) {
                         Log.d(TAG, "BASE 64 SBAGLIATO");
                         // TODO: handle exception
+                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
                     }
 
                 }else{
@@ -278,6 +283,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                     } catch (IllegalArgumentException e) {
                         Log.d(TAG, "BASE 64 SBAGLIATO");
                         // TODO: handle exception
+                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
                     }
 
 
@@ -313,6 +319,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         } catch (IllegalArgumentException e) {
             Log.d(TAG, "BASE 64 SBAGLIATO");
             // TODO: handle exception
+            content.setImageResource(R.drawable.ic_baseline_broken_image_24);
         }
 
 

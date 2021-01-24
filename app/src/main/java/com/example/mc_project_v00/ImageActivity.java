@@ -25,7 +25,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {  //TODO: FATTI DIRE SE ERA NEL DB E CARICALA
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
@@ -55,6 +55,7 @@ public class ImageActivity extends AppCompatActivity {
             } catch (IllegalArgumentException e) {
                 Log.d(TAG, "BASE 64 SBAGLIATO");
                 // TODO: handle exception
+                content.setImageResource(R.drawable.ic_baseline_broken_image_24);
             }
 
         }else{
