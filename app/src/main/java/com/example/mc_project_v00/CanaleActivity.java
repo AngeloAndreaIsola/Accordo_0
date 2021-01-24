@@ -34,7 +34,6 @@ import java.util.List;
 
 public class CanaleActivity extends ImageController implements View.OnClickListener {
     private static final String TAG = "ChannelActivity";
-    private static int PICK_PHOTO_FOR_POST = 0;
     private static final int GALLERY_REQUEST = 9;
     private static final int SEND_POSITION = 1;
     private static Context context;
@@ -53,8 +52,6 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         sidString = preferences.getString("sid", null);
         context = this;
-
-
 
         ActionBar actionbar = getSupportActionBar();
         Bundle extras = getIntent().getExtras();
@@ -94,7 +91,6 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
             public void onClick(View v) {
                 try {
                     sendMessage();
-                                  //TODO: METTI IL REFRESH CHAT NELLA RESPONSE DI SENDMESSAGE
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -111,12 +107,9 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         buttonSendPosition.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Intent i = new Intent(CanaleActivity.getPostActivityContext(), SendLocationActivity.class);
                 Intent i = new Intent(CanaleActivity.getPostActivityContext(), LocationComponentActivity.class);
                 i.putExtra("nomeCanale", channelName);
                 i.putExtra("sid",sidString);
-                //v.getContext().startActivity(i);
-
                 startActivityForResult(i, SEND_POSITION);
             }
         });
@@ -155,8 +148,6 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
                 e.printStackTrace();
             }
 
-            //imageView.setImageURI(selectedImage);
-
             String endodedImage = null;
             try {
                 endodedImage = uriToBase64(imageUri);
@@ -184,9 +175,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
 
     public boolean imageIsValid (String encodedImage){
-
-        if (encodedImage.length() >= 137000) {  //500000
-            //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
+        if (encodedImage.length() >= 137000) {
             Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
             return false;
         }else{
@@ -206,7 +195,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }, error -> reportErrorToUsers(error));  //logAndShowChannel(finalChannelName, response)
+            }, error -> reportErrorToUsers(error));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -243,18 +232,14 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     private void sendMessage() throws JSONException {
         EditText message = findViewById(R.id.messageInputView);
         String content = String.valueOf(message.getText());
-        String type = "t";
         Log.d(TAG,"addPost request");
         ComunicationController cc = new ComunicationController(this);
         if(content.length() <= 100) { //controlla che il testo sia piú breve di 100 caratteri
             cc.addPostText(sidString, channelName, content, response -> refreshChat(), error -> reportErrorToUsers(error));
-            EditText editTextMessage = findViewById(R.id.messageInputView);
-            editTextMessage.setText("");
+            message.setText("");
         } else {
             Toast.makeText(this,"The post can't be longer than 100 characters!",Toast.LENGTH_LONG).show();
         }
-        //notifica che il dataset è cambiato
-
     }
 
 
@@ -270,29 +255,6 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
         PostModel.getInstance().addPosts(response);
         PostModel.getInstance().addPostForDB(response);
-
-        /*
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
-                try {
-                    postRoomDatabase.postDao().insertAllPosts(PostModel.getInstance().getListForDB());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-         */
-
-    }
-
-
-    private void logAndShowChannel(String channelName, JSONObject response) {
-        Log.d(TAG, "channel post list: " + channelName + ": " + response.toString());
-        //TextView mTextView = findViewById(R.id.logCanale);
-        //mTextView.setText(response.toString());
     }
 
     private void reportErrorToUsers(VolleyError error){
@@ -309,15 +271,6 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         return context;
     }
 
-    public void writeOnDatabse() throws JSONException {
-        PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
-
-        for (int i=0; i<PostModel.getInstance().getListForDBsize(); i++) {
-            postRoomDatabase.postDao().addPost(PostModel.getInstance().getPostFromListForDB(i));
-        }
-
-        postRoomDatabase.close();
-    }
 
 }
 

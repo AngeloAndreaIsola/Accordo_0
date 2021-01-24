@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.PostRoomDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +25,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {  //TODO: FATTI DIRE SE ERA NEL DB E CARICALA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
@@ -33,25 +35,46 @@ public class ImageActivity extends AppCompatActivity {
 
         } else{
             Log.d(TAG, "Extras erano vuoti");
+            finish();
         }
 
 
-        ComunicationController cc = new ComunicationController(this);
-        SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
-        sid = preferences.getString("sid",null);
+        //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
+        PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(this).getPostRoomDatabase();
+        if (postRoomDatabase.postDao().getContentImage(Integer.parseInt(Integer.toString(pid))) != null){
 
-        Log.d(TAG, Integer.toString(pid));
-        try {
-            cc.getPostImage(sid, Integer.toString(pid), response -> {
-                try {
-                    hadleGetImageResponse(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }, error -> reportErrorToUser(error));
-        } catch (JSONException e) {
-            e.printStackTrace();
+            String encodedImage = (postRoomDatabase.postDao().getContentImage(pid));
+
+            ImageView content = findViewById(R.id.imageView2);
+            try {
+                //decodifica da stringa a bitmap
+                byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                content.setImageBitmap(decodedByte);
+                Log.d(TAG, "contenuto immagine caricato da db");
+            } catch (IllegalArgumentException e) {
+                Log.d(TAG, "BASE 64 SBAGLIATO");
+                // TODO: handle exception
+            }
+
+        }else{
+            ComunicationController cc = new ComunicationController(this);
+            SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
+            sid = preferences.getString("sid",null);
+
+            try {
+                cc.getPostImage(sid, Integer.toString(pid), response -> {
+                    try {
+                        hadleGetImageResponse(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> reportErrorToUser(error));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
 
 
     }

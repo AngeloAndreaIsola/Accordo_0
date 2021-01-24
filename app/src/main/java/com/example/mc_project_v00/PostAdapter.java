@@ -33,7 +33,6 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private static final String TAG ="Post RecyclerView";
     private List<JSONObject> postList;   //TODO: INVERTI LA LISTA ALTRIMENTI SI VEDONO IN ALTO GLI ULTIMI MESSSAGGI
-    private List<JSONObject> oldpostList;
     private Context contextContainer;
     private ComunicationController ccPostAdapter;
     private String sid;

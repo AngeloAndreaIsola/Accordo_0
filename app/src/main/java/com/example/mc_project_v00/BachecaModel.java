@@ -76,14 +76,4 @@ public class BachecaModel {
             //descending order
             //return StudentName2.compareTo(StudentName1);
         }};
-
-    public void testRefresh() throws JSONException {
-        channelList.get(21).put("mine","t");
-        channelList.get(22).put("mine", "t");
-        channelList.get(19).put("mine", "t");
-        channelList.sort(channelListComparator);
-        Log.d(TAG, "addFakeData: " + channelList.toString());
-
-    }
-
 }

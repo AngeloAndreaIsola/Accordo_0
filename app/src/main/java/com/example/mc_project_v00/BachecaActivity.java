@@ -63,7 +63,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             Log.d(TAG, "sid: " + preferences.getString("sid",null));
 
             editor.putBoolean("firstLogin", false);
-            editor.commit();
+            editor.apply();
 
         } else if (preferences.getString("sid",null) != null){
             //sidString = preferences.getString("sid", null);
@@ -104,11 +104,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                     public void onClick(DialogInterface dialog, int which) {
                         String channel= channelName.getText().toString();
                         Log.d(TAG, channel);
-                        try {
-                            addChannelAndRefresh(channel);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        addChannelAndRefresh(channel);
                     }
                 });
                 channelDialog.setNegativeButton("Cancel",null);
@@ -171,7 +167,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
-    private void addChannelAndRefresh(String cTitle) throws JSONException {  //TODO: AVVISARE SE CREA UN CANALE CON UN NOME UGUALE
+    private void addChannelAndRefresh(String cTitle) {  //TODO: AVVISARE SE CREA UN CANALE CON UN NOME UGUALE
         ComunicationController ccBacheca = new ComunicationController(context);
         if (cTitle.length() >= 21){
             Toast.makeText(context, "Il nome del canale non può essere piu lungo di 20 caratteri", Toast.LENGTH_SHORT).show();

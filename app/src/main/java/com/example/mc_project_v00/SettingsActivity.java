@@ -117,10 +117,8 @@ public class SettingsActivity extends ImageController {
 
         if (imageBitmap.getHeight() != imageBitmap.getWidth()){
             Toast.makeText(this,"The image is NOT square", Toast.LENGTH_LONG).show();
-            //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
             return false;
         } else if (encodedImage.length() >= 137000) {
-            //Log.d(TAG, "string lenght (CON METODO OBSOLETO encodeTobase64) : " + encodeTobase64(image).length());
             Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
             return false;
         }else{
@@ -133,7 +131,6 @@ public class SettingsActivity extends ImageController {
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                //pickImage();
                 getImageFromGallery();
             }
         });
