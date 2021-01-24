@@ -63,7 +63,9 @@
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="hint" />
+                android:hint="hint"
+                android:inputType="text"
+                android:imeOptions="actionSend"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

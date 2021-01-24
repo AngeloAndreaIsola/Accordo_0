@@ -246,9 +246,8 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         String type = "t";
         Log.d(TAG,"addPost request");
         ComunicationController cc = new ComunicationController(this);
-        if(content.length() < 100) { //controlla che il testo sia piú breve di 100 caratteri
+        if(content.length() <= 100) { //controlla che il testo sia piú breve di 100 caratteri
             cc.addPostText(sidString, channelName, content, response -> refreshChat(), error -> reportErrorToUsers(error));
-            //TODO: PULIRE INPUT
             EditText editTextMessage = findViewById(R.id.messageInputView);
             editTextMessage.setText("");
         } else {
@@ -272,6 +271,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         PostModel.getInstance().addPosts(response);
         PostModel.getInstance().addPostForDB(response);
 
+        /*
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -283,6 +283,8 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
                 }
             }
         });
+
+         */
 
     }
 

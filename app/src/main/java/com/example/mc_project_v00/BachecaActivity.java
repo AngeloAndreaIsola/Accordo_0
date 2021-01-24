@@ -171,14 +171,17 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     }
 
-    private void addChannelAndRefresh(String cTitle) throws JSONException {  //TODO: AVVISARE SE CREA UN CANALE CON UN NOME UGUALE, e che non ecceda i 20 caratteri
+    private void addChannelAndRefresh(String cTitle) throws JSONException {  //TODO: AVVISARE SE CREA UN CANALE CON UN NOME UGUALE
         ComunicationController ccBacheca = new ComunicationController(context);
-        try {
-            ccBacheca.addChannel(sidString, cTitle, response -> refreshWall() , error -> reportErrorToUsers(error));
-        }catch (JSONException e) {
-            e.printStackTrace();
+        if (cTitle.length() >= 21){
+            Toast.makeText(context, "Il nome del canale non può essere piu lungo di 20 caratteri", Toast.LENGTH_SHORT).show();
+        }else {
+            try {
+                ccBacheca.addChannel(sidString, cTitle, response -> refreshWall() , error -> reportErrorToUsers(error));
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     private void refreshWall(){
