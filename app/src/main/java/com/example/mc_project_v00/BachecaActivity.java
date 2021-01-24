@@ -74,7 +74,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     private void register() {
         ComunicationController ccBacheca = new ComunicationController(this);
-        ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> reportErrorToUsers(error));
+        ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> reportErrorToUsers(error));  //TODO: FAI VEDERELA SCHERMATA DOVE CHIEDI DI RIPROVARE
     }
 
     @Override
