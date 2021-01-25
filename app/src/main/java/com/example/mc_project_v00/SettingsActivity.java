@@ -99,6 +99,8 @@ public class SettingsActivity extends ImageController {
 
         if (preferences.getString("profileImage", null) != null){
             loadLastProfilePicture();
+        }else{
+            profileImageView.setImageResource(R.drawable.ic_baseline_account_box_24);
         }
 
 
