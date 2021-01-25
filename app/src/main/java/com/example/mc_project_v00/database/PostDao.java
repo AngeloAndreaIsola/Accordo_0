@@ -42,7 +42,7 @@ public interface PostDao {
     @Insert (onConflict = OnConflictStrategy.IGNORE)
     void addContentImage(PostContentImage postContentImage);
 
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     void addPostProfileImage(PostProfileImage profileImage);
 
 }

@@ -1,6 +1,7 @@
 package com.example.mc_project_v00;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,10 +42,28 @@ public class SettingsActivity extends ImageController {
 
         SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
 
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle("Impostazioni");
+        actionbar.setDisplayUseLogoEnabled(true);
+        actionbar.setDisplayShowHomeEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
-        onBackToBachecaButtonClick();
+
+
+        //onBackToBachecaButtonClick();
         onSaveUsernameButtonClick();
-        onButtonLoadPictureClick();
+        //onButtonLoadPictureClick();
+
+
+        ImageView profileImageView = findViewById(R.id.imageView);
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                getImageFromGallery();
+            }
+        });
+
+
 
         EditText editText = findViewById(R.id.username);
         TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
@@ -126,6 +145,7 @@ public class SettingsActivity extends ImageController {
         }
     }
 
+    /*
     public void onButtonLoadPictureClick(){
         Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +155,8 @@ public class SettingsActivity extends ImageController {
             }
         });
     }
+
+     */
 
     private void getImageFromGallery(){
         Intent intent = new Intent();
@@ -235,7 +257,7 @@ public class SettingsActivity extends ImageController {
     }
 
 
-
+    /*
     public void onBackToBachecaButtonClick(){
         Button settingsButton = (Button) findViewById(R.id.backToBacheca);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -245,5 +267,7 @@ public class SettingsActivity extends ImageController {
             }
         });
     }
+
+     */
 
 }

@@ -120,10 +120,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                  */
                 int uid = postList.get(position).getInt("uid");
+                Log.d(TAG, "Dato nel db: "+  postRoomDatabase.postDao().getProfileVersion(uid) +" Dato nella response: " + postList.get(position).getInt("pversion"));
+
                 if (postList.get(position).getInt("pversion")==0) {
                     ImageView profilePicture = viewHolderPostText.itemView.findViewById(R.id.post_Text_ProfileImage);
                     profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-                }else  if (postRoomDatabase.postDao().getProfileVersion(uid) <= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
+                }else  if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")){
                     // ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
                     //profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
 
@@ -177,7 +179,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 if (postList.get(position).getInt("pversion")==0) {
                     ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
                     profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-                }else if (postRoomDatabase.postDao().getProfileVersion(uid) <= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
+                }else if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
                    // ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
                     //profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
 
@@ -264,7 +266,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 if (postList.get(position).getInt("pversion")==0) {
                     ImageView profilePicture = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_ProfileImage);
                     profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-                }else  if (postRoomDatabase.postDao().getProfileVersion(uid) <= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
+                }else  if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
                     // ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
                     //profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
 
