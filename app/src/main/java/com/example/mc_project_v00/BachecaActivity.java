@@ -89,17 +89,17 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.refresh:
-                Toast.makeText(context, "Refreshing wall", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Ricarica canali", Toast.LENGTH_SHORT).show();
                 refreshWall();
                 break;
 
             case R.id.addChannel:
                 AlertDialog.Builder channelDialog = new AlertDialog.Builder(context);
-                channelDialog.setTitle("Add a new channel:");
+                channelDialog.setTitle("Aggiungi nuovo canale: ");
                 final EditText channelName = new EditText(context);
                 channelName.setInputType(InputType.TYPE_CLASS_TEXT);
                 channelDialog.setView(channelName);
-                channelDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                channelDialog.setPositiveButton("Aggingi", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String channel= channelName.getText().toString();
@@ -107,7 +107,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                         addChannelAndRefresh(channel);
                     }
                 });
-                channelDialog.setNegativeButton("Cancel",null);
+                channelDialog.setNegativeButton("Cancella",null);
                 channelDialog.show();
                 break;
 
