@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MC_Project_V0.0</string>
+    <string name="app_name">ACCORDO</string>
     <string name="title_activity_impostazioni">ImpostazioniActivity</string>
 
     <!-- Preference Titles -->

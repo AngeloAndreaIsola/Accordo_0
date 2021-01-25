@@ -123,13 +123,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     }
 
 
-
-    private void getImageFromGallery(){
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, GALLERY_REQUEST);
-    }
+    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
