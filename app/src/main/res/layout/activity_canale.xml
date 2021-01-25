@@ -29,7 +29,17 @@
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="@+id/postRecyclerView"
         tools:layout_conversion_absoluteHeight="45dp"
-        tools:layout_conversion_absoluteWidth="411dp" />
+        tools:layout_conversion_absoluteWidth="411dp"
+
+        android:drawablePadding="8dp"
+        android:textColor="@color/content_text_color"
+        android:background="@drawable/message_input_style"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10" />
 
     <Button
         android:id="@+id/buttonSendPost"
