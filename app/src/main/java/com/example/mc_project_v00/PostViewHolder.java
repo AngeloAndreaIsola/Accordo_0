@@ -2,7 +2,9 @@ package com.example.mc_project_v00;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.renderscript.Sampler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -107,23 +109,20 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             Log.v(TAG, "Click on position");
             Intent i = new Intent(CanaleActivity.getPostActivityContext(), MapActivity.class);
 
-            String lat= null;
-            String lon = null;
+            String latString= null;
+            String lonString = null;
             try {
                 JSONObject o = PostModel.getInstance().getPostFromList(p);
-                lat = o.getString("lat");
-                lon = o.getString("lon");
-
-
+                latString = o.getString("lat");
+                lonString = o.getString("lon");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+                i.putExtra("lat", latString);
+                i.putExtra("lon", lonString);
 
-            i.putExtra("lat", lat);
-            i.putExtra("lon", lon);
-
-            v.getContext().startActivity(i);
+                v.getContext().startActivity(i);
         }
     }
 

@@ -20,6 +20,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.mc_project_v00.database.AppExecutors;
+import com.example.mc_project_v00.database.DatabaseClient;
+import com.example.mc_project_v00.database.PostContentImage;
+import com.example.mc_project_v00.database.PostRoomDatabase;
 
 
 import org.json.JSONException;
@@ -48,6 +52,22 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         sidString = preferences.getString("sid", null);
         adapter = new BachecaAdapter(this, this);
         context = this;
+
+
+        //PULISCE TUTTO IL DB NEL CASO SERVA
+        /*
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                PostRoomDatabase postRoomDatabase = DatabaseClient.getInstance(context).getPostRoomDatabase();
+                postRoomDatabase.clearAllTables();
+            }
+        });
+
+         */
+
+
+
 
 
         //CONTROLLA CHE SIA IL PRIMO ACCESSO DELL'UTENTE

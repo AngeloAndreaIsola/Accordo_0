@@ -3,6 +3,7 @@ package com.example.mc_project_v00;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -296,8 +297,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
                 //SET CONTENT
-                Button showPositionButton = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_Button_ShowPosition);
+                Button showPositionButton = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_Button_ShowPosition);;
+                if ( ! (postList.get(position).getDouble("lat") <= 90.0 && postList.get(position).getDouble("lat")>= -90.0 && postList.get(position).getDouble("lon")<=180 && postList.get(position).getDouble("lon")>=-180)){
+                    showPositionButton.setBackgroundColor(Color.GRAY);
+                    showPositionButton.setText("POSIZIONE CONDIVISA NON VALIDA");
+                    showPositionButton.setOnClickListener(null);
 
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -307,10 +313,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
     private void handleGetPostImageResponse(JSONObject response, PostViewHolder.ViewHolder_Post_Image viewHolderPostImage, int position ) throws JSONException {
         Log.d(TAG, "request post image correct: "+ response.toString());
-
-
-
-
         ImageView content = viewHolderPostImage.itemView.findViewById(R.id.post_Image_Content);
         try {
             //decodifica da stringa a bitmap

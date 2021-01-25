@@ -44,5 +44,4 @@ public interface PostDao {
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     void addPostProfileImage(PostProfileImage profileImage);
-
 }
