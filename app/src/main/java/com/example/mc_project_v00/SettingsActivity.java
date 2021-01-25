@@ -3,6 +3,9 @@ package com.example.mc_project_v00;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,8 +35,6 @@ public class SettingsActivity extends ImageController {
     private static final String TAG = "SettingsActivity";
     private static final int GALLERY_REQUEST = 9;
 
-    private TextView textView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +52,6 @@ public class SettingsActivity extends ImageController {
 
 
 
-        //onBackToBachecaButtonClick();
-        onSaveUsernameButtonClick();
-        //onButtonLoadPictureClick();
-
-
         ImageView profileImageView = findViewById(R.id.imageView);
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,28 +60,38 @@ public class SettingsActivity extends ImageController {
             }
         });
 
-
-
-        EditText editText = findViewById(R.id.username);
-        TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        Context context = this;
+        TextView usernameTextView = findViewById(R.id.usernameDisplay);
+        usernameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch (actionId){
-                    case EditorInfo.IME_ACTION_SEND:
-                        saveUsername();
+            public void onClick(View arg0) {
+                Log.d(TAG, "click su username");
+                AlertDialog.Builder channelDialog = new AlertDialog.Builder(context);
+                channelDialog.setTitle("Cambia username: ");
+                final EditText username = new EditText(context);
+                username.setInputType(InputType.TYPE_CLASS_TEXT);
+                channelDialog.setView(username);
+                channelDialog.setPositiveButton("Aggingi", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String usernameString= username.getText().toString();
+                        Log.d(TAG, usernameString);
+                        saveUsername(usernameString);
                         try {
                             uploadUsername();
-                            Toast.makeText(SettingsActivity.this, "Nome utente cambiato", Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                }
-                return false;
+                    }
+                });
+                channelDialog.setNegativeButton("Cancella",null);
+                channelDialog.show();
             }
-        };
+        });
 
-        textView = findViewById((R.id.username));
-        textView.setHint("insert username");
+
+
+
 
         if (preferences.getString("username", null) != null){
             loadLastUsername();
@@ -135,35 +142,24 @@ public class SettingsActivity extends ImageController {
     public boolean imageIsValid (String encodedImage, Bitmap imageBitmap){   //TODO: DA CAMBIARE QUI
 
         if (imageBitmap.getHeight() != imageBitmap.getWidth()){
-            Toast.makeText(this,"The image is NOT square", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"L'immagine NON è qudrata", Toast.LENGTH_LONG).show();
             return false;
         } else if (encodedImage.length() >= 137000) {
-            Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Immagine piu grande di 100kb", Toast.LENGTH_LONG).show();
             return false;
-        }else{
-            return true;
-        }
-    }
-
-    /*
-    public void onButtonLoadPictureClick(){
-        Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
-        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                getImageFromGallery();
+        }else try {
+                //decodifica da stringa a bitmap
+                byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                return true;
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(this,"Codifica base64 errata", Toast.LENGTH_LONG).show();
+                return false;
             }
-        });
-    }
+        }
 
-     */
 
-    private void getImageFromGallery(){
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, GALLERY_REQUEST);
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -182,7 +178,6 @@ public class SettingsActivity extends ImageController {
                 e.printStackTrace();
             }
 
-            //imageView.setImageURI(selectedImage);
 
             String endodedImage = null;
             try {
@@ -205,19 +200,20 @@ public class SettingsActivity extends ImageController {
     }
 
 
-    private void saveUsername() {
+    private void saveUsername(String username) {
         //TODO filtrare i nomi con invio e spazio
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.putString("username", "");
-        editor.putString("username", textView.getText().toString());
+        editor.putString("username", username);
         editor.apply();
 
         loadLastUsername();
 
         Log.d(TAG, "SaveUsername username: " + preferences.getString("username", null));
     }
+
     private void uploadUsername() throws JSONException {
         ComunicationController cc = new ComunicationController(this);
 
@@ -228,26 +224,13 @@ public class SettingsActivity extends ImageController {
         cc.setProfileUsername(sid, username, response -> Log.d(TAG, "Profile username uploaded to server"), error -> reportErrorToUser(error) );
         //TODO: GESTISCI L'ERRORE NEW CASO L'USERNAME SEISTA GIA
     }
+
     public void loadLastUsername(){
         SharedPreferences preferences = getSharedPreferences("User preference",MODE_PRIVATE);
         TextView userName = findViewById(R.id.usernameDisplay);
         userName.setText("");
         userName.setText(preferences.getString("username","null"));
         Log.d(TAG, "username settato a: " + preferences.getString("username","null"));
-    }
-    public void onSaveUsernameButtonClick(){
-        Button settingsButton = (Button) findViewById(R.id.saveUsername);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveUsername();
-                try {
-                    uploadUsername();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
 
@@ -256,18 +239,5 @@ public class SettingsActivity extends ImageController {
             Toast.makeText(this,"upload error: " + error.toString(), Toast.LENGTH_LONG).show();
     }
 
-
-    /*
-    public void onBackToBachecaButtonClick(){
-        Button settingsButton = (Button) findViewById(R.id.backToBacheca);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
-     */
 
 }
