@@ -123,7 +123,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     }
 
 
-    
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

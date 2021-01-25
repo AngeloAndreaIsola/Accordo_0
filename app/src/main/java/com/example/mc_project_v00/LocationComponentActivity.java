@@ -42,6 +42,10 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     private Location location;
     private LocationComponent lc;
 
+    public LocationComponentActivity(){
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,18 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 
 
     }
+    public void sendLocationFromAnotherActivity(String sid, String channelName) throws JSONException {
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
+
+
+
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
+
+        ComunicationController comunicationController = new ComunicationController(this);
+        comunicationController.addPostPosition(sid, channelName, Double.toString(lat), Double.toString(lon), response -> Log.d(TAG, "Posizione spedita"), error -> Log.d(TAG, "Posizione spedita: " + error));
+    }
+
 
     private void sendLocation() throws JSONException { //TODO: VERIFICA CHE LA POSIZIONE SIA VALIDA
         String channelName = null, sid = null;

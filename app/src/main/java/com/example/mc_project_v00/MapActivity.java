@@ -64,7 +64,7 @@ public class MapActivity extends AppCompatActivity {
                         .zoom(yourZoom)
                         .build());
 
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+                mapboxMap.setStyle(Style.TRAFFIC_NIGHT, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         Log.d(TAG, "Map created and style loaded");
@@ -122,4 +122,7 @@ public class MapActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
+
+
 }
