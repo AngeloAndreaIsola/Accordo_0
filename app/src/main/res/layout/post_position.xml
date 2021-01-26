@@ -64,8 +64,7 @@
             android:layout_marginRight="16dp"
             android:text="TextView"
             android:textColor="@color/content_text_color"
-
-            />
+            android:visibility="invisible"/>
     </RelativeLayout>
 
     <ImageView

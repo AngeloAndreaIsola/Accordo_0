@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase;
 public abstract class PostRoomDatabase extends RoomDatabase{
     public abstract PostDao postDao();
 
-    //TODO: FAI IN MODO CHE SIA SINGLETON MAGARI
 
 }
 

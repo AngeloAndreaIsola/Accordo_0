@@ -117,7 +117,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 failRegistrationDialog.setNegativeButton("Cancella",null);
                 failRegistrationDialog.show();
             }
-        });  //TODO: FAI VEDERELA SCHERMATA DOVE CHIEDI DI RIPROVARE
+        });
     }
 
     @Override
@@ -212,8 +212,8 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     private void addChannelAndRefresh(String cTitle) {
         ComunicationController ccBacheca = new ComunicationController(context);
-        if (cTitle.length() >= 21){
-            Toast.makeText(context, "Il nome del canale non può essere piu lungo di 20 caratteri", Toast.LENGTH_SHORT).show();
+        if (cTitle.length() >= 20){
+            Toast.makeText(context, "Il nome del canale non può essere piu lungo  o uguale a 20 caratteri", Toast.LENGTH_SHORT).show();
         }else {
             try {
                 ccBacheca.addChannel(sidString, cTitle, response -> refreshWall() , error -> reportErrorToUsers(error));
@@ -255,8 +255,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     }
 }
 
-
-//TODO: COMPORTAMENTO STRANO QUANDO CHANNELLIST VUOTA, SEGNA CHE L'ADAPTER NON SIA COLELGATO E SKIPPA IL LAYOUT
 
 
 

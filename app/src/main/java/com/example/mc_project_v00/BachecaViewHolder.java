@@ -29,7 +29,6 @@ public class BachecaViewHolder extends RecyclerView.ViewHolder implements View.O
 
 
     public void updateContent (String text){ //posso chiedere di passarmi anche altre cose come oggetti, nomi e cognomi e settare piu campi
-        //TODO: NON FUNZIONA COME DEVE
         if (firstuse){
             Log.v(TAG, "First use " + text);
         }else {

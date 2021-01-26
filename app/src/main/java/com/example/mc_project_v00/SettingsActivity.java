@@ -141,7 +141,7 @@ public class SettingsActivity extends ImageController {
 
         cc.setProfilePicture(sid, image, response -> Log.d(TAG, "Profile image uploaded to server"), error -> reportErrorToUser(error) );
     }
-    public boolean imageIsValid (String encodedImage, Bitmap imageBitmap){   //TODO: DA CAMBIARE QUI
+    public boolean imageIsValid (String encodedImage, Bitmap imageBitmap){
 
         if (imageBitmap.getHeight() != imageBitmap.getWidth()){
             Toast.makeText(this,"L'immagine NON è qudrata", Toast.LENGTH_LONG).show();
@@ -203,7 +203,6 @@ public class SettingsActivity extends ImageController {
 
 
     private void saveUsername(String username) {
-        //TODO filtrare i nomi con invio e spazio
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -224,7 +223,6 @@ public class SettingsActivity extends ImageController {
         String username = preferences.getString("username", null);
 
         cc.setProfileUsername(sid, username, response -> Log.d(TAG, "Profile username uploaded to server"), error -> reportErrorToUser(error) );
-        //TODO: GESTISCI L'ERRORE NEW CASO L'USERNAME SEISTA GIA
     }
 
     public void loadLastUsername(){

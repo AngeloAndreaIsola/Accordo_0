@@ -102,7 +102,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) { //TODO: CONTROLLA CHE RECICLI
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         try {
             if(postList.get(position).getString("type").contains("t")){ //BIND VIEWHOLDERONE
 
@@ -239,7 +239,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         });
 
     }
-    private void handleGetUSerPictureResponse(JSONObject response, PostViewHolder postViewHolder, int viewID) throws JSONException {  //TODO: FARE FUNZIONE A PARTE PER CARICARE IMMAINI
+    private void handleGetUSerPictureResponse(JSONObject response, PostViewHolder postViewHolder, int viewID) throws JSONException {
         Log.d(TAG, "request user picture correct: "+ response.toString());
 
 
@@ -254,9 +254,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
             Log.d(TAG, "BASE 64 SBAGLIATO");
             profilePicture.setImageResource(R.drawable.ic_baseline_broken_image_24);
         }
-
-
-
 
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

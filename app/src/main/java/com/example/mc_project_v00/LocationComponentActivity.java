@@ -94,7 +94,7 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     }
 
 
-    private void sendLocation() throws JSONException { //TODO: VERIFICA CHE LA POSIZIONE SIA VALIDA
+    private void sendLocation() throws JSONException {
         String channelName = null, sid = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

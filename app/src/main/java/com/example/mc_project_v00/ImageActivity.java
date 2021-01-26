@@ -54,7 +54,6 @@ public class ImageActivity extends AppCompatActivity {
                 Log.d(TAG, "contenuto immagine caricato da db");
             } catch (IllegalArgumentException e) {
                 Log.d(TAG, "BASE 64 SBAGLIATO");
-                // TODO: handle exception
                 content.setImageResource(R.drawable.ic_baseline_broken_image_24);
             }
 
