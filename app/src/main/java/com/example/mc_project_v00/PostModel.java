@@ -60,6 +60,8 @@ public class PostModel {
             postList.add( jsonArray.getJSONObject(i));
         }
         Log.d(TAG, "Post salvati nel postModel: " + postList.toString());
+
+
     }
 
     public void addPostForDB(JSONObject response) throws JSONException{
@@ -86,6 +88,10 @@ public class PostModel {
         }
         Log.d(TAG, "Post salvati nela lista per database: " + postListForDB.toString());
 
+    }
+
+    public void testAddWrongType() throws JSONException {
+        postList.get(0).put("type", "K");
     }
 
 }

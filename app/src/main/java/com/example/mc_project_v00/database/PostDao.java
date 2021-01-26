@@ -12,10 +12,10 @@ import java.util.List;
 
 @Dao
 public interface PostDao {
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     void insertAllPosts(List<Post> posts);
 
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     void addPost(Post post);
 
     @Delete
@@ -39,7 +39,7 @@ public interface PostDao {
     @Update
     void updatePosts(Post... posts);
 
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     void addContentImage(PostContentImage postContentImage);
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
