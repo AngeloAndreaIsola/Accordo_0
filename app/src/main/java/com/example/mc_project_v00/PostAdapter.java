@@ -109,40 +109,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostText, R.id.post_Text_Username, position);
 
 
-                //FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
+                //TEXT FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
                 int uid = postList.get(position).getInt("uid");
-                if (postList.get(position).getInt("pversion")==0) {
-
-                    ImageView profilePicture = viewHolderPostText.itemView.findViewById(R.id.post_Text_ProfileImage);
-                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-
-                } else  if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")){
-
-                    String encodedImage = (postRoomDatabase.postDao().getProfileContent(uid));
-                    ImageView content = viewHolderPostText.itemView.findViewById(R.id.post_Text_ProfileImage);
-
-                    try {
-                        //decodifica da stringa a bitmap
-                        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        content.setImageBitmap(decodedByte);
-                        Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
-                    } catch (IllegalArgumentException e) {
-                        Log.d(TAG, "BASE 64 SBAGLIATO");
-
-                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
-                    }
-
-
-
+                if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
+                    loadProfilePicture(viewHolderPostText, position, R.id.post_Text_ProfileImage);
                 }else {
                     profileImageRequest(position, viewHolderPostText, R.id.post_Text_ProfileImage);
                 }
-
-
-
-
-
 
 
                 //TEXT SET CONTENT
@@ -155,43 +128,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                 PostViewHolder.ViewHolder_Post_Image viewHolderPostImage = new PostViewHolder.ViewHolder_Post_Image(holder.itemView, mClickListener, position);
 
-                //IMAGE SE USERNAME
+                //IMAGE SET USERNAME
                 setUsername(viewHolderPostImage, R.id.post_Image_Username, position);
 
-                //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE PROFILO
-                //profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage );
+                //IMAGE FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
                 int uid = postList.get(position).getInt("uid");
-                if (postList.get(position).getInt("pversion")==0) {
-                    ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
-                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-                }else if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
-                   // ImageView profilePicture = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
-                    //profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-
-                    //viewHolderPostImage.imageViewContent.setImageResource(R.drawable.ic_baseline_account_box_24);
-
-
-                    String encodedImage = (postRoomDatabase.postDao().getProfileContent(uid));
-
-                    ImageView content = viewHolderPostImage.itemView.findViewById(R.id.post_Image_ProfileImage);
-                    try {
-                        //decodifica da stringa a bitmap
-                        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        content.setImageBitmap(decodedByte);
-                        Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
-                    } catch (IllegalArgumentException e) {
-                        Log.d(TAG, "BASE 64 SBAGLIATO");
-                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
-                    }
-
-
-
+                if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
+                    loadProfilePicture(viewHolderPostImage, position, R.id.post_Image_ProfileImage);
                 }else {
                     profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage);
                 }
 
-                //FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
+                //IMAGE FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
                 String pid = postList.get(position).getString("pid");
 
                 if (postRoomDatabase.postDao().getContentImage(Integer.parseInt(pid)) != null){
@@ -227,34 +175,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
                 PostViewHolder.ViewHolder_Post_Position viewHolderPostPosition = new PostViewHolder.ViewHolder_Post_Position(holder.itemView, mClickListener, position);
 
+                //POSITION: SET USERNAME
                 setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
 
+                //POSITION FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
                 int uid = postList.get(position).getInt("uid");
-                if (postList.get(position).getInt("pversion")==0) {
-                    ImageView profilePicture = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_ProfileImage);
-                    profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
-                }else  if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion") && postRoomDatabase.postDao().getProfileVersion(uid) != 0){
-
-                    String encodedImage = (postRoomDatabase.postDao().getProfileContent(uid));
-
-                    ImageView content = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_ProfileImage);
-                    try {
-                        //decodifica da stringa a bitmap
-                        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        content.setImageBitmap(decodedByte);
-                        Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
-                    } catch (IllegalArgumentException e) {
-                        Log.d(TAG, "BASE 64 SBAGLIATO");
-                        content.setImageResource(R.drawable.ic_baseline_broken_image_24);
-                    }
-
+                if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
+                    loadProfilePicture(viewHolderPostPosition, position, R.id.post_Position_ProfileImage);
                 }else {
                     profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
                 }
 
 
-                //SET CONTENT
+                //POSITION SET CONTENT
                 Button showPositionButton = viewHolderPostPosition.itemView.findViewById(R.id.post_Position_Button_ShowPosition);;
                 if ( ! (postList.get(position).getDouble("lat") <= 90.0 && postList.get(position).getDouble("lat")>= -90.0 && postList.get(position).getDouble("lon")<=180 && postList.get(position).getDouble("lon")>=-180)){
                     showPositionButton.setBackgroundColor(Color.GRAY);
@@ -379,6 +312,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
             username.setText("NO_NAME");
         }else{
             username.setText(temp_username);
+        }
+    }
+
+    public void loadProfilePicture (PostViewHolder postViewHolder, int position, int viewID) throws JSONException {
+        int uid = postList.get(position).getInt("uid");
+        if (postList.get(position).getInt("pversion") == 0) {
+
+            ImageView profilePicture = postViewHolder.itemView.findViewById(viewID);
+            profilePicture.setImageResource(R.drawable.ic_baseline_account_box_24);
+
+        } else if (postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
+
+            String encodedImage = (postRoomDatabase.postDao().getProfileContent(uid));
+            ImageView content = postViewHolder.itemView.findViewById(viewID);
+
+            try {
+                //decodifica da stringa a bitmap
+                byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                content.setImageBitmap(decodedByte);
+                Log.d(TAG, "contenuto immagine profilo per post immagine caricato da db");
+            } catch (IllegalArgumentException e) {
+                Log.d(TAG, "BASE 64 SBAGLIATO");
+
+                content.setImageResource(R.drawable.ic_baseline_broken_image_24);
+            }
         }
     }
 }
