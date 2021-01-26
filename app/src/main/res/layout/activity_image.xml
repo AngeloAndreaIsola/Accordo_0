@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ImageActivity">
+    tools:context=".ImageActivity"
+    android:background="@color/black">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -12,12 +13,10 @@
         android:layout_height="0dp"
 
 
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
