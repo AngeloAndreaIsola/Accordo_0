@@ -346,7 +346,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         });
 
     }
-    private void handleGetUSerPictureResponse(JSONObject response, PostViewHolder postViewHolder, int viewID) throws JSONException {
+    private void handleGetUSerPictureResponse(JSONObject response, PostViewHolder postViewHolder, int viewID) throws JSONException {  //TODO: FARE FUNZIONE A PARTE PER CARICARE IMMAINI
         Log.d(TAG, "request user picture correct: "+ response.toString());
 
         //decodifica da stringa a bitmap
