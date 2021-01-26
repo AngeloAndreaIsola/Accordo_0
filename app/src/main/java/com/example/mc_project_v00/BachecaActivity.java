@@ -95,18 +95,27 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         ComunicationController ccBacheca = new ComunicationController(this);
         ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> {
             if (error instanceof NoConnectionError){
-                AlertDialog.Builder NoConnectionDialog = new AlertDialog.Builder(context);
-                NoConnectionDialog.setTitle("Nessuna connessione");
-                NoConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                AlertDialog.Builder failRegistrationDialog = new AlertDialog.Builder(context);
+                failRegistrationDialog.setTitle("Nessuna connessione, registrazione fallita");
+                failRegistrationDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         register();
                     }
                 });
-                NoConnectionDialog.setNegativeButton("Cancella",null);
-                NoConnectionDialog.show();
+                failRegistrationDialog.setNegativeButton("Cancella",null);
+                failRegistrationDialog.show();
             }else {
-                Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+                AlertDialog.Builder failRegistrationDialog = new AlertDialog.Builder(context);
+                failRegistrationDialog.setTitle("Registrazione fallita");
+                failRegistrationDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        register();
+                    }
+                });
+                failRegistrationDialog.setNegativeButton("Cancella",null);
+                failRegistrationDialog.show();
             }
         });  //TODO: FAI VEDERELA SCHERMATA DOVE CHIEDI DI RIPROVARE
     }
@@ -225,16 +234,16 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 }
             }, error -> {
                 if (error instanceof NoConnectionError){
-                    AlertDialog.Builder NoConnectionDialog = new AlertDialog.Builder(context);
-                    NoConnectionDialog.setTitle("Nessuna connessione");
-                    NoConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                    AlertDialog.Builder noConnectionDialog = new AlertDialog.Builder(context);
+                    noConnectionDialog.setTitle("Nessuna connessione");
+                    noConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             refreshWall();
                         }
                     });
-                    NoConnectionDialog.setNegativeButton("Cancella",null);
-                    NoConnectionDialog.show();
+                    noConnectionDialog.setNegativeButton("Cancella",null);
+                    noConnectionDialog.show();
                 }else {
                     Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
                 }

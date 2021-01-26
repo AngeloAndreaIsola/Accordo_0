@@ -258,16 +258,16 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
         if (error instanceof NoConnectionError){
-            AlertDialog.Builder NoConnectionDialog = new AlertDialog.Builder(context);
-            NoConnectionDialog.setTitle("Nessuna connessione");
-            NoConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder noConnectionDialog = new AlertDialog.Builder(context);
+            noConnectionDialog.setTitle("Nessuna connessione");
+            noConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     refreshChat();
                 }
             });
-            NoConnectionDialog.setNegativeButton("Cancella",null);
-            NoConnectionDialog.show();
+            noConnectionDialog.setNegativeButton("Cancella",null);
+            noConnectionDialog.show();
         }else {
             Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
         }
