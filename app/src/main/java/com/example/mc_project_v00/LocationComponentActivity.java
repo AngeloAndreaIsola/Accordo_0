@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -49,6 +50,9 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // hide the action bar
+        getSupportActionBar().hide();
 
     // Mapbox access token is configured here. This needs to be called either in your application
     // object or in the same activity which contains the mapview.
@@ -125,6 +129,11 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
                                 .target(yourLatLng)
                                 .zoom(yourZoom)
                                 .build());
+
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.title("La tua ultima posizone nota");
+                        markerOptions.position(new LatLng(location.getLatitude(), location.getLongitude()));
+                        mapboxMap.addMarker(markerOptions);
                     }
                 });
     }
@@ -136,7 +145,6 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 
             // Get an instance of the component
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
-            lc = locationComponent;
 
             // Activate with options
             locationComponent.activateLocationComponent(
@@ -150,6 +158,9 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
+
+            // Enable the LocationComponent so that it's actually NOT visible on the map
+            locationComponent.setLocationComponentEnabled(false);
 
 
 

@@ -9,14 +9,14 @@
 
     <Button
         android:id="@+id/buttonSendLocation"
-        android:layout_width="199dp"
-        android:layout_height="50dp"
+        android:layout_width="242dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="24dp"
-        android:text="Button"
+        android:text="INVIA QUESTA POSIZONE"
+        android:visibility="invisible"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintEnd_toEndOf="parent"
-        mapbox:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"/>
+        mapbox:layout_constraintStart_toStartOf="parent" />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
