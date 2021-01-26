@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
@@ -92,7 +93,22 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     private void register() {
         ComunicationController ccBacheca = new ComunicationController(this);
-        ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> reportErrorToUsers(error));  //TODO: FAI VEDERELA SCHERMATA DOVE CHIEDI DI RIPROVARE
+        ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> {
+            if (error instanceof NoConnectionError){
+                AlertDialog.Builder NoConnectionDialog = new AlertDialog.Builder(context);
+                NoConnectionDialog.setTitle("Nessuna connessione");
+                NoConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        register();
+                    }
+                });
+                NoConnectionDialog.setNegativeButton("Cancella",null);
+                NoConnectionDialog.show();
+            }else {
+                Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });  //TODO: FAI VEDERELA SCHERMATA DOVE CHIEDI DI RIPROVARE
     }
 
     @Override
@@ -207,7 +223,22 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }, error -> reportErrorToUsers(error));
+            }, error -> {
+                if (error instanceof NoConnectionError){
+                    AlertDialog.Builder NoConnectionDialog = new AlertDialog.Builder(context);
+                    NoConnectionDialog.setTitle("Nessuna connessione");
+                    NoConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            refreshWall();
+                        }
+                    });
+                    NoConnectionDialog.setNegativeButton("Cancella",null);
+                    NoConnectionDialog.show();
+                }else {
+                    Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
