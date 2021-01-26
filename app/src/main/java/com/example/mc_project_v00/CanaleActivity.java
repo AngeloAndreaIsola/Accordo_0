@@ -5,7 +5,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
@@ -253,7 +257,20 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "request error: " + error.toString());
-        Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+        if (error instanceof NoConnectionError){
+            AlertDialog.Builder NoConnectionDialog = new AlertDialog.Builder(context);
+            NoConnectionDialog.setTitle("Nessuna connessione");
+            NoConnectionDialog.setPositiveButton("Riprova", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    refreshChat();
+                }
+            });
+            NoConnectionDialog.setNegativeButton("Cancella",null);
+            NoConnectionDialog.show();
+        }else {
+            Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
