@@ -58,14 +58,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
     }
 
-    public PostAdapter (JSONObject object, Context context, String sid, View.OnClickListener ClickListener) throws JSONException {
+    public PostAdapter (Context context, String sid, View.OnClickListener ClickListener) throws JSONException {
+        /*
         List<JSONObject> tempPostList = new ArrayList<JSONObject>();;
         JSONArray postArray = object.getJSONArray("posts");
         for(int i=0; i < postArray.length(); i++ ){
             tempPostList.add((JSONObject) postArray.get(i));
         }
 
-        this.postList = tempPostList;
+         */
+
+        this.postList = PostModel.getInstance().getPostList();
 
         this.contextContainer = context;
 

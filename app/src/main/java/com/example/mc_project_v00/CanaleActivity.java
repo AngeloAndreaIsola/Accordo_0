@@ -78,8 +78,6 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
         refreshChat();
 
-        //TODO: AGGIUNGERE PULSANTE REFRESH AL CANALE
-
         Button buttonSendPost = findViewById(R.id.buttonSendPost);
         Button buttonSendImage = findViewById(R.id.buttonSendImage);
         Button buttonSendPosition = findViewById(R.id.buttonSendPosition);
@@ -248,7 +246,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         RecyclerView rvPost = findViewById(R.id.postRecyclerView);
         rvPost.setLayoutManager(new LinearLayoutManager(this));
         rvPost.setHasFixedSize(true);
-        PostAdapter postAdapter = new PostAdapter(response, this, sidString, this);
+        PostAdapter postAdapter = new PostAdapter( this, sidString, this);
         rvPost.setAdapter(postAdapter);
 
         PostModel.getInstance().addPosts(response);

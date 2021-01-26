@@ -39,6 +39,10 @@ public class PostModel {
         return o;
     }
 
+    public List<JSONObject> getPostList () {
+        return postList;
+    }
+
     public Post getPostFromListForDB(int i) throws JSONException {
         Post o = postListForDB.get(i);
         return o;
