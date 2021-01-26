@@ -232,7 +232,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         String content = String.valueOf(message.getText());
         Log.d(TAG,"addPost request");
         ComunicationController cc = new ComunicationController(this);
-        if(content.length() <= 100) { //controlla che il testo sia piú breve di 100 caratteri
+        if(content.length() < 100) { //controlla che il testo sia piú breve di 100 caratteri
             cc.addPostText(sidString, channelName, content, response -> refreshChat(), error -> reportErrorToUsers(error));
             message.setText("");
         } else {
