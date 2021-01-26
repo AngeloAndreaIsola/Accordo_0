@@ -172,7 +172,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
 
     public boolean imageIsValid (String encodedImage){
         if (encodedImage.length() >= 137000) {
-            Toast.makeText(this,"The image is bigger than 100kb", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"L'iimagine non può essre piu grande di 100kb", Toast.LENGTH_LONG).show();
             return false;
         }else{
             return true;
@@ -234,7 +234,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
             cc.addPostText(sidString, channelName, content, response -> refreshChat(), error -> reportErrorToUsers(error));
             message.setText("");
         } else {
-            Toast.makeText(this,"The post can't be longer than 100 characters!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Il post NON può essre piu lungo o uguale a 100 caratteri",Toast.LENGTH_LONG).show();
         }
     }
 

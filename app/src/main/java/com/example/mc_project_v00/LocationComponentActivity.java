@@ -113,9 +113,6 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         LocationComponentActivity.this.mapboxMap = mapboxMap;
 
-
-        //new Style.Builder().fromUri("mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7")
-
         mapboxMap.setStyle(Style.TRAFFIC_NIGHT,
                 new Style.OnStyleLoaded() {
                     @Override
@@ -139,7 +136,7 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
     }
 
     @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) { //TODO: SE CI METTI TROPPO TEMPO A CONDERE I PERMESSI CRASHA, PROBLEMA DI THREAD
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
@@ -164,9 +161,9 @@ public class LocationComponentActivity extends AppCompatActivity implements OnMa
 
 
 
-            location = locationComponent.getLastKnownLocation();    //TODO: FARE LA CHIAMATA CHE PRENDE EFFETIVAMENTE L'ULTIMA POSIZIONE E NON SOLO L'ULTIMA CONOSCIUTA
+            location = locationComponent.getLastKnownLocation();
 
-            //TODO: SE CAMBIA LA POSIZINE NELLA SCHERMATA DOVE DOVREBBE ESSERE INVIATA NON MANDA L'ULTIMA
+
 
         } else {
             permissionsManager = new PermissionsManager(this);

@@ -177,8 +177,8 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     }
 
     private void reportErrorToUsers(VolleyError error){
-        Log.d(TAG, "request error: " + error.toString());
-        Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+        Log.d(TAG, "Errore richiesta: " + error.toString());
+        Toast.makeText(this,"Errore richiesta: " + error.toString(), Toast.LENGTH_LONG).show();
     }
 
     public void saveSID_inSharedPreferences(JSONObject response) {
@@ -245,7 +245,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                     noConnectionDialog.setNegativeButton("Cancella",null);
                     noConnectionDialog.show();
                 }else {
-                    Toast.makeText(this,"request error: " + error.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"Errore richiesta: " + error.toString(), Toast.LENGTH_LONG).show();
                 }
             });
         } catch (JSONException e) {

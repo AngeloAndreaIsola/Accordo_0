@@ -238,7 +238,7 @@ public class SettingsActivity extends ImageController {
 
     private void reportErrorToUser(VolleyError error) {
             Log.d(TAG, "request error: " + error.toString());
-            Toast.makeText(this,"upload error: " + error.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Errore upload: " + error.toString(), Toast.LENGTH_LONG).show();
     }
 
 
