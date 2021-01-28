@@ -13,8 +13,7 @@
         android:id="@+id/container_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_margin="13dp"
         android:background="@drawable/card_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,9 +27,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="21dp"
             android:text="Simple Title Text "
             android:textColor="@color/title_text_color"
             android:textStyle="bold" />
@@ -59,19 +58,18 @@
             android:text="TextView"
             android:textColor="@color/content_text_color"
             android:visibility="invisible"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/post_Text_ProfileImage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignBottom="@+id/post_Text_Username"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_account_box_24"
+            app:shapeAppearance="@style/RoundedSquare"/>
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/post_Text_ProfileImage"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/container_text"
-        app:layout_constraintStart_toStartOf="@+id/container_text"
-        app:layout_constraintTop_toTopOf="@+id/container_text"
-        app:srcCompat="@drawable/ic_baseline_account_box_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>
