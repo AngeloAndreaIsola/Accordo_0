@@ -16,15 +16,13 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
-import com.example.mc_project_v00.database.AppExecutors;
-import com.example.mc_project_v00.database.DatabaseClient;
-import com.example.mc_project_v00.database.PostContentImage;
-import com.example.mc_project_v00.database.PostRoomDatabase;
 
 
 import org.json.JSONException;
@@ -54,6 +52,13 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         adapter = new BachecaAdapter(this, this);
         context = this;
 
+        Button buttonSponsor = findViewById(R.id.buttonSponsor);
+        buttonSponsor.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BachecaActivity.this, SponsorActivity.class));
+            }
+        });
 
         //PULISCE TUTTO IL DB NEL CASO SERVA
         /*
@@ -202,12 +207,15 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     public void onListClick(int position) throws JSONException {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
 
-        String nomeCanale = BachecaModel.getInstance().getChannelFromList(position);
-        Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
-        i.putExtra("nomeCanale", nomeCanale);
-        i.putExtra("position", position);
-        startActivity(i);
-
+        if (position == 0){
+            startActivity(new Intent(BachecaActivity.this, SponsorActivity.class));
+        }else{
+            String nomeCanale = BachecaModel.getInstance().getChannelFromList(position);
+            Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
+            i.putExtra("nomeCanale", nomeCanale);
+            i.putExtra("position", position);
+            startActivity(i);
+        }
     }
 
     private void addChannelAndRefresh(String cTitle) {
@@ -253,6 +261,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         }
         adapter.notifyDataSetChanged();
     }
+
 }
 
 

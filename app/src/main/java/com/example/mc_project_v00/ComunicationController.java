@@ -178,4 +178,17 @@ public class ComunicationController {
         Log.d(TAG, "Sendig request" + service_url);
         requestQueue.add(request);
     }
+
+    public void getSponsorList (String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+        final String service_url = "sponsors.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
 }

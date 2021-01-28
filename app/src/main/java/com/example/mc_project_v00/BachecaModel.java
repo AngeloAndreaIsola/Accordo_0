@@ -2,6 +2,8 @@ package com.example.mc_project_v00;
 
 import android.util.Log;
 
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +54,11 @@ public class BachecaModel {
          */
 
         channelList.sort(channelListComparator);
+
+        JSONObject sponsor = new JSONObject();
+        sponsor.put("ctitle", "SPONSOR");
+        sponsor.put("mine", "t");
+        channelList.add(0, sponsor);
 
         Log.d(TAG, "Channel list save in model: " + channelList.toString());
     }
