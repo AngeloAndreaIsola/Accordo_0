@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -86,10 +87,14 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         } else if (preferences.getString("sid",null) != null){
             //sidString = preferences.getString("sid", null);
+            Log.d(TAG, "sid: " + preferences.getString("sid",null));
             refreshWall();
         }
 
     }
+
+
+
 
     private void register() {
         ComunicationController ccBacheca = new ComunicationController(this);
@@ -122,9 +127,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_bacheca, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 

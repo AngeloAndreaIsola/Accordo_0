@@ -18,10 +18,13 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
@@ -45,6 +48,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     private String channelName = null;
     private String sidString;
 
+    private MenuItem searchIteam, searchSettings;
 
 
 
@@ -68,6 +72,11 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         actionbar.setDisplayUseLogoEnabled(true);
         actionbar.setDisplayShowHomeEnabled(true);
         actionbar.setDisplayHomeAsUpEnabled(true);
+
+        //actionbar.setIcon(R.drawable.ic_baseline_favorite_24);
+
+
+
 
 
         try {
@@ -115,6 +124,33 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
                 startActivityForResult(i, SEND_POSITION);
             }
         });
+    }
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.menu_bacheca, menu);
+
+        menu.findItem(R.id.addChannel).setVisible(false);
+        menu.findItem(R.id.refresh).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+
+        //menu.findItem(R.id.prefered).setVisible(true);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //if (id == R.id.mybutton) {
+            // do something here
+        //}
+        return super.onOptionsItemSelected(item);
     }
 
 

@@ -20,4 +20,12 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_settings_24"/>
 
- </menu>
+    <item android:title="Prefered"
+        android:id="@+id/prefered"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:visible="false"/>
+
+
+</menu>
