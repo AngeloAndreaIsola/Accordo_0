@@ -26,10 +26,13 @@ import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
 import com.example.mc_project_v00.database.PostContentImage;
 import com.example.mc_project_v00.database.PostRoomDatabase;
+import com.google.gson.JsonObject;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class BachecaActivity extends AppCompatActivity implements OnListClickListener {
 
@@ -37,6 +40,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     private String sidString = null; 
     private BachecaAdapter adapter;
     private Context context = null;
+    private Boolean togle = false;
 
 
     @Override
@@ -160,6 +164,32 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             case R.id.settings:
                 startActivity(new Intent(BachecaActivity.this, SettingsActivity.class));
                 break;
+
+
+            case R.id.prefered_filter:
+                if (togle==false){
+                    try {
+                        showFilteredWall(BachecaModel.getInstance().getChannelList());
+                        togle = true;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else{
+                    ComunicationController cc = new ComunicationController(this);
+                    try {
+                        cc.getWall2(sidString, response -> {
+                            try {
+                                showWall(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }, error -> reportErrorToUsers(error));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
         }
 
 
@@ -178,6 +208,19 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         BachecaModel.getInstance().addAndSortData(response);
     }
+
+
+    private void showFilteredWall(List<JSONObject> canali) throws JSONException {
+
+        //colleghiamo model e dapter
+        RecyclerView rv = findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        BachecaAdapter adapter = new BachecaAdapter(this, this);
+        rv.setAdapter(adapter);
+
+        BachecaModel.getInstance().addAndSortFilteredData(canali);
+    }
+
 
     private void reportErrorToUsers(VolleyError error){
         Log.d(TAG, "Errore richiesta: " + error.toString());
@@ -206,9 +249,11 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         Log.d("RecycleViewExample", "From Main Activity: " + position);
 
         String nomeCanale = BachecaModel.getInstance().getChannelFromList(position);
+        boolean stato = BachecaModel.getInstance().getChannelPreferedState(position);
         Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
         i.putExtra("nomeCanale", nomeCanale);
         i.putExtra("position", position);
+        i.putExtra("preferredState",stato);
         startActivity(i);
 
     }
@@ -229,7 +274,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     private void refreshWall(){
         ComunicationController ccBacheca = new ComunicationController(context);
         try {
-            ccBacheca.getWall(sidString, response -> {
+            ccBacheca.getWall2(sidString, response -> {
                 try {
                     showWall(response);
                 } catch (JSONException e) {

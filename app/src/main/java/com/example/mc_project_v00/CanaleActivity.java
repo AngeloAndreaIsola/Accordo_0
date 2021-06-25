@@ -47,6 +47,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     private int position;
     private String channelName = null;
     private String sidString;
+    private boolean preferedState;
 
     private MenuItem searchIteam, searchSettings;
 
@@ -66,6 +67,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         if (extras != null) {
             channelName = extras.getString("nomeCanale");
             position = extras.getInt("position");
+            preferedState = extras.getBoolean("stato");
             this.setTitle(channelName);
         }
 
@@ -136,8 +138,9 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         menu.findItem(R.id.addChannel).setVisible(false);
         menu.findItem(R.id.refresh).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.prefered_filter).setVisible(false);
 
-        //menu.findItem(R.id.prefered).setVisible(true);
+        menu.findItem(R.id.prefered).setVisible(true);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -147,10 +150,29 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //if (id == R.id.mybutton) {
-            // do something here
-        //}
+        if (id == R.id.prefered) {
+            Log.d(TAG, "canale "+channelName+", stato preferito: "+ preferedState);
+
+
+            ComunicationController comunicationController = new ComunicationController(this);
+            try {
+                if (preferedState==false){
+                    preferedState = true;
+                }else if (preferedState == true){
+                    preferedState = false;
+                }
+                Log.d(TAG, "onOptionsItemSelected: sid: ,"+sidString+" bool: "+preferedState+" , channelName:" + channelName);
+                comunicationController.prefered(sidString, preferedState, channelName, response -> Log.d(TAG, "cambioPrefered: Cabiato stato da " + !preferedState + " a " + preferedState), error -> Log.d(TAG, "onOptionsItemSelected: errore aggiungendo preferito sid: "+ sidString+", bool: "+preferedState+ " , title: " + channelName));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void cambioPrefered(){
+        Log.d(TAG, "cambioPrefered: Cabiato stato da " + !preferedState + " a " + preferedState);
+        preferedState = !preferedState;
     }
 
 
