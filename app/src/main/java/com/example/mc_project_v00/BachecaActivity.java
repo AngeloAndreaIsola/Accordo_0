@@ -173,10 +173,11 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        BachecaAdapter adapter = new BachecaAdapter(this, this);
+        //BachecaAdapter adapter = new BachecaAdapter(this, this);
         rv.setAdapter(adapter);
 
         BachecaModel.getInstance().addAndSortData(response);
+        adapter.notifyDataSetChanged();
     }
 
     private void reportErrorToUsers(VolleyError error){
