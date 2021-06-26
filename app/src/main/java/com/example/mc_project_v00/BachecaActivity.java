@@ -167,7 +167,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
 
             case R.id.prefered_filter:
-                if (togle==false){
+                if (togle==true){
                     try {
                         showFilteredWall(BachecaModel.getInstance().getChannelList());
                         togle = true;
@@ -203,7 +203,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         //colleghiamo model e dapter
         RecyclerView rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        BachecaAdapter adapter = new BachecaAdapter(this, this);
+        //BachecaAdapter adapter = new BachecaAdapter(this, this);
         rv.setAdapter(adapter);
 
         BachecaModel.getInstance().addAndSortData(response);
