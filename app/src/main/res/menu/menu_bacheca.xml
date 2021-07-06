@@ -32,7 +32,7 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_favorite_24"
-        android:visible="true"/>
+        android:visible="false"/>
 
 
 </menu>

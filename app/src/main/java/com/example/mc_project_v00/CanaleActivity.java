@@ -140,7 +140,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.prefered_filter).setVisible(false);
 
-        menu.findItem(R.id.prefered).setVisible(true);
+        //menu.findItem(R.id.prefered).setVisible(true);
 
         return super.onCreateOptionsMenu(menu);
     }

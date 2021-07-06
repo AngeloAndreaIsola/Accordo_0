@@ -177,7 +177,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
                 } else{
                     ComunicationController cc = new ComunicationController(this);
                     try {
-                        cc.getWall2(sidString, response -> {
+                        cc.getWall(sidString, response -> {
                             try {
                                 showWall(response);
                             } catch (JSONException e) {

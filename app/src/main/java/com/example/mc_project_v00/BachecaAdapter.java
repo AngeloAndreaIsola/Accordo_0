@@ -64,13 +64,16 @@ public class BachecaAdapter extends RecyclerView.Adapter<BachecaViewHolder>  {
     public BachecaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //viene chiamato quando dobbiamo creare una nuova view
         View view = mInflater.inflate(R.layout.single_row, parent, false);
 
+        /*
         if (viewType == 0){
             view = mInflater.inflate(R.layout.single_row_prefered, parent, false);
             return new BachecaViewHolder(view, mListClickListener);
         }else{
             return new BachecaViewHolder(view, mListClickListener);
         }
+        */
 
+        return new BachecaViewHolder(view, mListClickListener);
 
     }
 
