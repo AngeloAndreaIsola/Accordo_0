@@ -1,0 +1,240 @@
+package com.example.recyclerview_test;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.ToggleButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity {
+
+    static public String TAG ="MainActivity";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        for (int i=0; i<100; i++){
+            JSONObject json = new JSONObject();
+
+            try {
+                json.put("contatto", "contatto" + i);
+
+                if (i%2==0){
+                    json.put("preferito", "true");
+                }else {
+                    json.put("preferito", "false");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Model.getInstance().addData(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Colleghiamo il tutto
+        RecyclerView rv = findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        MyAdapter adapter = new MyAdapter(this);
+        rv.setAdapter(adapter);
+
+        Switch sw = (Switch)findViewById(R.id.switch2);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    Log.d(TAG, "onCheckedChanged: enabled");
+                    adapter.filterOn();
+                } else {
+                    // The toggle is disabled
+                    Log.d(TAG, "onCheckedChanged: disabled");
+                    adapter.fitlerOff();
+                }
+            }
+        });
+
+    }
+}
+
+package com.example.recyclerview_test;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Model {
+    private static Model theInstance = null;
+    private List<JSONObject> listaContatti, listaContattiFiltrata, temp;
+
+    private Model(){
+        listaContatti = new ArrayList<>();
+        listaContattiFiltrata = new ArrayList<>();
+        temp = new ArrayList<>();
+    }
+
+    //Ritorna una istanza, se non c'è la crea e la ritorna
+    public static synchronized Model getInstance(){
+        if(theInstance==null){
+            theInstance= new Model();
+        }
+        return theInstance;
+    }
+
+    //ritorna dimensione per MyAdapter.getItemCount()
+    public int getListaContattiSize(){
+        return listaContatti.size();
+    }
+
+    //Aggiunge i dati, usato nella main activity
+    public void addData(JSONObject contatto) throws JSONException {
+        listaContatti.add(contatto);
+
+        if (contatto.getString("preferito") == "true"){
+            listaContattiFiltrata.add(contatto);
+        }
+    }
+
+    //prende il contatto singolo per myAdapter.OnBindViewHolder
+    public JSONObject getContant(int position){
+        return listaContatti.get(position);
+    }
+
+    public void swapListOn() {
+        temp = listaContatti;
+        listaContatti = listaContattiFiltrata;
+        listaContattiFiltrata = temp;
+    }
+
+    public void swapListOff(){
+        temp = listaContattiFiltrata;
+        listaContattiFiltrata = listaContatti;
+        listaContatti = temp;
+    }
+}
+
+
+package com.example.recyclerview_test;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
+public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private LayoutInflater mLayoutInflater = null;
+
+    //Si occupa di creare le cose dinamicamente usando un inflater
+    public MyAdapter(Context context){
+    mLayoutInflater = LayoutInflater.from(context);
+    }
+
+    //Viene chiamato quando deve essere creata una nuova view
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = mLayoutInflater.inflate(R.layout.single_row, parent, false);
+
+        if (viewType == 0){
+            view.setBackgroundColor(Color.parseColor("#ff0000"));
+        }
+
+        return new MyViewHolder(view);
+    }
+
+    //Usato per reciclare una view, e aggiornare il contenuto
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        String s = null;
+        try {
+            s = Model.getInstance().getContant(position).getString("contatto");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        holder.updateContent(s);
+    }
+
+    //Dice quanti sono gli elementi della lista
+    @Override
+    public int getItemCount() {
+        return Model.getInstance().getListaContattiSize();
+    }
+
+    public int getItemViewType(int position){
+        try {
+            if(Model.getInstance().getContant(position).getString("preferito").contains("true")){
+                return 0;
+            }else if (Model.getInstance().getContant(position).getString("preferito").contains("false")) {
+                return 1;
+            }else{
+                return 2;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 3;
+        }
+
+    }
+
+    public void filterOn(){
+        Model.getInstance().swapListOn();
+        notifyDataSetChanged();
+    }
+
+    public void fitlerOff(){
+        Model.getInstance().swapListOff();
+        notifyDataSetChanged();
+    }
+}
+
+
+package com.example.recyclerview_test;
+
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class MyViewHolder extends RecyclerView.ViewHolder {
+
+    private TextView mTextView = null;
+
+    //Gli dico qule è la singola cella
+    public MyViewHolder(@NonNull View itemView) {
+        super(itemView);
+        mTextView = itemView.findViewById(R.id.single_row);
+    }
+
+    //Riempe la cella quando viene aggiornata
+    public void updateContent(String text){
+        mTextView.setText(text);
+    }
+
+}
+
+
+
+

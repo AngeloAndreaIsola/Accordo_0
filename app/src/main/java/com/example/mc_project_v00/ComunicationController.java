@@ -28,6 +28,30 @@ public class ComunicationController {
         requestQueue = Volley.newRequestQueue(contextContainer);
     }
 
+    public void getWall2(String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
+        final String service_url = "getWall2.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid",sid);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void prefered (String sid, Boolean preferred, String ctitle, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) throws JSONException {
+        final String service_url = "setPreferred.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid",sid);
+        jsonObject.put("ctitle",ctitle);
+        jsonObject.put("preferred", preferred);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
     public void register (Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         final String service_url = "register.php";
         final String url = BASE_URL + service_url;

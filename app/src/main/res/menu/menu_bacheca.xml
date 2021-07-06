@@ -27,5 +27,12 @@
         android:icon="@drawable/ic_baseline_favorite_24"
         android:visible="false"/>
 
+    <item android:title="Prefered_filter"
+        android:id="@+id/prefered_filter"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:visible="false"/>
+
 
 </menu>
