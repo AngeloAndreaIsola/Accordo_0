@@ -2,6 +2,8 @@ package com.example.mc_project_v00;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+
 public class UserData {
     private static final String TAG = "UserData";
 
@@ -10,6 +12,8 @@ public class UserData {
     private String username = null;
     private String picture = null;
     private int pversion = 0;
+
+    static public JSONArray f = new JSONArray();
 
     public void saveProfile(int uid, String username, String picture, int pversion){
         this.uid = uid;
