@@ -109,7 +109,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 PostViewHolder.ViewHolder_Post_Text viewHolderPostText = new PostViewHolder.ViewHolder_Post_Text(holder.itemView);
 
                 //TEXT SET USERNAME
-                setUsername(viewHolderPostText, R.id.post_Text_Username, position);
+                setUsername(viewHolderPostText, R.id.post_Text_Username, position, postList.get(position).getString("uid"));
 
 
                 //TEXT FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
@@ -132,7 +132,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 PostViewHolder.ViewHolder_Post_Image viewHolderPostImage = new PostViewHolder.ViewHolder_Post_Image(holder.itemView, mClickListener, position);
 
                 //IMAGE SET USERNAME
-                setUsername(viewHolderPostImage, R.id.post_Image_Username, position);
+                setUsername(viewHolderPostImage, R.id.post_Image_Username, position, postList.get(position).getString("uid"));
 
                 //IMAGE FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
                 int uid = postList.get(position).getInt("uid");
@@ -179,7 +179,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 PostViewHolder.ViewHolder_Post_Position viewHolderPostPosition = new PostViewHolder.ViewHolder_Post_Position(holder.itemView, mClickListener, position);
 
                 //POSITION: SET USERNAME
-                setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
+                setUsername(viewHolderPostPosition, R.id.post_Position_Username, position, postList.get(position).getString("uid"));
 
                 //POSITION FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
                 int uid = postList.get(position).getInt("uid");
@@ -198,6 +198,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                     showPositionButton.setOnClickListener(null);
 
                 }
+            }
+
+            if (UserData.f.toString().contains(postList.get(position).getString("uid"))){/*
+               if(postList.get(position).getString("type").contains("l")){
+
+               }
+               if(postList.get(position).getString("type").contains("l")){
+
+               }
+               if(postList.get(position).getString("type").contains("l")){
+
+               }*/
+
+                holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
+            }else{
+                holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -303,15 +319,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
     }
 
-    public void setUsername(PostViewHolder postViewHolder, int viewID, int position) throws JSONException {
+    public void setUsername(PostViewHolder postViewHolder, int viewID, int position, String uid) throws JSONException {
         TextView username = postViewHolder.itemView.findViewById(viewID);
         JSONObject object_username = postList.get(position);
         String temp_username = object_username.getString("name");
-        Log.d(TAG, "il nome dell'utente è: " + temp_username);
+        Log.d(TAG, "il nome dell'utente è: " + temp_username + " UID: " + postList.get(position).getString("uid"));
         if (temp_username == "null"){
             username.setText("NO_NAME");
         }else{
-            username.setText(temp_username);
+            if (UserData.f.toString().contains(uid)){
+                username.setText(temp_username + " (SEGUITO)");
+                //username.setTextColor(Color.parseColor("#FF0000"));
+            }else{
+                username.setText(temp_username);
+            }
+
         }
     }
 
