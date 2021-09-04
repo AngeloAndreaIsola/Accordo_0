@@ -29,6 +29,7 @@ import com.example.mc_project_v00.database.PostRoomDatabase;
 import com.google.gson.JsonObject;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,6 +42,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     private BachecaAdapter adapter;
     private Context context = null;
     private Boolean togle = false;
+    //private JSONArray f = new JSONArray();
 
 
     @Override
@@ -93,11 +95,36 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
             //sidString = preferences.getString("sid", null);
             Log.d(TAG, "sid: " + preferences.getString("sid",null));
             refreshWall();
+
+
+
+            try {
+                showFollowing(preferences.getString("sid",null));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }
 
+    private void showFollowing(String sidString) throws JSONException {
+        ComunicationController comunicationController = new ComunicationController(this);
+        comunicationController.following(sidString, response -> {
+            try {
+                logFollowing(response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> reportErrorToUsers(error));
 
+        comunicationController.follow(sidString, "22205", response -> Log.d(TAG, "Followato: 22205"), error -> reportErrorToUsers(error));
+
+    }
+
+    private void logFollowing(JSONObject response) throws JSONException {
+        UserData.f = response.getJSONArray("following");
+        Log.d(TAG, "Stai seguendo: " + UserData.f.toString());
+    }
 
 
     private void register() {

@@ -80,7 +80,8 @@ public class ComunicationController {
         jsonObject.put("sid",sid);
 
         JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
-        Log.d(TAG, "Sendig request" + service_url);
+        Log.d(TAG, "Sendig request " + service_url);
+        Log.d(TAG, "request MARCO: " + request.toString());
         requestQueue.add(request);
     }
 
@@ -208,6 +209,41 @@ public class ComunicationController {
         jsonObject.put("lon", lon);
 
 
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void following(String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+        final String service_url = "following.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void follow(String sid, String uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+        final String service_url = "follow.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("uid", uid);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
+        Log.d(TAG, "Sendig request" + service_url);
+        requestQueue.add(request);
+    }
+
+    public void unfollow(String sid, String uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener ) throws JSONException {
+        final String service_url = "unfollow.php";
+        final String url = BASE_URL + service_url;
+        final JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sid", sid);
+        jsonObject.put("uid", uid);
 
         JsonObjectRequest request = new JsonObjectRequest(url, jsonObject, responseListener, errorListener);
         Log.d(TAG, "Sendig request" + service_url);
