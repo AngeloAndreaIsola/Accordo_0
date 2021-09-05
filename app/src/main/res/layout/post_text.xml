@@ -9,14 +9,16 @@
 
 
     <RelativeLayout
-        android:paddingBottom="16dp"
         android:id="@+id/container_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="13dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/card_bg"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -46,30 +48,32 @@
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
             android:textColor="@color/content_text_color" />
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/tv_date_t"
+            android:layout_width="97dp"
+            android:layout_height="25dp"
+            android:layout_above="@+id/post_text_Content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginRight="29dp"
+            android:layout_marginBottom="3dp"
             android:text="TextView"
             android:textColor="@color/content_text_color"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/post_Text_ProfileImage"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_alignBottom="@+id/post_Text_Username"
-            android:layout_marginBottom="0dp"
             android:layout_marginLeft="9dp"
+            android:layout_marginBottom="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_account_box_24"
-            app:shapeAppearance="@style/RoundedSquare"/>
+            app:shapeAppearance="@style/RoundedSquare"
+            app:srcCompat="@drawable/ic_baseline_account_box_24" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

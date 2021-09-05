@@ -19,16 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.example.mc_project_v00.database.AppExecutors;
 import com.example.mc_project_v00.database.DatabaseClient;
-import com.example.mc_project_v00.database.Post;
 import com.example.mc_project_v00.database.PostContentImage;
 import com.example.mc_project_v00.database.PostProfileImage;
 import com.example.mc_project_v00.database.PostRoomDatabase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
@@ -106,7 +103,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         try {
             if(postList.get(position).getString("type").contains("t")){ //BIND VIEWHOLDERONE
 
-                PostViewHolder.ViewHolder_Post_Text viewHolderPostText = new PostViewHolder.ViewHolder_Post_Text(holder.itemView);
+                PostViewHolder.ViewHolder_Post_Text viewHolderPostText = new PostViewHolder.ViewHolder_Post_Text(holder.itemView, mClickListener);
 
                 //TEXT SET USERNAME
                 setUsername(viewHolderPostText, R.id.post_Text_Username, position, postList.get(position).getString("uid"));
@@ -200,20 +197,86 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 }
             }
 
-            if (UserData.f.toString().contains(postList.get(position).getString("uid"))){/*
+            if (UserData.f.toString().contains(postList.get(position).getString("uid"))){
                if(postList.get(position).getString("type").contains("l")){
+                   holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
+                   //holder.itemView.findViewById(R.id.tv_date_p).setVisibility(View.INVISIBLE);
+                   holder.itemView.findViewById(R.id.tv_date_p).setVisibility(View.VISIBLE);
 
+                   Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_p);
+                   follow.setText("Non seguire");
                }
-               if(postList.get(position).getString("type").contains("l")){
+               if(postList.get(position).getString("type").contains("t")){
+                   holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
+                   //holder.itemView.findViewById(R.id.tv_date_t).setVisibility(View.INVISIBLE);
+                   holder.itemView.findViewById(R.id.tv_date_t).setVisibility(View.VISIBLE);
 
+
+                   Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_t);
+                   follow.setText("Non seguire");
                }
-               if(postList.get(position).getString("type").contains("l")){
+               if(postList.get(position).getString("type").contains("i")){
+                   holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
+                   //holder.itemView.findViewById(R.id.tv_date_i).setVisibility(View.INVISIBLE);
+                   holder.itemView.findViewById(R.id.tv_date_i).setVisibility(View.VISIBLE);
 
-               }*/
 
-                holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
+                   Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_i);
+                   follow.setText("Non seguire");
+               }
             }else{
                 holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                if(postList.get(position).getString("type").contains("l")){
+                    Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_p);
+                    follow.setText("Segui");
+
+                    holder.itemView.findViewById(R.id.tv_date_p).setVisibility(View.VISIBLE);
+                    holder.itemView.findViewById(R.id.tv_date_p).setOnClickListener(new View.OnClickListener(){
+
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                Log.d(TAG, "Voglio seguire: " + postList.get(position).getString("uid"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                if(postList.get(position).getString("type").contains("t")){
+                    Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_t);
+                    follow.setText("Segui");
+
+                    holder.itemView.findViewById(R.id.tv_date_t).setVisibility(View.VISIBLE);
+                    holder.itemView.findViewById(R.id.tv_date_t).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                Log.d(TAG, "Voglio seguire: " + postList.get(position).getString("uid"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                if(postList.get(position).getString("type").contains("i")){
+                    Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_i);
+                    follow.setText("Segui");
+
+                    holder.itemView.findViewById(R.id.tv_date_i).setVisibility(View.VISIBLE);
+                    holder.itemView.findViewById(R.id.tv_date_i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                Log.d(TAG, "Voglio seguire: " + postList.get(position).getString("uid"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

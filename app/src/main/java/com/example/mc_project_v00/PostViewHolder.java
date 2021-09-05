@@ -1,11 +1,6 @@
 package com.example.mc_project_v00;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.renderscript.Sampler;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 public class PostViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "Post_RecyclerView";
     View itemView;
@@ -31,15 +23,32 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    static class ViewHolder_Post_Text extends PostViewHolder{
+    static class ViewHolder_Post_Text extends PostViewHolder implements View.OnClickListener{
         TextView textViewUsername, textViewContent;
         ImageView imageViewProfileImage;
+        private View.OnClickListener followClickListener = null;
 
-        public ViewHolder_Post_Text(@NonNull View itemView) {
+        public ViewHolder_Post_Text(@NonNull View itemView, View.OnClickListener clicklistener) {
             super(itemView);
             textViewUsername = itemView.findViewById(R.id.post_Text_Username);
             textViewContent = itemView.findViewById(R.id.post_text_Content);
             imageViewProfileImage = itemView.findViewById((R.id.post_Text_ProfileImage));
+
+            itemView.findViewById(R.id.tv_date_t).setOnClickListener(this);
+            followClickListener = clicklistener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            try {
+                JSONObject o = PostModel.getInstance().getPostFromList(getAdapterPosition());
+                String uid = o.getString("uid");
+
+                Log.d(TAG, "Voglio seguire: " + uid);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -48,6 +57,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewProfileImage, imageViewContent;
         int p;
         private View.OnClickListener mClickListener = null;
+        private View.OnClickListener fClickListener = null;
 
         public ViewHolder_Post_Image(@NonNull View itemView, View.OnClickListener clicklistener, int position) {
             super(itemView);
@@ -57,9 +67,29 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             imageViewProfileImage = itemView.findViewById((R.id.post_Image_ProfileImage));
 
             itemView.findViewById(R.id.post_Image_Content).setOnClickListener(this);
+
             mClickListener = clicklistener;
 
             p = position;
+
+            fClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        JSONObject o = PostModel.getInstance().getPostFromList(getAdapterPosition());
+                        String uid = o.getString("uid");
+
+                        Log.d(TAG, "Voglio seguire: " + uid);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            itemView.findViewById(R.id.tv_date_i).setOnClickListener(fClickListener);
+
+
 
         }
 
@@ -88,7 +118,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         TextView textViewUsername;
         ImageView imageViewProfileImage;
         Button settingsButton;
-        private View.OnClickListener mListClickListener;
+        private View.OnClickListener mListClickListener = null;
+        private View.OnClickListener fClickListener = null;
         int p=0;
 
         public ViewHolder_Post_Position(@NonNull View itemView, View.OnClickListener onClickListener, int position) {
@@ -101,6 +132,23 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             itemView.findViewById(R.id.post_Position_Button_ShowPosition).setOnClickListener(this);
             mListClickListener = onClickListener;
             p = position;
+
+            fClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        JSONObject o = PostModel.getInstance().getPostFromList(getAdapterPosition());
+                        String uid = o.getString("uid");
+
+                        Log.d(TAG, "Voglio seguire: " + uid);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            itemView.findViewById(R.id.tv_date_p).setOnClickListener(fClickListener);
 
         }
 
