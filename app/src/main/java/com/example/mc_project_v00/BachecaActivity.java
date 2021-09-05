@@ -92,6 +92,12 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         } else if (preferences.getString("sid",null) != null){
             //sidString = preferences.getString("sid", null);
             Log.d(TAG, "sid: " + preferences.getString("sid",null));
+            UserData.sid = preferences.getString("sid",null);
+            try {
+                saveProfile();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             refreshWall();
         }
 
@@ -102,7 +108,13 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
     private void register() {
         ComunicationController ccBacheca = new ComunicationController(this);
-        ccBacheca.register(response -> saveSID_inSharedPreferences(response), error -> {
+        ccBacheca.register(response -> {
+            try {
+                saveSID_inSharedPreferences(response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
             if (error instanceof NoConnectionError){
                 AlertDialog.Builder failRegistrationDialog = new AlertDialog.Builder(context);
                 failRegistrationDialog.setTitle("Nessuna connessione, registrazione fallita");
@@ -228,7 +240,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
         Toast.makeText(this,"Errore richiesta: " + error.toString(), Toast.LENGTH_LONG).show();
     }
 
-    public void saveSID_inSharedPreferences(JSONObject response) {
+    public void saveSID_inSharedPreferences(JSONObject response) throws JSONException {
         SharedPreferences preferences = getSharedPreferences("User preference", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         try {
@@ -242,7 +254,27 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         sidString = preferences.getString("sid", null);
 
+        UserData.sid = preferences.getString("sid", null);
+
+        saveProfile();
         refreshWall();
+    }
+
+    private void saveProfile() throws JSONException {
+        ComunicationController comunicationController = new ComunicationController(this);
+        comunicationController.getProfile(UserData.sid, responseProfile -> {
+            try {
+                UserData.pversion = responseProfile.getInt("pversion");
+                UserData.picture = responseProfile.getString("picture");
+                UserData.uid = responseProfile.getString("uid");
+                UserData.username = responseProfile.getString("name");
+
+                Log.d(TAG, "Profilo salvato:  Sid=" + UserData.sid + " Uid=" + UserData.uid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> reportErrorToUsers(error));
+
     }
 
     @Override
