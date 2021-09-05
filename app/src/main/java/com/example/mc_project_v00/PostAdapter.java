@@ -204,7 +204,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                    holder.itemView.findViewById(R.id.tv_date_p).setVisibility(View.VISIBLE);
 
                    Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_p);
-                   follow.setText("Non seguire");
+                   follow.setText("Non seguire: " + postList.get(position).getString("uid"));
+
+
                }
                if(postList.get(position).getString("type").contains("t")){
                    holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
@@ -213,7 +215,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
                    Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_t);
-                   follow.setText("Non seguire");
+                   follow.setText("Non seguire: " + postList.get(position).getString("uid"));
                }
                if(postList.get(position).getString("type").contains("i")){
                    holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"));
@@ -222,7 +224,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
                    Button follow = (Button)holder.itemView.findViewById(R.id.tv_date_i);
-                   follow.setText("Non seguire");
+                   follow.setText("Non seguire" + postList.get(position).getString("uid"));
                }
             }else{
                 holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
