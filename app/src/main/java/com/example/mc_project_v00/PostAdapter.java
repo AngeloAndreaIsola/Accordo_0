@@ -113,12 +113,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
                 //TEXT FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
+                /*
                 int uid = postList.get(position).getInt("uid");
                 if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
                     loadProfilePicture(viewHolderPostText, position, R.id.post_Text_ProfileImage);
                 }else {
                     profileImageRequest(position, viewHolderPostText, R.id.post_Text_ProfileImage);
                 }
+
+                 */
+
+                setProfilePicture(viewHolderPostText, R.id.post_Text_ProfileImage, position);
 
 
                 //TEXT SET CONTENT
@@ -135,16 +140,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostImage, R.id.post_Image_Username, position);
 
                 //IMAGE FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
+                /*
                 int uid = postList.get(position).getInt("uid");
                 if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
                     loadProfilePicture(viewHolderPostImage, position, R.id.post_Image_ProfileImage);
                 }else {
                     profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage);
                 }
+                */
+                setProfilePicture(viewHolderPostImage, R.id.post_Image_ProfileImage, position);
 
                 //IMAGE FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
                 String pid = postList.get(position).getString("pid");
 
+                //IMAGE SET CONTENT
                 if (postRoomDatabase.postDao().getContentImage(Integer.parseInt(pid)) != null){
 
                     String encodedImage = (postRoomDatabase.postDao().getContentImage(Integer.parseInt(pid)));
@@ -182,12 +191,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
 
                 //POSITION FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
+                /*
                 int uid = postList.get(position).getInt("uid");
                 if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
                     loadProfilePicture(viewHolderPostPosition, position, R.id.post_Position_ProfileImage);
                 }else {
                     profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
                 }
+
+                 */
+                setProfilePicture(viewHolderPostPosition, R.id.post_Position_ProfileImage, position);
 
 
                 //POSITION SET CONTENT
@@ -312,6 +325,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
             username.setText("NO_NAME");
         }else{
             username.setText(temp_username);
+        }
+    }
+
+    public void setProfilePicture(PostViewHolder postViewHolder, int viewID, int position) throws JSONException {
+        int uid = postList.get(position).getInt("uid");
+        if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
+            loadProfilePicture(postViewHolder, position, viewID);
+        }else {
+            profileImageRequest(position, postViewHolder, viewID);
         }
     }
 
