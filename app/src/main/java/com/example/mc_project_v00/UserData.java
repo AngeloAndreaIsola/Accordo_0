@@ -7,26 +7,24 @@ import org.json.JSONArray;
 public class UserData {
     private static final String TAG = "UserData";
 
-    private String sid = null;
-    private int uid = 0;
-    private String username = null;
-    private String picture = null;
-    private int pversion = 0;
+    static public String sid = null;
+    static public String uid = null;
+    static public String username = null;
+    static public String picture = null;
+    static public int pversion = 0;
 
-    static public JSONArray f = new JSONArray();
-
-    public void saveProfile(int uid, String username, String picture, int pversion){
+    public void saveProfile(String uid, String username, String picture, int pversion){
         this.uid = uid;
         this.username = username;
         this.picture = picture;
         this.pversion = pversion;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
