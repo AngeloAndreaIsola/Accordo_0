@@ -58,7 +58,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
     }
 
-    public PostAdapter (Context context, String sid, View.OnClickListener ClickListener) throws JSONException {
+    public PostAdapter (Context context, String sid) throws JSONException { //, View.OnClickListener ClickListener
         /*
         List<JSONObject> tempPostList = new ArrayList<JSONObject>();;
         JSONArray postArray = object.getJSONArray("posts");
@@ -76,7 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
         this.sid = sid;
 
-        mClickListener = ClickListener;
+        //mClickListener = ClickListener;
 
         postRoomDatabase = DatabaseClient.getInstance(contextContainer).getPostRoomDatabase();
 

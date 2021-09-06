@@ -39,7 +39,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-public class CanaleActivity extends ImageController implements View.OnClickListener {
+public class CanaleActivity extends ImageController { //implements View.OnClickListener
     private static final String TAG = "ChannelActivity";
     private static final int GALLERY_REQUEST = 9;
     private static final int SEND_POSITION = 1;
@@ -304,7 +304,7 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         RecyclerView rvPost = findViewById(R.id.postRecyclerView);
         rvPost.setLayoutManager(new LinearLayoutManager(this));
         rvPost.setHasFixedSize(true);
-        PostAdapter postAdapter = new PostAdapter( this, sidString, this);
+        PostAdapter postAdapter = new PostAdapter( this, sidString); //this
         rvPost.setAdapter(postAdapter);
 
         PostModel.getInstance().addPosts(response);
@@ -329,10 +329,10 @@ public class CanaleActivity extends ImageController implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        Log.d("RecycleViewPost", "From Channel Activity: " + position);
-    }
+    //@Override
+    //public void onClick(View v) {
+   //     Log.d("RecycleViewPost", "From Channel Activity: " + position);
+   // }
 
     public static Context getPostActivityContext(){
         return context;
