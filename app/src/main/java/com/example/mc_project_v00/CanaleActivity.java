@@ -151,28 +151,9 @@ public class CanaleActivity extends ImageController { //implements View.OnClickL
         int id = item.getItemId();
 
         if (id == R.id.prefered) {
-            Log.d(TAG, "canale "+channelName+", stato preferito: "+ preferedState);
 
-
-            ComunicationController comunicationController = new ComunicationController(this);
-            try {
-                if (preferedState==false){
-                    preferedState = true;
-                }else if (preferedState == true){
-                    preferedState = false;
-                }
-                Log.d(TAG, "onOptionsItemSelected: sid: ,"+sidString+" bool: "+preferedState+" , channelName:" + channelName);
-                comunicationController.prefered(sidString, preferedState, channelName, response -> Log.d(TAG, "cambioPrefered: Cabiato stato da " + !preferedState + " a " + preferedState), error -> Log.d(TAG, "onOptionsItemSelected: errore aggiungendo preferito sid: "+ sidString+", bool: "+preferedState+ " , title: " + channelName));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void cambioPrefered(){
-        Log.d(TAG, "cambioPrefered: Cabiato stato da " + !preferedState + " a " + preferedState);
-        preferedState = !preferedState;
     }
 
 
