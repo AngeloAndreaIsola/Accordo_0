@@ -13,8 +13,6 @@ import java.util.List;
 public class BachecaModel {
 
     private List<JSONObject> channelList = null;
-    private List<JSONObject> tempChannelList = null;
-    private List<JSONObject> filteredList = null;
     private static BachecaModel theInstance = null;
     private static final String TAG = "Model";
 
@@ -38,16 +36,6 @@ public class BachecaModel {
         return o.getString("ctitle");
     }
 
-    public boolean getChannelPreferedState(int i) throws  JSONException{
-        JSONObject o = channelList.get(i);
-        Log.d(TAG, "getChannelPreferedState: " + o.toString());
-        if (o.getString("preferred")=="t"){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     public  List<JSONObject> getChannelList(){
         return channelList;
     }
@@ -57,29 +45,6 @@ public class BachecaModel {
         JSONArray jsonArray = response.getJSONArray("channels");
         for (int i = 0; i<jsonArray.length(); i++) {
             channelList.add( jsonArray.getJSONObject(i));
-        }
-
-        /*
-        //USA QUESTA LINEA PER TESTARE LA sortData()
-        listaCanali.get(21).put("mine","t");
-        listaCanali.get(22).put("mine", "t");
-        listaCanali.get(19).put("mine", "t");
-
-         */
-
-        //channelList.sort(channelListComparator);
-
-        Log.d(TAG, "Channel list save in model: " + channelList.toString());
-    }
-
-    public void addAndSortFilteredData (List<JSONObject> canali) throws JSONException {
-        //channelList.clear();
-        filteredList.clear();
-
-        for (int i = 0; i<canali.size(); i++) {
-            if (canali.get(i).getString("preferred").contains("t")){
-                filteredList.add(canali.get(i));
-            }
         }
 
         /*

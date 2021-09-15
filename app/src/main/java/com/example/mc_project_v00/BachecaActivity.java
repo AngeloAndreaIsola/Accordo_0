@@ -179,28 +179,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
 
             case R.id.prefered_filter:
-                if (togle==true){
-                    try {
-                        showFilteredWall(BachecaModel.getInstance().getChannelList());
-                        togle = true;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else{
-                    ComunicationController cc = new ComunicationController(this);
-                    try {
-                        cc.getWall(sidString, response -> {
-                            try {
-                                showWall(response);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }, error -> reportErrorToUsers(error));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
+                Log.d(TAG, "Clik su filtro preferiti");
 
         }
 
@@ -220,18 +199,6 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
 
         BachecaModel.getInstance().addAndSortData(response);
         adapter.notifyDataSetChanged();
-    }
-
-
-    private void showFilteredWall(List<JSONObject> canali) throws JSONException {
-
-        //colleghiamo model e dapter
-        RecyclerView rv = findViewById(R.id.recyclerView);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        BachecaAdapter adapter = new BachecaAdapter(this, this);
-        rv.setAdapter(adapter);
-
-        BachecaModel.getInstance().addAndSortFilteredData(canali);
     }
 
 
@@ -280,13 +247,10 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     @Override
     public void onListClick(int position) throws JSONException {
         Log.d("RecycleViewExample", "From Main Activity: " + position);
-
         String nomeCanale = BachecaModel.getInstance().getChannelFromList(position);
-        boolean stato = BachecaModel.getInstance().getChannelPreferedState(position);
         Intent i = new Intent(BachecaActivity.this, CanaleActivity.class);
         i.putExtra("nomeCanale", nomeCanale);
         i.putExtra("position", position);
-        i.putExtra("preferredState",stato);
         startActivity(i);
 
     }
@@ -307,7 +271,7 @@ public class BachecaActivity extends AppCompatActivity implements OnListClickLis
     private void refreshWall(){
         ComunicationController ccBacheca = new ComunicationController(context);
         try {
-            ccBacheca.getWall2(sidString, response -> {
+            ccBacheca.getWall(sidString, response -> {
                 try {
                     showWall(response);
                 } catch (JSONException e) {

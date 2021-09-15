@@ -235,6 +235,16 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
 }
 
+--------------------------------------------------------------------------------
+
+    - Highlight --> onBindviewHolder:
+                  If (condition){
+                    //cambia backgroud a colore
+                  } else {
+                   //metti backgraound come bianco
+                  }
 
 
+    - A volte == non funziona, usa contains
+    - Per input text usa campo EditText
 
