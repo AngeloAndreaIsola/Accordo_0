@@ -245,6 +245,27 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                   }
 
 
+                                  for (int i=0; i<UserData.following.length(); i++){
+                                      if(postList.get(position).getString("uid").contains(UserData.following.getString(i))){
+                                          viewHolderPostText.itemView.setBackgroundColor(Color.parseColor("#ff0000"));
+
+                                          Button button = viewHolderPostText.itemView.findViewById(R.id.tv_date_t);
+                                          button.setVisibility(View.VISIBLE);
+                                          button.setText("Non seguire");
+
+                                      }else{
+                                          viewHolderPostText.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                                          viewHolderPostText.itemView.findViewById(R.id.tv_date_t).setVisibility(View.VISIBLE);
+
+                                          Button button = viewHolderPostText.itemView.findViewById(R.id.tv_date_t);
+                                          button.setVisibility(View.VISIBLE);
+                                          button.setText("Segui");
+
+                                      }
+
+                                  }
+
+
     - A volte == non funziona, usa contains
     - Per input text usa campo EditText
 

@@ -113,16 +113,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
 
                 //TEXT FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
-                /*
-                int uid = postList.get(position).getInt("uid");
-                if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
-                    loadProfilePicture(viewHolderPostText, position, R.id.post_Text_ProfileImage);
-                }else {
-                    profileImageRequest(position, viewHolderPostText, R.id.post_Text_ProfileImage);
-                }
-
-                 */
-
                 setProfilePicture(viewHolderPostText, R.id.post_Text_ProfileImage, position);
 
 
@@ -140,14 +130,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostImage, R.id.post_Image_Username, position);
 
                 //IMAGE FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
-                /*
-                int uid = postList.get(position).getInt("uid");
-                if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
-                    loadProfilePicture(viewHolderPostImage, position, R.id.post_Image_ProfileImage);
-                }else {
-                    profileImageRequest(position, viewHolderPostImage, R.id.post_Image_ProfileImage);
-                }
-                */
                 setProfilePicture(viewHolderPostImage, R.id.post_Image_ProfileImage, position);
 
                 //IMAGE FAI LA CHIAMATA PER PRENDERE L'IMMAGINE CONTENUTO
@@ -191,15 +173,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
                 setUsername(viewHolderPostPosition, R.id.post_Position_Username, position);
 
                 //POSITION FOTO PROFILO: CONTROLLA SE E' NEL DB ALTRIMENTI FA LA CHIAMATA
-                /*
-                int uid = postList.get(position).getInt("uid");
-                if (postList.get(position).getInt("pversion")==0 || postRoomDatabase.postDao().getProfileVersion(uid) >= postList.get(position).getInt("pversion")) {
-                    loadProfilePicture(viewHolderPostPosition, position, R.id.post_Position_ProfileImage);
-                }else {
-                    profileImageRequest(position, viewHolderPostPosition, R.id.post_Position_ProfileImage);
-                }
-
-                 */
                 setProfilePicture(viewHolderPostPosition, R.id.post_Position_ProfileImage, position);
 
 
