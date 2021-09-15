@@ -106,7 +106,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         try {
             if(postList.get(position).getString("type").contains("t")){ //BIND VIEWHOLDERONE
 
-                PostViewHolder.ViewHolder_Post_Text viewHolderPostText = new PostViewHolder.ViewHolder_Post_Text(holder.itemView);
+                PostViewHolder.ViewHolder_Post_Text viewHolderPostText = new PostViewHolder.ViewHolder_Post_Text(holder.itemView, position);
 
                 //TEXT SET USERNAME
                 setUsername(viewHolderPostText, R.id.post_Text_Username, position);

@@ -35,7 +35,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         TextView textViewUsername, textViewContent;
         ImageView imageViewProfileImage;
 
-        public ViewHolder_Post_Text(@NonNull View itemView) {
+        public ViewHolder_Post_Text(@NonNull View itemView, int positon) {
             super(itemView);
             textViewUsername = itemView.findViewById(R.id.post_Text_Username);
             textViewContent = itemView.findViewById(R.id.post_text_Content);
